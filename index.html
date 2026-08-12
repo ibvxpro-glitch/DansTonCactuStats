@@ -632,9 +632,9 @@ footer code{
     <div class="panel-head">
       <div>
         <h2>La route vers les 150</h2>
-        <p>Part du dex de base (150 jokers) déjà débloquée par chaque collectionneur, au 11 août.</p>
+        <p>Part du catalogue complet (150 jokers de base + 2 cachés = 152) déjà débloquée par chaque collectionneur, au 11 août.</p>
       </div>
-      <span class="panel-tag">Complétion</span>
+      <span class="panel-tag">Complétion · /152</span>
     </div>
     <div class="panel-body">
       <div class="compl-grid" id="complGrid"></div>
@@ -704,6 +704,32 @@ footer code{
     </div>
   </section>
 
+  <section class="panel" id="panelHoarders">
+    <div class="panel-head">
+      <div>
+        <h2>Les accumulateurs</h2>
+        <p>Le plus gros tas de doublons d'<b>un seul et même joker</b> chez chaque collectionneur — jusqu'où va l'acharnement.</p>
+      </div>
+      <span class="panel-tag">Max doublons d'un joker</span>
+    </div>
+    <div class="panel-body">
+      <div class="trophy-list compact" id="hoarderList"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panelPremium">
+    <div class="panel-head">
+      <div>
+        <h2>La collection premium</h2>
+        <p>Part des jokers uniques débloqués qui ont une édition spéciale (Foil, Holographic, Polychrome, Négatif) — parmi les collectionneurs avec au moins 20 jokers uniques.</p>
+      </div>
+      <span class="panel-tag">Taux d'édition · unique</span>
+    </div>
+    <div class="panel-body">
+      <div class="trophy-list compact" id="premiumList"></div>
+    </div>
+  </section>
+
   <div class="section-divider-wrap">
     <div class="section-divider"><span class="line"></span><span class="label">Le Jokerdex complet</span><span class="line"></span></div>
     <p class="section-divider-sub" style="color:var(--text-muted); font-size:0.86rem; max-width:70ch;">Un cran plus large : les 150 jokers de base + les jokers cachés, avec le nombre de tirages cumulés par <b style="color:var(--text-secondary)">toute la communauté</b> de danstacollection.fr — pas seulement les 25 premiers du classement.</p>
@@ -747,6 +773,31 @@ footer code{
     </div>
   </section>
 
+  <section class="panel" id="panelHoardedJokers">
+    <div class="panel-head">
+      <div>
+        <h2>Accumulation & biais du tirage</h2>
+        <p>Certains jokers s'entassent en double chez ceux qui les ont ; d'autres tombent plus ou moins souvent que prévu par leur seule rareté.</p>
+      </div>
+      <span class="panel-tag">Détenteurs · écarts</span>
+    </div>
+    <div class="panel-body">
+      <p class="bars-note" style="margin:0 0 10px; padding:0; border:none;"><b>Les plus accumulés en double</b> — nombre moyen d'exemplaires chez ceux qui le possèdent (jokers avec au moins 5 détenteurs).</p>
+      <div class="bars" id="hoardedJokersBars"></div>
+      <div class="movers" style="margin-top:26px;">
+        <div class="mover-col up">
+          <h3>▲ Sortent plus que prévu</h3>
+          <div class="mover-list" id="ecartOver"></div>
+        </div>
+        <div class="mover-col down">
+          <h3>▼ Sortent moins que prévu</h3>
+          <div class="mover-list" id="ecartUnder"></div>
+        </div>
+      </div>
+      <p class="bars-note" style="margin-top:14px;">Écart relatif au taux théorique de la rareté, jokers avec au moins 20 tirages.</p>
+    </div>
+  </section>
+
   <section class="panel" id="panelStake">
     <div class="panel-head">
       <div>
@@ -761,6 +812,25 @@ footer code{
     </div>
   </section>
 
+  <div class="section-divider-wrap">
+    <div class="section-divider"><span class="line"></span><span class="label">Coulisses du stream</span><span class="line"></span></div>
+    <p class="section-divider-sub" style="color:var(--text-muted); font-size:0.86rem; max-width:70ch;">25 sessions de stream, du <b style="color:var(--text-secondary)">7 juin</b> au <b style="color:var(--text-secondary)">11 août</b> — d'où viennent vraiment les 4 924 jokers distribués.</p>
+  </div>
+
+  <section class="panel" id="panelSessions">
+    <div class="panel-head">
+      <div>
+        <h2>Les sessions de stream</h2>
+        <p>Chaque booster ouvert vient d'une session en direct — voilà à quoi ressemble le rythme derrière le classement.</p>
+      </div>
+      <span class="panel-tag">25 sessions</span>
+    </div>
+    <div class="panel-body">
+      <div class="hero-stats" id="sessionStats" style="margin-bottom:22px;"></div>
+      <div class="bars" id="sessionBars"></div>
+      <p class="bars-note" id="sessionNote"></p>
+    </div>
+  </section>
 
 </div>
 
@@ -838,7 +908,7 @@ function attachTip(el, html){
 
   const tiles = [
     { val: fmtInt(totalBoosters), lbl: 'Boosters ouverts (top 25, cumulé)', delta: `= ${fmtInt(totalEpines)} épines`, cls:'' },
-    { val: `${bestCompletion.uniq}<small>/150</small>`, lbl: `Meilleure complétion — ${bestCompletion.name}`, delta: `${(bestCompletion.uniq/150*100).toFixed(0)} % du dex de base`, cls:'up' },
+    { val: `${bestCompletion.uniq}<small>/152</small>`, lbl: `Meilleure complétion — ${bestCompletion.name}`, delta: `${(bestCompletion.uniq/152*100).toFixed(0)} % du catalogue complet`, cls:'up' },
     { val: `${fmtPts(ppbAvg)}<small> pts</small>`, lbl: 'Points marqués par booster, en moyenne', delta: `${gapPct>=0?'+':''}${gapPct.toFixed(1)} % vs les ${fmtPts(EV)} pts attendus — les doublons ne rapportent rien`, cls: gapPct>=0?'up':'down' },
     { val: `25`, lbl: 'Collectionneurs suivis au 11 août', delta: '2 entrées, 2 sorties depuis le 9 août', cls:'' },
   ];
@@ -1037,7 +1107,7 @@ function attachTip(el, html){
 
 /* ---------- Completion ---------- */
 (function(){
-  const BASE = 150;
+  const BASE = 152;
   const rows = Object.entries(d3).map(([name,v])=>({name, uniq:v.uniq, pct: v.uniq/BASE*100}))
     .sort((a,b)=>b.pct-a.pct);
 
@@ -1046,13 +1116,13 @@ function attachTip(el, html){
     return `<div class="bar-row" data-name="${r.name}" data-uniq="${r.uniq}" data-pct="${r.pct.toFixed(1)}">
       <span class="bar-name"><span class="rank">${String(i+1).padStart(2,'0')}</span>${r.name}</span>
       <span class="bar-track"><span class="bar-fill" style="width:${w}%; background:var(--gold)"></span></span>
-      <span class="bar-val"><b>${r.uniq}</b>/150 · ${r.pct.toFixed(0)}%</span>
+      <span class="bar-val"><b>${r.uniq}</b>/152 · ${r.pct.toFixed(0)}%</span>
     </div>`;
   }).join('');
 
   document.querySelectorAll('#complGrid .bar-row').forEach(el=>{
     const n = el.dataset.name, u = el.dataset.uniq, p = el.dataset.pct;
-    attachTip(el, `<b>${n}</b><br>${u} jokers uniques / 150<br>${p} % du dex de base`);
+    attachTip(el, `<b>${n}</b><br>${u} jokers uniques / 152<br>${p} % du catalogue complet`);
   });
 })();
 
@@ -1153,7 +1223,7 @@ function attachTip(el, html){
     `Recoupement : le total de boosters ouverts ici (<b>${fmtInt(totalBoosters)}</b>) tombe exactement sur le total de tirages du Jokerdex plus bas (4 924) — les deux relevés du 12 août sont cohérents entre eux.`;
 
   /* ---------- Completion % across the whole community ---------- */
-  const BASE_DEX = 150;
+  const BASE_DEX = 152;
   const pctRows = rows.map(r=>({name:r.name, pct: r.uniq/BASE_DEX*100}));
   const avgPct = pctRows.reduce((s,r)=>s+r.pct,0)/pctRows.length;
   const sortedPct = [...pctRows].sort((a,b)=>a.pct-b.pct);
@@ -1209,6 +1279,49 @@ function attachTip(el, html){
   }).join('');
   document.getElementById('communityTrophyNote').innerHTML =
     `<b>${sorted.length} jokers différents</b> sont le trophée d'au moins un collectionneur. Sur le seul top 25, Cactus, Canio et Perkeo dominaient (3 chacun) ; sur toute la communauté, ce sont surtout des jokers peu-communs comme <b>Egg</b> qui reviennent le plus, portés par les nombreux profils encore en début de collection.`;
+})();
+
+/* ---------- Les accumulateurs (max doublons d'un même joker, par collectionneur) ---------- */
+(function(){
+  const hoarders = OFFICIAL_LEADERBOARD
+    .map(r => ({ name: r[1], maxStack: r[6], doublons: r[5] }))
+    .filter(h => h.maxStack > 0)
+    .sort((a,b) => b.maxStack - a.maxStack || b.doublons - a.doublons)
+    .slice(0, 6);
+  document.getElementById('hoarderList').innerHTML = hoarders.map((h,i)=>{
+    const rank = i===0 || hoarders[i-1].maxStack!==h.maxStack ? i+1 : null;
+    return `<div class="trophy-row">
+      <span class="trophy-rank">${rank!=null?rank:''}</span>
+      <span>
+        <span class="trophy-name">${h.name}</span>
+        <div class="trophy-sub">${fmtInt(h.doublons)} doublons au total</div>
+      </span>
+      <span class="trophy-count">${h.maxStack}<small>exemplaires du même joker</small></span>
+    </div>`;
+  }).join('');
+})();
+
+/* ---------- La collection premium (taux d'édition parmi les jokers uniques) ---------- */
+(function(){
+  const MIN_UNIQ = 20;
+  const premium = OFFICIAL_LEADERBOARD
+    .map(r => {
+      const [rang,name,score,total,uniq,doublons,maxStack,pctCat,foil,holo,poly,neg] = r;
+      const edited = foil+holo+poly+neg;
+      return { name, uniq, edited, rate: uniq>0 ? edited/uniq*100 : 0 };
+    })
+    .filter(p => p.uniq >= MIN_UNIQ)
+    .sort((a,b) => b.rate-a.rate)
+    .slice(0, 6);
+  document.getElementById('premiumList').innerHTML = premium.map((p,i)=>`
+    <div class="trophy-row">
+      <span class="trophy-rank">${i+1}</span>
+      <span>
+        <span class="trophy-name">${p.name}</span>
+        <div class="trophy-sub">${p.edited} jokers avec édition sur ${p.uniq} uniques</div>
+      </span>
+      <span class="trophy-count">${p.rate.toFixed(1)}<small>% édités</small></span>
+    </div>`).join('');
 })();
 
 /* ---------- Jokerdex complet : parsing ---------- */
@@ -1312,8 +1425,42 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     <span class="callout-mark">✦</span>
     <div>
       <p>Les <strong>2 jokers cachés</strong> confirmés à ce jour sont bien classés Légendaire, hors des 150 de base : <strong>Cactus</strong> (${cactus.count} détenteurs, cohérent avec les 3 collectionneurs identifiés plus haut qui l'ont en top joker) et <strong>Golden Eye</strong>, obtenu une seule fois sur toute la communauté (par <b>arkhann50</b>) — le pull le plus rare de tout le Jokerdex, devant Yorick et Triboulet (2 chacun).</p>
-      <p>Le classement en jeu affiche ces deux jokers à <strong>17</strong> et <strong>20 points</strong> respectivement (sans édition), alors que le barème officiel exporté par le site les liste tous les deux à 15 pts — la valeur générique de tout légendaire. Les deux valeurs cohabitent probablement parce que le tableau exporté ne fait qu'appliquer la règle par rareté, sans capturer un bonus spécifique aux secrets que le moteur de score, lui, applique bel et bien.</p>
+      <p>Le classement en jeu affiche ces deux jokers à <strong>17</strong> et <strong>20 points</strong> respectivement (sans édition) — ce sont les valeurs réellement appliquées au score. Le tableau officiel exporté par le site les liste, lui, à 15 pts, la valeur générique de tout légendaire : ce champ ne fait qu'appliquer la règle par rareté et ne capture pas le bonus spécifique aux secrets que le moteur de score, lui, applique bel et bien.</p>
     </div>`;
+})();
+
+/* ---------- Accumulation & biais du tirage ---------- */
+(function(){
+  const collRows = OFFICIAL_COLLECTION.map(([id,name,rarity,exemplaires,editions,maxStake,detenteurs,tauxPossession,exParDetenteur,partDrops,partTheorique,ecart])=>
+    ({ id, name, rarity, exemplaires, detenteurs, exParDetenteur, partDrops, partTheorique }));
+
+  const hoarded = collRows.filter(j=>j.detenteurs>=5).sort((a,b)=>b.exParDetenteur-a.exParDetenteur).slice(0,8);
+  const max = hoarded[0].exParDetenteur;
+  document.getElementById('hoardedJokersBars').innerHTML = hoarded.map((j,i)=>{
+    const w = (j.exParDetenteur/max*100).toFixed(1);
+    return `<div class="bar-row" data-name="${j.name}" data-ex="${j.exParDetenteur}" data-det="${j.detenteurs}" data-tot="${j.exemplaires}">
+      <span class="bar-name"><span class="rank">${String(i+1).padStart(2,'0')}</span>${j.name}</span>
+      <span class="bar-track"><span class="bar-fill" style="width:${w}%; background:${RARITY_COLOR[j.rarity]}"></span></span>
+      <span class="bar-val"><b>${j.exParDetenteur.toFixed(2)}</b>×</span>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('#hoardedJokersBars .bar-row').forEach(el=>{
+    const n=el.dataset.name, ex=el.dataset.ex, det=el.dataset.det, tot=el.dataset.tot;
+    attachTip(el, `<b>${n}</b><br>${ex} exemplaires en moyenne chez ceux qui l'ont<br>${det} détenteurs pour ${tot} tirages au total`);
+  });
+
+  const withRel = collRows.filter(j=>j.exemplaires>=20).map(j=>({
+    ...j, rel: (j.partDrops - j.partTheorique) / j.partTheorique * 100,
+  }));
+  const over = [...withRel].sort((a,b)=>b.rel-a.rel).slice(0,4);
+  const under = [...withRel].sort((a,b)=>a.rel-b.rel).slice(0,4);
+  const ecartRow = (j,sign)=>`<div class="mover-item ${sign}">
+    <span>${j.name}</span>
+    <span class="mover-ranks">${j.rarity}</span>
+    <span class="mover-delta">${sign==='up'?'+':''}${j.rel.toFixed(0)}%</span>
+  </div>`;
+  document.getElementById('ecartOver').innerHTML = over.map(j=>ecartRow(j,'up')).join('');
+  document.getElementById('ecartUnder').innerHTML = under.map(j=>ecartRow(j,'down')).join('');
 })();
 
 /* ---------- Signature jokers (max stake, échelle 0-9) ----------
@@ -1351,5 +1498,48 @@ const STAKE_MAX = 9;
   const topDisplay = rows[0].maxStake + 1;
   document.getElementById('stakeNote').innerHTML =
     `L'échelle va jusqu'à <b>9</b> (le stake de base compte comme le 1ᵉʳ palier) — personne dans nos relevés n'a encore dépassé <b>${topDisplay}/9</b>.`;
+})();
+
+/* ---------- Sessions de stream ---------- */
+(function(){
+  const sessions = OFFICIAL_SESSIONS.map(([session,date,debut,fin,duree,ouvertures,jokersDistribues,viewersServis,jokersParHeure])=>
+    ({ session, date, debut, fin, duree, ouvertures, jokersDistribues, viewersServis, jokersParHeure }));
+
+  const totalHeures = sessions.reduce((s,r)=>s+r.duree,0);
+  const totalDistribues = sessions.reduce((s,r)=>s+r.jokersDistribues,0);
+  const avgParHeure = totalDistribues/totalHeures;
+  const best = [...sessions].sort((a,b)=>b.jokersParHeure-a.jokersParHeure)[0];
+  const longest = [...sessions].sort((a,b)=>b.duree-a.duree)[0];
+
+  const tiles = [
+    { val: fmtInt(sessions.length), lbl: 'Sessions de stream recensées', delta: `du ${sessions[0].date} au ${sessions[sessions.length-1].date}`, cls:'' },
+    { val: `${fmtPts(totalHeures)}<small> h</small>`, lbl: 'Temps de stream cumulé', delta: `= ${fmtInt(totalDistribues)} jokers distribués`, cls:'' },
+    { val: `${fmtPts(avgParHeure)}<small>/h</small>`, lbl: 'Jokers distribués par heure, en moyenne', delta: `record : ${fmtPts(best.jokersParHeure)}/h le ${best.date}`, cls:'up' },
+    { val: `${fmtPts(longest.duree)}<small> h</small>`, lbl: 'Session la plus longue', delta: `le ${longest.date} (${longest.jokersDistribues} jokers)`, cls:'' },
+  ];
+  document.getElementById('sessionStats').innerHTML = tiles.map(t=>`
+    <div class="stat-tile">
+      <span class="val">${t.val}</span>
+      <span class="lbl">${t.lbl}</span>
+      <span class="delta ${t.cls}">${t.delta}</span>
+    </div>`).join('');
+
+  const sorted = [...sessions].sort((a,b)=>b.jokersDistribues-a.jokersDistribues);
+  const maxDistrib = sorted[0].jokersDistribues;
+  document.getElementById('sessionBars').innerHTML = sorted.map((s,i)=>{
+    const w = (s.jokersDistribues/maxDistrib*100).toFixed(1);
+    return `<div class="bar-row" data-date="${s.date}" data-duree="${s.duree}" data-ouvertures="${s.ouvertures}" data-jph="${s.jokersParHeure}" data-viewers="${s.viewersServis}">
+      <span class="bar-name"><span class="rank">${String(i+1).padStart(2,'0')}</span>${s.date}</span>
+      <span class="bar-track"><span class="bar-fill" style="width:${w}%"></span></span>
+      <span class="bar-val"><b>${s.jokersDistribues}</b> jokers</span>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('#sessionBars .bar-row').forEach(el=>{
+    const d=el.dataset.date, dur=el.dataset.duree, o=el.dataset.ouvertures, jph=el.dataset.jph, v=el.dataset.viewers;
+    attachTip(el, `<b>${d}</b><br>${dur} h de stream · ${o} boosters ouverts<br>${jph} jokers/heure · ${v} viewers servis`);
+  });
+
+  document.getElementById('sessionNote').innerHTML =
+    `Triées par nombre de jokers distribués, la session la plus courte comme la plus longue.`;
 })();
 </script>
