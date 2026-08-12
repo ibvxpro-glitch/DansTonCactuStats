@@ -761,10 +761,6 @@ footer code{
     </div>
   </section>
 
-  <footer>
-    <p><b>Source :</b> classements publics relevés sur <a href="https://danstacollection.fr/" target="_blank" rel="noopener">danstacollection.fr</a> les <code>2026-08-09</code>, <code>2026-08-10</code> et <code>2026-08-11</code> (25 premiers du classement à chaque relevé). L'espérance théorique par booster (<span id="evFooter"></span> pts) est calculée à partir des taux de drop communiqués : 70 % commun (1&nbsp;pt), 25 % peu-commun (2&nbsp;pts), 5 % rare (4&nbsp;pts), 0,3 % légendaire (15&nbsp;pts), et indépendamment 4,8 % brillant/foil (+4), 2,8 % holographique (+6), 1,2 % polychrome (+9), 0,3 % négatif (+14).</p>
-    <p>« Boosters ouverts » est déduit de la variation du compteur <em>Total jokers</em> entre deux relevés (1 booster = 1 joker = 150 épines). Les écarts entre l'espérance théorique et les points/booster réellement observés peuvent venir de la variance sur un échantillon encore modeste, ou du barème propre aux jokers cachés — voir l'encart sur Cactus ci-dessus.</p>
-  </footer>
 
 </div>
 
@@ -846,7 +842,6 @@ function attachTip(el, html){
     </div>`).join('');
 
   document.getElementById('evValue').textContent = fmtPts(EV);
-  document.getElementById('evFooter').textContent = fmtPts(EV);
 })();
 
 /* ---------- Activity bars ---------- */
