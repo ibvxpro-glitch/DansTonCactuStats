@@ -276,29 +276,35 @@ h1.title{
 .legend-item{ display:flex; align-items:center; gap:7px; font-size:0.78rem; color: var(--text-secondary); }
 .legend-dot{ width:10px; height:10px; border-radius:3px; flex:none; }
 
-/* ---------- Sparkline grid ---------- */
-.spark-grid{
+/* ---------- Trajectoires ---------- */
+.traj-grid{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
-.spark-card{
+.traj-card{
   border:1px solid var(--border-soft);
   background: var(--surface-2);
   border-radius: 12px;
-  padding: 12px 14px;
-  display:grid;
-  grid-template-columns: 1fr auto;
-  align-items:center;
+  padding: 14px 16px 12px;
+  display:flex;
+  flex-direction:column;
   gap: 10px;
 }
-.spark-name{ font-size:0.84rem; color: var(--text-primary); font-weight:600; }
-.spark-rank{ font-family: var(--font-display); font-size:0.68rem; color: var(--text-muted); }
-.spark-score{ font-family: var(--font-display); font-weight:700; font-size:1.05rem; text-align:right; font-variant-numeric: tabular-nums; }
-.spark-svg{ grid-column: 1 / -1; }
-.spark-delta{ font-family: var(--font-display); font-size:0.7rem; text-align:right; }
-.spark-delta.up{ color: var(--blue); }
-.spark-delta.flat{ color: var(--text-muted); }
+.traj-head{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.traj-name{ font-size:0.84rem; color: var(--text-primary); font-weight:600; }
+.traj-rank{ font-family: var(--font-display); font-size:0.68rem; color: var(--text-muted); margin-right:2px; }
+.traj-score{ font-family: var(--font-display); font-weight:700; font-size:1.05rem; color: var(--text-primary); font-variant-numeric: tabular-nums; flex:none; }
+.traj-chart{ width:100%; height:auto; display:block; }
+.traj-grid-line{ stroke: var(--border-soft); stroke-width:1; }
+.traj-axis-label{ font-family: var(--font-display); font-size:11px; fill: var(--text-muted); }
+.traj-line{ fill:none; stroke: var(--violet); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.traj-dot-start{ fill: var(--text-muted); }
+.traj-dot-end{ fill: var(--gold); }
+.traj-hit{ fill: transparent; stroke: transparent; stroke-width:1.5; cursor:pointer; }
+.traj-hit:hover{ fill: var(--violet); fill-opacity:0.18; stroke: var(--violet); }
+.traj-foot{ font-family: var(--font-display); font-size:0.7rem; text-align:right; color: var(--text-muted); }
+.traj-foot.up{ color: var(--blue); }
 
 /* ---------- Movers ---------- */
 .movers{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -515,8 +521,8 @@ footer code{
 @media (max-width: 860px){
   .hero-stats{ grid-template-columns: repeat(2, 1fr); }
   .movers{ grid-template-columns: 1fr; }
-  .spark-grid{ grid-template-columns: 1fr; }
   .io-grid{ grid-template-columns: 1fr; }
+  .traj-grid{ grid-template-columns: 1fr; }
 }
 @media (max-width: 620px){
   .bar-row{ grid-template-columns: 108px 1fr 70px; }
@@ -590,12 +596,12 @@ footer code{
     <div class="panel-head">
       <div>
         <h2>Trajectoires</h2>
-        <p>Évolution du score des 10 premiers du classement actuel, du 7 juin au 15 août — un point par date où au moins un joker a été distribué.</p>
+        <p>Évolution du score des 10 premiers du classement actuel sur les 10 derniers relevés — un point par date de stream où au moins un joker a été distribué. Survole un point pour voir la date, le score et les points gagnés.</p>
       </div>
-      <span class="panel-tag">Top 10 · 27 relevés</span>
+      <span class="panel-tag" id="sparkTag">Top 10 · 10 derniers relevés</span>
     </div>
     <div class="panel-body">
-      <div class="spark-grid" id="sparkGrid"></div>
+      <div class="traj-grid" id="sparkGrid"></div>
     </div>
   </section>
 
@@ -1016,28 +1022,63 @@ const TRAJ_SERIES = [["LeSoumis2Cactus35",[70,99,117,122,126,128,137,139,146,174
 const HOARDER_DETAIL = {"37brice":["Scholar","Common",[["2026-07-16","none"],["2026-07-28","none"],["2026-08-01","none"],["2026-08-02","none"],["2026-08-04","none"],["2026-08-04","none"],["2026-08-13","foil"]]],"AdrienCrak":["Clever Joker","Common",[["2026-08-04","none"],["2026-08-06","none"],["2026-08-10","none"]]],"airness456":["Mad Joker","Common",[["2026-06-07","none"],["2026-06-13","none"]]],"al_rizla97":["Wily Joker","Common",[["2026-07-15","none"],["2026-08-03","none"],["2026-08-07","foil"],["2026-08-09","none"],["2026-08-12","none"]]],"andremgn":["Devious Joker","Common",[["2026-07-21","none"],["2026-08-11","none"]]],"AOPMaroilles":["Egg","Common",[["2026-08-09","none"],["2026-08-10","none"]]],"ApokalmiX":["Droll Joker","Common",[["2026-06-10","none"],["2026-07-15","none"],["2026-08-04","none"]]],"arkhann50":["Riff-Raff","Common",[["2026-07-21","none"],["2026-07-28","holographic"],["2026-08-01","none"]]],"baptouu9":["Mystic Summit","Common",[["2026-07-24","none"],["2026-08-09","none"]]],"barb_rouss":["Joker","Common",[["2026-07-16","holographic"],["2026-08-12","none"]]],"Bichopebitou":["Joker","Common",[["2026-08-09","none"],["2026-08-10","holographic"],["2026-08-10","foil"]]],"Bourinus":["Clever Joker","Common",[["2026-08-04","none"],["2026-08-04","none"]]],"cquoilabull":["Golden Ticket","Common",[["2026-06-30","none"],["2026-07-05","none"],["2026-07-23","none"],["2026-08-02","none"],["2026-08-10","none"]]],"Croucroute":["Abstract Joker","Common",[["2026-07-16","none"],["2026-08-01","none"],["2026-08-02","foil"],["2026-08-04","none"],["2026-08-04","none"],["2026-08-08","none"],["2026-08-08","none"]]],"Darssynator":["Hallucination","Common",[["2026-08-01","none"],["2026-08-07","none"]]],"DIEUDURIRE":["Runner","Common",[["2026-08-08","none"],["2026-08-12","holographic"],["2026-08-13","none"]]],"DinisBeifong":["Bull","Uncommon",[["2026-06-07","none"],["2026-06-10","foil"]]],"diylbert":["Blue Joker","Common",[["2026-07-21","none"],["2026-08-01","none"]]],"eil4roc":["Misprint","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"elbubbito":["Greedy Joker","Common",[["2026-07-24","none"],["2026-07-28","none"],["2026-08-06","none"],["2026-08-10","none"]]],"eleanor_nagisa":["Droll Joker","Common",[["2026-08-08","none"],["2026-08-08","none"]]],"elicapes":["Crazy Joker","Common",[["2026-08-09","none"],["2026-08-12","none"],["2026-08-13","none"]]],"fandragon_":["Gros Michel","Common",[["2026-08-04","foil"],["2026-08-08","none"],["2026-08-11","none"],["2026-08-11","none"],["2026-08-11","none"]]],"Fiddjy":["Drunkard","Common",[["2026-06-07","none"],["2026-06-07","none"],["2026-06-10","none"]]],"forthefutureproject":["Credit Card","Common",[["2026-08-07","none"],["2026-08-08","none"],["2026-08-09","none"],["2026-08-11","none"]]],"gal12_":["Lusty Joker","Common",[["2026-07-21","none"],["2026-07-24","none"],["2026-07-24","none"]]],"gandalf_le_rouge":["Droll Joker","Common",[["2026-08-08","none"],["2026-08-08","none"]]],"garg000ille":["Zany Joker","Common",[["2026-07-16","none"],["2026-08-04","polychrome"],["2026-08-04","none"],["2026-08-08","none"],["2026-08-10","none"]]],"Ghirtor":["Splash","Common",[["2026-08-11","none"],["2026-08-13","none"]]],"ghostsoumis2soumis":["Even Steven","Common",[["2026-07-23","none"],["2026-07-24","none"],["2026-07-24","none"],["2026-08-04","none"],["2026-08-04","none"]]],"GiseleKerozene":["Sly Joker","Common",[["2026-07-24","none"],["2026-07-24","foil"]]],"HiBillyICanFly":["Mail-In Rebate","Common",[["2026-06-07","none"],["2026-06-07","none"],["2026-07-21","foil"]]],"honoshadow56":["Hallucination","Common",[["2026-08-10","none"],["2026-08-11","none"],["2026-08-13","none"]]],"hpaascal":["Credit Card","Common",[["2026-07-05","none"],["2026-07-28","none"],["2026-08-10","none"],["2026-08-13","none"]]],"hx_u1yss3":["Drunkard","Common",[["2026-07-28","none"],["2026-08-12","none"]]],"Idkau":["Mad Joker","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"ニリキタ":["Gluttonous Joker","Common",[["2026-08-02","none"],["2026-08-04","none"],["2026-08-04","none"],["2026-08-08","none"]]],"jakytutu":["Banner","Common",[["2026-08-10","none"],["2026-08-12","none"]]],"JohnDuffLeSoumis9":["Superposition","Common",[["2026-06-10","polychrome"],["2026-07-05","none"],["2026-07-24","none"],["2026-08-01","none"],["2026-08-03","none"],["2026-08-11","none"]]],"Korob735":["Hanging Chad","Common",[["2026-06-07","none"],["2026-07-15","none"],["2026-08-13","none"]]],"KreoKiwi":["Green Joker","Common",[["2026-08-11","none"],["2026-08-13","none"]]],"leo__star":["Banner","Common",[["2026-07-23","none"],["2026-07-23","none"]]],"LeSoumis2Cactus35":["Chaos the Clown","Common",[["2026-06-07","none"],["2026-07-17","none"],["2026-07-21","none"],["2026-08-01","none"],["2026-08-04","none"],["2026-08-08","none"],["2026-08-11","none"]]],"le__belge":["Mad Joker","Common",[["2026-07-21","none"],["2026-07-23","none"],["2026-08-02","none"]]],"Lilubells":["Gluttonous Joker","Common",[["2026-08-08","none"],["2026-08-10","none"]]],"liouliou82":["Banner","Common",[["2026-08-08","none"],["2026-08-11","none"]]],"M0UTM0UT56":["Odd Todd","Common",[["2026-08-09","none"],["2026-08-10","none"],["2026-08-10","none"],["2026-08-13","none"],["2026-08-13","none"]]],"m3r0v1gien":["Clever Joker","Common",[["2026-08-06","none"],["2026-08-06","foil"],["2026-08-07","none"],["2026-08-11","none"]]],"MatatraX":["Credit Card","Common",[["2026-07-15","none"],["2026-07-16","none"],["2026-08-09","none"],["2026-08-09","none"]]],"Maxtime019LeSoumis2Cactus":["Lusty Joker","Common",[["2026-07-15","foil"],["2026-07-16","none"],["2026-08-02","none"],["2026-08-03","none"],["2026-08-04","none"],["2026-08-10","holographic"]]],"megacop27":["8 Ball","Common",[["2026-06-07","none"],["2026-08-02","none"],["2026-08-03","none"],["2026-08-03","none"],["2026-08-08","none"]]],"MichelSemoule":["Devious Joker","Common",[["2026-06-07","none"],["2026-06-07","foil"],["2026-08-06","none"]]],"Monsieur_Tatillon":["Joker","Common",[["2026-07-04","none"],["2026-08-07","foil"],["2026-08-08","none"],["2026-08-08","none"],["2026-08-11","none"]]],"Mozafok":["Egg","Common",[["2026-08-11","none"],["2026-08-11","none"]]],"mr_patate44":["Ice Cream","Common",[["2026-07-28","none"],["2026-08-06","none"],["2026-08-06","none"],["2026-08-09","none"]]],"Neandre":["Credit Card","Common",[["2026-08-04","none"],["2026-08-08","none"],["2026-08-09","foil"]]],"Niajja":["Splash","Common",[["2026-08-04","foil"],["2026-08-04","none"]]],"nithror_":["Gluttonous Joker","Common",[["2026-06-07","none"],["2026-06-07","none"],["2026-06-07","none"]]],"Nodorf":["Wily Joker","Common",[["2026-07-15","none"],["2026-08-04","foil"],["2026-08-09","none"],["2026-08-10","none"]]],"pasmoi42":["Devious Joker","Common",[["2026-06-07","none"],["2026-06-10","none"]]],"pauport":["Wrathful Joker","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"Quiiiche":["Popcorn","Common",[["2026-07-24","none"],["2026-07-28","none"]]],"Robfram":["Scary Face","Common",[["2026-07-24","none"],["2026-07-24","none"]]],"SamFl7x":["Banner","Common",[["2026-08-09","none"],["2026-08-09","none"]]],"Sasha_Yubari":["Troubadour","Uncommon",[["2026-08-12","none"],["2026-08-13","none"],["2026-08-13","holographic"]]],"ScarEnix":["Mystic Summit","Common",[["2026-06-07","none"],["2026-07-24","none"]]],"Skypios":["Joker","Common",[["2026-07-24","none"],["2026-07-24","holographic"],["2026-08-06","negative"]]],"soytto":["Odd Todd","Common",[["2026-08-09","none"],["2026-08-12","none"]]],"SramRedBlack":["Chaos the Clown","Common",[["2026-07-23","none"],["2026-08-09","none"],["2026-08-10","none"]]],"ST_Chouette":["Wrathful Joker","Common",[["2026-08-09","none"],["2026-08-10","none"]]],"sylvesterslalome":["Square Joker","Common",[["2026-08-08","none"],["2026-08-12","none"],["2026-08-13","none"]]],"Texmex91":["Green Joker","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"to1nio":["Superposition","Common",[["2026-06-07","none"],["2026-07-05","none"],["2026-07-16","none"],["2026-07-21","none"],["2026-07-28","none"]]],"toinou4173":["Mail-In Rebate","Common",[["2026-07-16","none"],["2026-07-23","none"],["2026-07-24","polychrome"],["2026-08-12","none"]]],"TOMYGOODY":["Credit Card","Common",[["2026-08-11","none"],["2026-08-11","none"]]],"Tucunared":["Banner","Common",[["2026-08-07","none"],["2026-08-10","none"],["2026-08-11","none"]]],"tw0hour":["Chaos the Clown","Common",[["2026-08-04","none"],["2026-08-07","none"],["2026-08-11","none"]]],"umFantasminhaCamarada":["Crafty Joker","Common",[["2026-08-01","none"],["2026-08-10","none"],["2026-08-11","none"]]],"Verinxin":["Mad Joker","Common",[["2026-06-10","none"],["2026-06-10","none"],["2026-06-13","none"],["2026-07-24","foil"]]],"wengikos":["Ice Cream","Common",[["2026-07-23","none"],["2026-07-24","none"],["2026-08-08","none"]]],"XboxeurMan":["Mystic Summit","Common",[["2026-06-10","none"],["2026-06-10","none"],["2026-08-01","none"],["2026-08-10","foil"]]],"zeguro6":["Half Joker","Common",[["2026-07-15","none"],["2026-07-16","none"],["2026-07-24","none"],["2026-07-24","none"]]]}; // collectorName -> [cardName, rarity, [[dateISO, editionKey], ...]] for their single most-duplicated card
 const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"]],"Mail-In Rebate":[["Monsieur_Tatillon","negative","2026-06-30"]],"Baseball Card":[["al_rizla97","negative","2026-07-15"]],"Satellite":[["Maxtime019LeSoumis2Cactus","none","2026-07-04"]],"Chicot":[["garg000ille","none","2026-08-10"]],"Cactus":[["M0UTM0UT56","none","2026-06-07"],["to1nio","none","2026-07-04"],["m3r0v1gien","none","2026-08-04"]],"Perkeo":[["zeguro6","none","2026-08-07"],["Croucroute","none","2026-08-11"]],"Baron":[["Bichopebitou","none","2026-08-02"],["37brice","polychrome","2026-08-13"]],"Yorick":[["forthefutureproject","none","2026-08-04"]],"Runner":[["cquoilabull","polychrome","2026-08-06"]],"Misprint":[["ghostsoumis2soumis","negative","2026-08-13"]],"Hit the Road":[["fandragon_","polychrome","2026-08-12"]],"Triboulet":[["elbubbito","holographic","2026-08-09"]],"Cavendish":[["JohnDuffLeSoumis9","none","2026-08-04"]],"Photograph":[["hpaascal","negative","2026-08-09"]],"Canio":[["nithror_","holographic","2026-06-07"],["Tucunared","none","2026-08-11"]],"Smiley Face":[["megacop27","polychrome","2026-07-28"]],"The Tribe":[["MatatraX","polychrome","2026-08-09"]],"Obelisk":[["ApokalmiX","none","2026-06-10"]],"Golden Eye":[["arkhann50","none","2026-08-01"]]}; // jokerName -> [[collectorName, editionKey, dateISO], ...] — current top 25 whose top card is this joker (any edition), édition propre à chaque personne
 (function(){
-  const n = TRAJ_DATES.length;
-  const xs = TRAJ_DATES.map((_,idx)=> 6 + idx*(114-6)/(n-1));
+  const lastN = 10;
+  const dates = TRAJ_DATES.slice(-lastN);
+  const n = dates.length;
   const fmtDate = d => { const [,m,day] = d.split('-'); return `${day}/${m}`; };
 
-  document.getElementById('sparkGrid').innerHTML = TRAJ_SERIES.map(([name, scores], i)=>{
-    const min = Math.min(...scores), max = Math.max(...scores);
-    const norm = v => max===min ? 20 : 34 - ((v-min)/(max-min))*28;
-    const pts = scores.map((v,idx)=>[xs[idx], norm(v)]);
-    const path = pts.map((p,idx)=> (idx===0?'M':'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
-    const c = scores[scores.length-1];
-    const delta = c - scores[0];
-    const dots = `<circle cx="${pts[0][0]}" cy="${pts[0][1]}" r="2.4" fill="var(--text-muted)" /><circle cx="${pts[n-1][0]}" cy="${pts[n-1][1]}" r="3" fill="var(--gold)" />`;
-    return `<div class="spark-card">
-      <span class="spark-name"><span class="spark-rank">#${i+1}</span> ${name}</span>
-      <span class="spark-score">${c}</span>
-      <svg class="spark-svg" viewBox="0 0 120 40" width="100%" height="40" preserveAspectRatio="none">
-        <path d="${path}" fill="none" stroke="var(--violet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        ${dots}
+  document.getElementById('sparkTag').textContent = `Top 10 · ${lastN} derniers relevés`;
+
+  // Fixed-ratio viewBox (520x160) rendered at width:100% / height:auto so the
+  // browser scales x and y by the SAME factor — no stretch, no blur, circles stay circles.
+  const plotX0 = 40, plotX1 = 506, plotYTop = 20, plotYBot = 132;
+  const xs = dates.map((_,idx)=> plotX0 + idx*(plotX1-plotX0)/(n-1));
+  const midIdx = Math.floor((n-1)/2);
+
+  const cardData = [];
+  document.getElementById('sparkGrid').innerHTML = TRAJ_SERIES.map(([name, fullScores], i)=>{
+    const scores = fullScores.slice(-lastN);
+    const priorScore = fullScores[fullScores.length - lastN - 1];
+    const cur = scores[scores.length-1];
+    const start = scores[0];
+    const delta = cur - start;
+    const minV = Math.min(...scores), maxV = Math.max(...scores);
+    const range = maxV - minV;
+    const ys = scores.map(v => range===0 ? (plotYTop+plotYBot)/2 : plotYBot - (v-minV)/range*(plotYBot-plotYTop));
+    const path = xs.map((x,idx)=> (idx===0?'M':'L') + x.toFixed(1) + ',' + ys[idx].toFixed(1)).join(' ');
+    cardData.push({ scores, ys, priorScore });
+    const hits = xs.map((x,idx)=> `<circle cx="${x.toFixed(1)}" cy="${ys[idx].toFixed(1)}" r="12" class="traj-hit"/>`).join('');
+    return `<div class="traj-card">
+      <div class="traj-head">
+        <span class="traj-name"><span class="traj-rank">#${i+1}</span> ${name}</span>
+        <span class="traj-score">${cur}</span>
+      </div>
+      <svg class="traj-chart" viewBox="0 0 520 176">
+        <line x1="${plotX0}" y1="${plotYTop}" x2="${plotX1}" y2="${plotYTop}" class="traj-grid-line"/>
+        <line x1="${plotX0}" y1="${plotYBot}" x2="${plotX1}" y2="${plotYBot}" class="traj-grid-line"/>
+        <text x="36" y="24" text-anchor="end" class="traj-axis-label">${maxV}</text>
+        <text x="36" y="146" text-anchor="end" class="traj-axis-label">${minV}</text>
+        <path d="${path}" class="traj-line"/>
+        <circle cx="${xs[0].toFixed(1)}" cy="${ys[0].toFixed(1)}" r="4" class="traj-dot-start"/>
+        <circle cx="${xs[n-1].toFixed(1)}" cy="${ys[n-1].toFixed(1)}" r="4" class="traj-dot-end"/>
+        <text x="${plotX0}" y="166" text-anchor="start" class="traj-axis-label">${fmtDate(dates[0])}</text>
+        <text x="${xs[midIdx].toFixed(1)}" y="166" text-anchor="middle" class="traj-axis-label">${fmtDate(dates[midIdx])}</text>
+        <text x="${plotX1}" y="166" text-anchor="end" class="traj-axis-label">${fmtDate(dates[n-1])}</text>
+        ${hits}
       </svg>
-      <span class="spark-delta ${delta>0?'up':'flat'}">${delta>0?'+':''}${delta} pts depuis le ${fmtDate(TRAJ_DATES[0])} (${n} relevés)</span>
+      <span class="traj-foot${delta>0?' up':''}">${delta>0?'+':''}${delta} pts depuis le ${fmtDate(dates[0])} (${lastN} relevés)</span>
     </div>`;
   }).join('');
+
+  document.querySelectorAll('#sparkGrid .traj-card').forEach((card, ci)=>{
+    const { scores, priorScore } = cardData[ci];
+    card.querySelectorAll('.traj-hit').forEach((hit, pi)=>{
+      const prev = pi===0 ? priorScore : scores[pi-1];
+      const gain = scores[pi] - prev;
+      const gainColor = gain>0 ? 'var(--blue)' : 'var(--text-muted)';
+      attachTip(hit, `<b>${fmtDate(dates[pi])}</b><br>${scores[pi]} pts<br><span style="color:${gainColor}">${gain>0?'+':''}${gain} pts vs relevé précédent</span>`);
+    });
+  });
 })();
 
 /* ---------- Movers ---------- */
