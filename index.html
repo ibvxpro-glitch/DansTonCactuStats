@@ -1035,8 +1035,12 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
   const xs = dates.map((_,idx)=> plotX0 + idx*(plotX1-plotX0)/(n-1));
   const midIdx = Math.floor((n-1)/2);
 
+  // Classement par score actuel (dernier relevé) — l'ordre brut de TRAJ_SERIES ne
+  // reflète pas forcément le rang réel du 15 août.
+  const rankedSeries = [...TRAJ_SERIES].sort((a,b)=> b[1][b[1].length-1] - a[1][a[1].length-1]);
+
   const cardData = [];
-  document.getElementById('sparkGrid').innerHTML = TRAJ_SERIES.map(([name, fullScores], i)=>{
+  document.getElementById('sparkGrid').innerHTML = rankedSeries.map(([name, fullScores], i)=>{
     const scores = fullScores.slice(-lastN);
     const priorScore = fullScores[fullScores.length - lastN - 1];
     const cur = scores[scores.length-1];
