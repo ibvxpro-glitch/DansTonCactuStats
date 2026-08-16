@@ -245,6 +245,26 @@ h1.title{
 }
 .bars-note b{ color: var(--text-secondary); }
 
+/* ---------- Listes tronquées + bouton "voir tout" ---------- */
+.list-extra{ display:contents; }
+.list-extra.is-hidden{ display:none; }
+.list-toggle{
+  display:block;
+  width:100%;
+  margin-top: 10px;
+  padding: 9px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 9px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+.list-toggle:hover{ color: var(--text-primary); border-color: var(--gold); background: var(--surface-3); }
+
 /* ---------- Diverging chart ---------- */
 .diverge{ display:flex; flex-direction:column; gap:7px; }
 .dv-row{
@@ -525,6 +545,121 @@ h1.title{
 .compare-vals{ font-family: var(--font-display); font-size:0.78rem; color: var(--text-secondary); text-align:right; white-space:nowrap; }
 .compare-vals b{ color: var(--gold); font-weight:700; }
 
+/* ---------- Recherche d'un pseudo ---------- */
+.search-box{ position:relative; margin-bottom:22px; }
+.search-input{
+  width:100%;
+  padding:13px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+}
+.search-input::placeholder{ color: var(--text-muted); }
+.search-input:focus{ border-color: var(--gold); }
+.search-suggest{
+  display:none;
+  position:absolute;
+  top: calc(100% + 6px);
+  left:0; right:0;
+  z-index:10;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  max-height: 288px;
+  overflow-y:auto;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.4);
+}
+.search-suggest-item{
+  display:flex; align-items:center; gap:10px;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-size: 0.86rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.search-suggest-item:last-child{ border-bottom:none; }
+.search-suggest-item:hover, .search-suggest-item.active{ background: var(--surface-3); }
+.search-suggest-item .rank{ font-family: var(--font-display); font-size:0.7rem; color: var(--text-muted); flex:none; width:36px; }
+.search-suggest-item .name{ flex:1; color: var(--text-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.search-suggest-item .score{ font-family: var(--font-display); font-size:0.76rem; color: var(--text-secondary); flex:none; }
+.search-suggest-empty{ padding: 12px 14px; color: var(--text-muted); font-size:0.84rem; }
+
+.pseudo-card{ border-top: 1px solid var(--border-soft); padding-top: 20px; }
+.pseudo-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+.pseudo-rank{ font-family: var(--font-display); font-size:0.85rem; color: var(--text-muted); }
+.pseudo-name{ font-family: var(--font-display); font-weight:700; font-size:1.3rem; color: var(--text-primary); }
+.pseudo-score{ margin-left:auto; font-family: var(--font-display); font-weight:700; font-size:1.2rem; color: var(--gold); }
+.pseudo-score small{ font-size:0.68rem; font-weight:400; color: var(--text-secondary); text-transform:uppercase; letter-spacing:.04em; }
+.pseudo-tiles{ grid-template-columns: repeat(4, 1fr); margin-bottom: 22px; }
+.pseudo-breakdown{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; margin-bottom: 18px; }
+.pseudo-breakdown-col h3{
+  font-family: var(--font-display); font-size:0.72rem; text-transform:uppercase; letter-spacing:.06em; color: var(--text-secondary); margin:0 0 10px;
+}
+.pseudo-breakdown .bar-row{ grid-template-columns: 108px 1fr 34px; }
+.pseudo-top{ font-size:0.86rem; color: var(--text-secondary); margin: 0 0 20px; padding-top:14px; border-top: 1px dashed var(--border-soft); }
+.pseudo-top b{ color: var(--text-primary); }
+.neighbor-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.neighbor-card{ background: var(--surface-2); border:1px solid var(--border-soft); border-radius:12px; padding:14px 16px; }
+.neighbor-card--empty{ display:flex; flex-direction:column; justify-content:center; color: var(--text-muted); font-size:0.84rem; }
+.neighbor-empty-note{ margin:0; }
+.neighbor-tag{ display:block; font-family: var(--font-display); font-size:0.66rem; text-transform:uppercase; letter-spacing:.06em; color: var(--text-muted); margin-bottom:6px; }
+.neighbor-name{ display:block; font-weight:600; font-size:0.92rem; color: var(--text-primary); margin-bottom:10px; }
+.neighbor-deltas{ display:flex; flex-direction:column; gap:4px; }
+.neighbor-delta{ font-family: var(--font-display); font-size:0.8rem; font-variant-numeric:tabular-nums; }
+.neighbor-delta.up{ color: var(--blue); }
+.neighbor-delta.down{ color: var(--red); }
+
+/* ---------- Sommaire ---------- */
+html{ scroll-behavior: smooth; }
+.panel{ scroll-margin-top: 20px; }
+.toc{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap: 9px;
+  padding: 16px 22px;
+  margin-bottom: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.toc-label{
+  font-family: var(--font-display);
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  white-space: nowrap;
+  margin-right: -1px;
+}
+.toc-sep{
+  width:1px;
+  align-self: stretch;
+  min-height: 20px;
+  background: var(--border-soft);
+  margin: 0 6px;
+}
+.toc-link{
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 5px 11px;
+  white-space: nowrap;
+}
+.toc-link:hover{ color: var(--text-primary); border-color: var(--gold); background: var(--surface-3); }
+@media (max-width: 760px){
+  .toc{ gap:8px; }
+  .toc-sep{ display:none; }
+  .toc-label{ flex-basis:100%; margin: 6px 0 -2px; }
+  .toc-label:first-child{ margin-top:0; }
+}
+
 /* ---------- Tooltip ---------- */
 #tooltip{
   position: fixed;
@@ -570,6 +705,8 @@ footer code{
   .movers{ grid-template-columns: 1fr; }
   .io-grid{ grid-template-columns: 1fr; }
   .traj-grid{ grid-template-columns: 1fr; }
+  .pseudo-tiles{ grid-template-columns: repeat(2, 1fr); }
+  .pseudo-breakdown{ grid-template-columns: 1fr; }
 }
 @media (max-width: 620px){
   .bar-row{ grid-template-columns: 108px 1fr 70px; }
@@ -577,9 +714,12 @@ footer code{
   .dv-axis{ grid-template-columns: 108px 1fr 54px; }
   .wrap{ padding: 32px 16px 60px; }
   h1.title{ font-size: 1.7rem; }
+  .neighbor-grid{ grid-template-columns: 1fr; }
+  .pseudo-score{ margin-left:0; }
 }
 @media (prefers-reduced-motion: reduce){
   * { transition: none !important; }
+  html{ scroll-behavior: auto; }
 }
 </style>
 
@@ -591,6 +731,35 @@ footer code{
     <p class="subtitle">Trois relevés du classement — <strong>13, 14 et 15 août 2026</strong> — passés au crible pour voir qui carbure aux boosters, qui a la baraka, et quel joker trône le plus souvent en haut d'affiche.</p>
     <div class="hero-stats" id="heroStats"></div>
   </header>
+
+  <nav class="toc" aria-label="Sommaire">
+    <span class="toc-label">Top 25</span>
+    <a class="toc-link" href="#panelActivity">Activité</a>
+    <a class="toc-link" href="#panelSpending">Achats</a>
+    <a class="toc-link" href="#panelChance">Rendement</a>
+    <a class="toc-link" href="#panelSpark">Trajectoires</a>
+    <a class="toc-link" href="#panelMovers">Ça grimpe, ça glisse</a>
+    <a class="toc-link" href="#panelTrophy">Trophées</a>
+    <a class="toc-link" href="#panelCompletion">Vers les 150</a>
+    <a class="toc-link" href="#panelPages">Pages complètes</a>
+    <a class="toc-link" href="#panelScatter">Doublons</a>
+    <a class="toc-link" href="#panelIO">Entrées / sorties</a>
+    <span class="toc-sep" aria-hidden="true"></span>
+    <span class="toc-label">Communauté</span>
+    <a class="toc-link" href="#panelSearch">Chercher un pseudo</a>
+    <a class="toc-link" href="#panelCommunityScale">Ampleur</a>
+    <a class="toc-link" href="#panelCommunityTrophy">Le vrai tiercé</a>
+    <a class="toc-link" href="#panelHoarders">Accumulateurs</a>
+    <a class="toc-link" href="#panelPremium">Premium</a>
+    <span class="toc-sep" aria-hidden="true"></span>
+    <span class="toc-label">Jokerdex</span>
+    <a class="toc-link" href="#panelValidation">Grand tirage</a>
+    <a class="toc-link" href="#panelExtremes">Extrêmes</a>
+    <a class="toc-link" href="#panelHoardedJokers">Biais du tirage</a>
+    <span class="toc-sep" aria-hidden="true"></span>
+    <span class="toc-label">Stream</span>
+    <a class="toc-link" href="#panelSessions">Sessions</a>
+  </nav>
 
   <section class="panel" id="panelActivity">
     <div class="panel-head">
@@ -747,6 +916,24 @@ footer code{
     <div class="section-divider"><span class="line"></span><span class="label">Toute la communauté</span><span class="line"></span></div>
     <p class="section-divider-sub" style="color:var(--text-muted); font-size:0.86rem; max-width:70ch;">Le classement complet, <b style="color:var(--text-secondary)">202 collectionneurs</b>, relevé le 15 août — pas seulement le top 25 suivi plus haut.</p>
   </div>
+
+  <section class="panel" id="panelSearch">
+    <div class="panel-head">
+      <div>
+        <h2>Ta fiche de collectionneur</h2>
+        <p>Cherche un pseudo pour voir son classement, ses stats en détail, et comment il se situe face à ses deux voisins directs du classement.</p>
+      </div>
+      <span class="panel-tag">202 collectionneurs · recherche</span>
+    </div>
+    <div class="panel-body">
+      <div class="search-box">
+        <input type="text" id="pseudoSearch" class="search-input" placeholder="Tape un pseudo… (ex : garg000ille)" autocomplete="off" spellcheck="false" />
+        <div class="search-suggest" id="pseudoSuggest"></div>
+      </div>
+      <div class="pseudo-card" id="pseudoCard" style="display:none;"></div>
+      <p class="bars-note" id="pseudoEmpty">Aucun pseudo sélectionné pour l'instant — commence à taper ci-dessus, les suggestions apparaissent au fil de la frappe.</p>
+    </div>
+  </section>
 
   <section class="panel" id="panelCommunityScale">
     <div class="panel-head">
@@ -930,6 +1117,26 @@ const EV = RARITY_EV + EDITION_EV;
 function fmtInt(n){ return n.toLocaleString('fr-FR'); }
 function fmtPts(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
 
+/* ---------- Listes tronquées + bouton "voir tout" ---------- */
+function splitList(sorted, visibleCount, rowFn){
+  const visible = sorted.slice(0, visibleCount);
+  const extra = sorted.slice(visibleCount);
+  let html = visible.map((r,i)=>rowFn(r,i)).join('');
+  if(extra.length){
+    html += `<div class="list-extra is-hidden">${extra.map((r,i)=>rowFn(r,i+visibleCount)).join('')}</div>`
+      + `<button type="button" class="list-toggle" data-more="Voir tout (${sorted.length})" data-less="Réduire">Voir tout (${sorted.length})</button>`;
+  }
+  return html;
+}
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('.list-toggle');
+  if(!btn) return;
+  const wrap = btn.previousElementSibling;
+  if(!wrap || !wrap.classList.contains('list-extra')) return;
+  const nowHidden = wrap.classList.toggle('is-hidden');
+  btn.textContent = nowHidden ? btn.dataset.more : btn.dataset.less;
+});
+
 /* ---------- Tooltip ---------- */
 const tip = document.getElementById('tooltip');
 function showTip(e, html){
@@ -1013,18 +1220,18 @@ function attachTip(el, html){
 /* ---------- Biggest spenders (cumulative boosters, 202 collectionneurs, 15 août) ---------- */
 (function(){
   const rows = OFFICIAL_LEADERBOARD.map(r => ({ name: r[1], total: r[3], epines: r[3]*150 }))
-    .sort((a,b)=>b.total-a.total)
-    .slice(0,25);
+    .sort((a,b)=>b.total-a.total);
   const max = rows[0].total;
 
-  document.getElementById('spendGrid').innerHTML = rows.map((r,i)=>{
+  const spendRow = (r,i)=>{
     const w = (r.total/max*100).toFixed(1);
     return `<div class="bar-row" data-name="${r.name}" data-total="${r.total}" data-epines="${r.epines}">
       <span class="bar-name"><span class="rank">${String(i+1).padStart(2,'0')}</span>${r.name}</span>
       <span class="bar-track"><span class="bar-fill" style="width:${w}%"></span></span>
       <span class="bar-val"><b>${fmtInt(r.epines)}</b> épines</span>
     </div>`;
-  }).join('');
+  };
+  document.getElementById('spendGrid').innerHTML = splitList(rows, 25, spendRow);
 
   document.querySelectorAll('#spendGrid .bar-row').forEach(el=>{
     const n = el.dataset.name, t = el.dataset.total, e = el.dataset.epines;
@@ -1056,8 +1263,8 @@ function attachTip(el, html){
     attachTip(el, `<b>${n}</b><br>${p} pts / booster<br>attendu : ${fmtPts(EV)} pts / booster`);
   });
 
-  const unlucky = [...rows].sort((a,b)=>a.ppb-b.ppb).slice(0,5);
-  document.getElementById('unluckyList').innerHTML = unlucky.map((r,i)=>{
+  const unlucky = [...rows].sort((a,b)=>a.ppb-b.ppb);
+  const unluckyRow = (r,i)=>{
     const dev = r.ppb - EV;
     return `<div class="trophy-row" data-name="${r.name}" data-ppb="${r.ppb.toFixed(3)}">
       <span class="trophy-rank red">${i+1}</span>
@@ -1067,7 +1274,8 @@ function attachTip(el, html){
       </span>
       <span class="trophy-count" style="color:var(--red)">${dev.toFixed(2)}<small>vs attendu</small></span>
     </div>`;
-  }).join('');
+  };
+  document.getElementById('unluckyList').innerHTML = splitList(unlucky, 5, unluckyRow);
   document.querySelectorAll('#unluckyList .trophy-row').forEach(el=>{
     const n = el.dataset.name, p = el.dataset.ppb;
     attachTip(el, `<b>${n}</b><br>${p} pts / booster<br>attendu : ${fmtPts(EV)} pts / booster`);
@@ -1172,16 +1380,16 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
   }
   const r1 = rankOf(d1), r3 = rankOf(d3);
   const changes = allNames.filter(n=>r1[n]&&r3[n]).map(n=>({name:n, r1:r1[n], r3:r3[n], delta:r1[n]-r3[n]}));
-  const up = changes.filter(c=>c.delta>0).sort((a,b)=>b.delta-a.delta).slice(0,4);
-  const down = changes.filter(c=>c.delta<0).sort((a,b)=>a.delta-b.delta).slice(0,4);
+  const up = changes.filter(c=>c.delta>0).sort((a,b)=>b.delta-a.delta);
+  const down = changes.filter(c=>c.delta<0).sort((a,b)=>a.delta-b.delta);
 
   const row = (c,sign)=>`<div class="mover-item ${sign}">
     <span>${c.name}</span>
     <span class="mover-ranks">#${c.r1}&nbsp;→&nbsp;#${c.r3}</span>
     <span class="mover-delta">${sign==='up'?'+':''}${c.delta}</span>
   </div>`;
-  document.getElementById('moversUp').innerHTML = up.map(c=>row(c,'up')).join('');
-  document.getElementById('moversDown').innerHTML = down.map(c=>row(c,'down')).join('');
+  document.getElementById('moversUp').innerHTML = splitList(up, 4, c=>row(c,'up'));
+  document.getElementById('moversDown').innerHTML = splitList(down, 4, c=>row(c,'down'));
 })();
 
 /* ---------- Trophy list (état actuel — un seul relevé, day3, pour ne pas compter 3x le même joker persistant) ----------
@@ -1301,8 +1509,8 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
     attachTip(el, `<b>${n}</b><br>${t} boosters ouverts<br>${dRate} % de doublons`);
   });
 
-  const mostDupes = [...rows].sort((a,b)=>b.dupeRate-a.dupeRate).slice(0,5);
-  document.getElementById('dupeList').innerHTML = mostDupes.map((r,i)=>{
+  const mostDupes = [...rows].sort((a,b)=>b.dupeRate-a.dupeRate);
+  const dupeRow = (r,i)=>{
     const dCount = Math.round(r.total * r.dupeRate/100);
     return `<div class="trophy-row" data-name="${r.name}" data-total="${r.total}" data-dupe="${r.dupeRate.toFixed(1)}">
       <span class="trophy-rank">${i+1}</span>
@@ -1312,7 +1520,8 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
       </span>
       <span class="trophy-count">${r.dupeRate.toFixed(1)}<small>% doublons</small></span>
     </div>`;
-  }).join('');
+  };
+  document.getElementById('dupeList').innerHTML = splitList(mostDupes, 5, dupeRow);
   document.querySelectorAll('#dupeList .trophy-row').forEach(el=>{
     const n = el.dataset.name, t = el.dataset.total, dRate = el.dataset.dupe;
     attachTip(el, `<b>${n}</b><br>${t} boosters ouverts<br>${dRate} % de doublons`);
@@ -1425,14 +1634,13 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
   const hoarders = OFFICIAL_LEADERBOARD
     .map(r => ({ name: r[1], maxStack: r[6], doublons: r[5] }))
     .filter(h => h.maxStack > 0)
-    .sort((a,b) => b.maxStack - a.maxStack || b.doublons - a.doublons)
-    .slice(0, 6);
+    .sort((a,b) => b.maxStack - a.maxStack || b.doublons - a.doublons);
 
   const EDITION_LABEL_FR2 = {none:'Sans édition', foil:'Brillant', holographic:'Holographique', polychrome:'Polychrome', negative:'Négatif'};
   const RARITY_LABEL_FR = {Common:'Commun', Uncommon:'Peu-commun', Rare:'Rare', Legendary:'Légendaire'};
   const fmtDateFR2 = d => d.split('-').reverse().join('/');
 
-  document.getElementById('hoarderList').innerHTML = hoarders.map((h,i)=>{
+  const hoarderRow = (h,i)=>{
     const rank = i===0 || hoarders[i-1].maxStack!==h.maxStack ? i+1 : null;
     const detail = HOARDER_DETAIL[h.name];
     const has = !!detail;
@@ -1463,7 +1671,8 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
       </div>
       <div class="trophy-detail"></div>
     </div>`;
-  }).join('');
+  };
+  document.getElementById('hoarderList').innerHTML = splitList(hoarders, 6, hoarderRow);
 
   document.querySelectorAll('#hoarderList .trophy-row[data-hoarder].clickable').forEach(row=>{
     row.addEventListener('click', ()=>{
@@ -1521,9 +1730,8 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
       return { name, uniq, edited, rate: uniq>0 ? edited/uniq*100 : 0 };
     })
     .filter(p => p.uniq >= MIN_UNIQ)
-    .sort((a,b) => b.rate-a.rate)
-    .slice(0, 6);
-  document.getElementById('premiumList').innerHTML = premium.map((p,i)=>`
+    .sort((a,b) => b.rate-a.rate);
+  const premiumRow = (p,i)=>`
     <div class="trophy-row">
       <span class="trophy-rank">${i+1}</span>
       <span>
@@ -1531,7 +1739,8 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
         <div class="trophy-sub">${p.edited} jokers avec édition sur ${p.uniq} uniques</div>
       </span>
       <span class="trophy-count">${p.rate.toFixed(1)}<small>% édités</small></span>
-    </div>`).join('');
+    </div>`;
+  document.getElementById('premiumList').innerHTML = splitList(premium, 6, premiumRow);
 })();
 
 /* ---------- Les pages complètes (15 jokers/page, classeur en jeu) ---------- */
@@ -1646,16 +1855,13 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
 
 /* ---------- Extremes panel (jokers cachés exclus pour ne rien spoiler) ---------- */
 (function(){
-  const mostPulled = [...jokerBase].sort((a,b)=>b.count-a.count).slice(0,5);
-  const leastPulled = [...jokerBase].sort((a,b)=>a.count-b.count).slice(0,5);
+  const mostPulled = [...jokerBase].sort((a,b)=>b.count-a.count);
+  const leastPulled = [...jokerBase].sort((a,b)=>a.count-b.count);
+  const pulledRow = j =>
+    `<div class="io-item"><span>${j.name} <span style="color:${RARITY_COLOR[j.rarity]}; font-size:0.74rem;">· ${RARITY_LABEL[j.rarity]}</span></span><span class="n">${j.count}×</span></div>`;
 
-  document.getElementById('mostPulled').innerHTML = mostPulled.map(j=>
-    `<div class="io-item"><span>${j.name} <span style="color:${RARITY_COLOR[j.rarity]}; font-size:0.74rem;">· ${RARITY_LABEL[j.rarity]}</span></span><span class="n">${j.count}×</span></div>`
-  ).join('');
-
-  document.getElementById('leastPulled').innerHTML = leastPulled.map(j=>
-    `<div class="io-item"><span>${j.name} <span style="color:${RARITY_COLOR[j.rarity]}; font-size:0.74rem;">· ${RARITY_LABEL[j.rarity]}</span></span><span class="n">${j.count}×</span></div>`
-  ).join('');
+  document.getElementById('mostPulled').innerHTML = splitList(mostPulled, 5, pulledRow);
+  document.getElementById('leastPulled').innerHTML = splitList(leastPulled, 5, pulledRow);
 })();
 
 /* ---------- Accumulation & biais du tirage ---------- */
@@ -1663,16 +1869,17 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const collRows = OFFICIAL_COLLECTION.map(([id,name,rarity,exemplaires,editions,maxStake,detenteurs,tauxPossession,exParDetenteur,partDrops,partTheorique,ecart])=>
     ({ id, name, rarity, exemplaires, detenteurs, exParDetenteur, partDrops, partTheorique }));
 
-  const hoarded = collRows.filter(j=>j.detenteurs>=5).sort((a,b)=>b.exParDetenteur-a.exParDetenteur).slice(0,8);
+  const hoarded = collRows.filter(j=>j.detenteurs>=5).sort((a,b)=>b.exParDetenteur-a.exParDetenteur);
   const max = hoarded[0].exParDetenteur;
-  document.getElementById('hoardedJokersBars').innerHTML = hoarded.map((j,i)=>{
+  const hoardedRow = (j,i)=>{
     const w = (j.exParDetenteur/max*100).toFixed(1);
     return `<div class="bar-row" data-name="${j.name}" data-ex="${j.exParDetenteur}" data-det="${j.detenteurs}" data-tot="${j.exemplaires}">
       <span class="bar-name"><span class="rank">${String(i+1).padStart(2,'0')}</span>${j.name}</span>
       <span class="bar-track"><span class="bar-fill" style="width:${w}%; background:${RARITY_COLOR[j.rarity]}"></span></span>
       <span class="bar-val"><b>${j.exParDetenteur.toFixed(2)}</b>×</span>
     </div>`;
-  }).join('');
+  };
+  document.getElementById('hoardedJokersBars').innerHTML = splitList(hoarded, 8, hoardedRow);
   document.querySelectorAll('#hoardedJokersBars .bar-row').forEach(el=>{
     const n=el.dataset.name, ex=el.dataset.ex, det=el.dataset.det, tot=el.dataset.tot;
     attachTip(el, `<b>${n}</b><br>${ex} exemplaires en moyenne chez ceux qui l'ont<br>${det} détenteurs pour ${tot} tirages au total`);
@@ -1681,15 +1888,15 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const withRel = collRows.filter(j=>j.exemplaires>=20).map(j=>({
     ...j, rel: (j.partDrops - j.partTheorique) / j.partTheorique * 100,
   }));
-  const over = [...withRel].sort((a,b)=>b.rel-a.rel).slice(0,4);
-  const under = [...withRel].sort((a,b)=>a.rel-b.rel).slice(0,4);
+  const over = [...withRel].sort((a,b)=>b.rel-a.rel);
+  const under = [...withRel].sort((a,b)=>a.rel-b.rel);
   const ecartRow = (j,sign)=>`<div class="mover-item ${sign}">
     <span>${j.name}</span>
     <span class="mover-ranks">${j.rarity}</span>
     <span class="mover-delta">${sign==='up'?'+':''}${j.rel.toFixed(0)}%</span>
   </div>`;
-  document.getElementById('ecartOver').innerHTML = over.map(j=>ecartRow(j,'up')).join('');
-  document.getElementById('ecartUnder').innerHTML = under.map(j=>ecartRow(j,'down')).join('');
+  document.getElementById('ecartOver').innerHTML = splitList(over, 4, j=>ecartRow(j,'up'));
+  document.getElementById('ecartUnder').innerHTML = splitList(under, 4, j=>ecartRow(j,'down'));
 })();
 
 
@@ -1734,5 +1941,172 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
 
   document.getElementById('sessionNote').innerHTML =
     `Triées par nombre de jokers distribués, la session la plus courte comme la plus longue.`;
+})();
+
+
+/* ---------- Recherche d'un pseudo ---------- */
+(function(){
+  const input = document.getElementById('pseudoSearch');
+  const suggestBox = document.getElementById('pseudoSuggest');
+  const card = document.getElementById('pseudoCard');
+  const empty = document.getElementById('pseudoEmpty');
+
+  const EDITION_LABEL_SEARCH = {none:'sans édition', foil:'Brillant', holographic:'Holographique', polychrome:'Polychrome', negative:'Négatif'};
+
+  const roster = OFFICIAL_LEADERBOARD.map(r => ({
+    rank:r[0], name:r[1], score:r[2], total:r[3], uniq:r[4], dupes:r[5], maxStack:r[6], pct:r[7],
+    foil:r[8], holo:r[9], poly:r[10], neg:r[11], common:r[12], uncommon:r[13], rare:r[14], legendary:r[15],
+    topJoker:r[16], topEdition:r[17], topPts:r[18]
+  }));
+  const byRank = new Map(roster.map(r => [r.rank, r]));
+  const byName = new Map(roster.map(r => [r.name.toLowerCase(), r]));
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function breakdownRow(lbl, n, max){
+    const w = max > 0 ? (n/max*100).toFixed(1) : 0;
+    return `<div class="bar-row">
+      <span class="bar-name">${lbl}</span>
+      <span class="bar-track"><span class="bar-fill" style="width:${w}%"></span></span>
+      <span class="bar-val"><b>${n}</b></span>
+    </div>`;
+  }
+
+  function neighborBlock(n, tag, ref){
+    if(!n){
+      const msg = tag === 'Juste devant' ? '1ère place — personne devant.' : 'Dernière place — personne derrière.';
+      return `<div class="neighbor-card neighbor-card--empty"><span class="neighbor-tag">${tag}</span><p class="neighbor-empty-note">${msg}</p></div>`;
+    }
+    const dScore = ref.score - n.score;
+    const dUniq = ref.uniq - n.uniq;
+    const dDupes = ref.dupes - n.dupes;
+    const row = (d, unit) => `<span class="neighbor-delta ${d>=0?'up':'down'}">${d>=0?'+':''}${fmtInt(d)} ${unit}</span>`;
+    return `<div class="neighbor-card">
+      <span class="neighbor-tag">${tag}</span>
+      <span class="neighbor-name">#${n.rank} · ${esc(n.name)}</span>
+      <div class="neighbor-deltas">
+        ${row(dScore, 'pts')}
+        ${row(dUniq, 'uniques')}
+        ${row(dDupes, 'doublons')}
+      </div>
+    </div>`;
+  }
+
+  function renderCard(r){
+    if(!r){
+      card.style.display = 'none';
+      empty.style.display = 'block';
+      empty.textContent = 'Aucun collectionneur ne correspond à ce pseudo.';
+      return;
+    }
+    empty.style.display = 'none';
+    card.style.display = 'block';
+
+    const above = byRank.get(r.rank - 1);
+    const below = byRank.get(r.rank + 1);
+
+    const tiles = [
+      { val: fmtInt(r.score), lbl: 'Points', delta: `rang #${r.rank} / ${roster.length}` },
+      { val: fmtInt(r.total), lbl: 'Exemplaires ouverts' },
+      { val: fmtInt(r.uniq), lbl: 'Jokers uniques', delta: `${r.pct}% du catalogue` },
+      { val: fmtInt(r.dupes), lbl: 'Doublons', delta: `pile max ${r.maxStack}` },
+    ];
+
+    const editionMax = Math.max(r.foil, r.holo, r.poly, r.neg, 1);
+    const rarityMax = Math.max(r.common, r.uncommon, r.rare, r.legendary, 1);
+
+    card.innerHTML = `
+      <div class="pseudo-head">
+        <span class="pseudo-rank">#${r.rank} / ${roster.length}</span>
+        <span class="pseudo-name">${esc(r.name)}</span>
+        <span class="pseudo-score">${fmtInt(r.score)} <small>pts</small></span>
+      </div>
+      <div class="hero-stats pseudo-tiles">
+        ${tiles.map(t => `<div class="stat-tile"><span class="val">${t.val}</span><span class="lbl">${t.lbl}</span>${t.delta ? `<span class="delta">${t.delta}</span>` : ''}</div>`).join('')}
+      </div>
+      <div class="pseudo-breakdown">
+        <div class="pseudo-breakdown-col">
+          <h3>Éditions (uniques)</h3>
+          <div class="bars">
+            ${breakdownRow('Brillant', r.foil, editionMax)}
+            ${breakdownRow('Holo', r.holo, editionMax)}
+            ${breakdownRow('Poly', r.poly, editionMax)}
+            ${breakdownRow('Négatif', r.neg, editionMax)}
+          </div>
+        </div>
+        <div class="pseudo-breakdown-col">
+          <h3>Raretés (uniques)</h3>
+          <div class="bars">
+            ${breakdownRow('Commun', r.common, rarityMax)}
+            ${breakdownRow('Peu-commun', r.uncommon, rarityMax)}
+            ${breakdownRow('Rare', r.rare, rarityMax)}
+            ${breakdownRow('Légendaire', r.legendary, rarityMax)}
+          </div>
+        </div>
+      </div>
+      <p class="pseudo-top">Meilleure pêche : <b>${esc(r.topJoker)}</b> (${EDITION_LABEL_SEARCH[r.topEdition] || esc(r.topEdition)}) — ${fmtPts(r.topPts)} pts.</p>
+      <div class="neighbor-grid">
+        ${neighborBlock(above, 'Juste devant', r)}
+        ${neighborBlock(below, 'Juste derrière', r)}
+      </div>
+    `;
+  }
+
+  let currentMatches = [];
+  let activeIndex = -1;
+
+  function paintSuggestions(){
+    suggestBox.innerHTML = currentMatches.map((r,i) => `
+      <div class="search-suggest-item${i===activeIndex?' active':''}" data-i="${i}">
+        <span class="rank">#${r.rank}</span>
+        <span class="name">${esc(r.name)}</span>
+        <span class="score">${fmtInt(r.score)} pts</span>
+      </div>`).join('');
+    suggestBox.querySelectorAll('.search-suggest-item').forEach(el => {
+      el.addEventListener('mousedown', e => {
+        e.preventDefault();
+        pick(currentMatches[+el.dataset.i]);
+      });
+    });
+  }
+
+  function renderSuggestions(query){
+    const q = query.trim().toLowerCase();
+    activeIndex = -1;
+    if(!q){
+      currentMatches = [];
+      suggestBox.innerHTML = '';
+      suggestBox.style.display = 'none';
+      return;
+    }
+    currentMatches = roster.filter(r => r.name.toLowerCase().includes(q)).sort((a,b)=>a.rank-b.rank).slice(0, 8);
+    if(!currentMatches.length){
+      suggestBox.innerHTML = `<div class="search-suggest-empty">Aucun pseudo trouvé.</div>`;
+      suggestBox.style.display = 'block';
+      return;
+    }
+    paintSuggestions();
+    suggestBox.style.display = 'block';
+  }
+
+  function pick(r){
+    input.value = r.name;
+    suggestBox.style.display = 'none';
+    renderCard(r);
+  }
+
+  input.addEventListener('input', () => renderSuggestions(input.value));
+  input.addEventListener('focus', () => { if(input.value) renderSuggestions(input.value); });
+  input.addEventListener('blur', () => setTimeout(() => { suggestBox.style.display = 'none'; }, 120));
+  input.addEventListener('keydown', e => {
+    if(suggestBox.style.display === 'block' && currentMatches.length){
+      if(e.key === 'ArrowDown'){ e.preventDefault(); activeIndex = Math.min(activeIndex+1, currentMatches.length-1); paintSuggestions(); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); activeIndex = Math.max(activeIndex-1, 0); paintSuggestions(); }
+      else if(e.key === 'Enter'){ e.preventDefault(); pick(activeIndex>=0 ? currentMatches[activeIndex] : currentMatches[0]); }
+      else if(e.key === 'Escape'){ suggestBox.style.display = 'none'; }
+    }
+  });
 })();
 </script>
