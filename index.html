@@ -587,7 +587,6 @@ h1.title{
 .search-suggest-item .score{ font-family: var(--font-display); font-size:0.76rem; color: var(--text-secondary); flex:none; }
 .search-suggest-empty{ padding: 12px 14px; color: var(--text-muted); font-size:0.84rem; }
 
-.pseudo-card{ border-top: 1px solid var(--border-soft); padding-top: 20px; }
 .pseudo-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
 .pseudo-rank{ font-family: var(--font-display); font-size:0.85rem; color: var(--text-muted); }
 .pseudo-name{ font-family: var(--font-display); font-weight:700; font-size:1.3rem; color: var(--text-primary); }
@@ -611,6 +610,48 @@ h1.title{
 .neighbor-delta{ font-family: var(--font-display); font-size:0.8rem; font-variant-numeric:tabular-nums; }
 .neighbor-delta.up{ color: var(--blue); }
 .neighbor-delta.down{ color: var(--red); }
+.pseudo-section{ padding-top:18px; margin-top:18px; border-top:1px dashed var(--border-soft); }
+.pseudo-section h3{
+  font-family: var(--font-display); font-size:0.72rem; text-transform:uppercase; letter-spacing:.06em; color: var(--text-secondary); margin:0 0 12px;
+}
+
+/* ---------- Sélecteur de pseudo (déplacé sous le hero) ---------- */
+.pseudo-finder{ margin-bottom: 32px; }
+.pseudo-finder .panel-body{ padding-top: 22px; }
+.pseudo-finder-title{
+  font-family: var(--font-display); font-size:1.05rem; letter-spacing:0.02em; text-transform:uppercase;
+  margin: 0 0 14px; color: var(--text-primary);
+}
+
+/* ---------- Fiche collectionneur (modal) ---------- */
+.modal-overlay{
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(13,19,24,0.72);
+  display:flex; align-items:flex-start; justify-content:center;
+  padding: 48px 20px; overflow-y:auto;
+}
+.modal-overlay[hidden]{ display:none; }
+.modal-dialog{
+  position: relative;
+  width: 100%; max-width: 720px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 32px 28px 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.modal-close{
+  position: absolute; top:14px; right:14px;
+  width:32px; height:32px; border-radius:50%;
+  background: var(--surface-2); border:1px solid var(--border-soft);
+  color: var(--text-secondary); font-size:0.95rem; line-height:1;
+  cursor: pointer;
+}
+.modal-close:hover{ color: var(--text-primary); border-color: var(--gold); }
+@media (max-width: 620px){
+  .modal-overlay{ padding: 0; }
+  .modal-dialog{ max-width:none; min-height:100%; border-radius:0; border-left:none; border-right:none; }
+}
 
 /* ---------- Sommaire ---------- */
 html{ scroll-behavior: smooth; }
@@ -664,7 +705,7 @@ html{ scroll-behavior: smooth; }
 #tooltip{
   position: fixed;
   pointer-events: none;
-  z-index: 50;
+  z-index: 150;
   background: #0d1318;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -732,6 +773,17 @@ footer code{
     <div class="hero-stats" id="heroStats"></div>
   </header>
 
+  <section class="panel pseudo-finder" id="panelSearch">
+    <div class="panel-body">
+      <h2 class="pseudo-finder-title">Ta fiche de collectionneur</h2>
+      <div class="search-box">
+        <input type="text" id="pseudoSearch" class="search-input" placeholder="Tape un pseudo… (ex : garg000ille)" autocomplete="off" spellcheck="false" />
+        <div class="search-suggest" id="pseudoSuggest"></div>
+      </div>
+      <p class="bars-note">Choisis une suggestion (ou valide avec Entrée) pour ouvrir sa fiche complète — classement, stats, rendement, et comparaison avec ses deux voisins directs.</p>
+    </div>
+  </section>
+
   <nav class="toc" aria-label="Sommaire">
     <span class="toc-label">Top 25</span>
     <a class="toc-link" href="#panelActivity">Activité</a>
@@ -746,7 +798,6 @@ footer code{
     <a class="toc-link" href="#panelIO">Entrées / sorties</a>
     <span class="toc-sep" aria-hidden="true"></span>
     <span class="toc-label">Communauté</span>
-    <a class="toc-link" href="#panelSearch">Chercher un pseudo</a>
     <a class="toc-link" href="#panelCommunityScale">Ampleur</a>
     <a class="toc-link" href="#panelCommunityTrophy">Le vrai tiercé</a>
     <a class="toc-link" href="#panelHoarders">Accumulateurs</a>
@@ -917,24 +968,6 @@ footer code{
     <p class="section-divider-sub" style="color:var(--text-muted); font-size:0.86rem; max-width:70ch;">Le classement complet, <b style="color:var(--text-secondary)">202 collectionneurs</b>, relevé le 15 août — pas seulement le top 25 suivi plus haut.</p>
   </div>
 
-  <section class="panel" id="panelSearch">
-    <div class="panel-head">
-      <div>
-        <h2>Ta fiche de collectionneur</h2>
-        <p>Cherche un pseudo pour voir son classement, ses stats en détail, et comment il se situe face à ses deux voisins directs du classement.</p>
-      </div>
-      <span class="panel-tag">202 collectionneurs · recherche</span>
-    </div>
-    <div class="panel-body">
-      <div class="search-box">
-        <input type="text" id="pseudoSearch" class="search-input" placeholder="Tape un pseudo… (ex : garg000ille)" autocomplete="off" spellcheck="false" />
-        <div class="search-suggest" id="pseudoSuggest"></div>
-      </div>
-      <div class="pseudo-card" id="pseudoCard" style="display:none;"></div>
-      <p class="bars-note" id="pseudoEmpty">Aucun pseudo sélectionné pour l'instant — commence à taper ci-dessus, les suggestions apparaissent au fil de la frappe.</p>
-    </div>
-  </section>
-
   <section class="panel" id="panelCommunityScale">
     <div class="panel-head">
       <div>
@@ -1081,6 +1114,13 @@ footer code{
 </div>
 
 <div id="tooltip"></div>
+
+<div class="modal-overlay" id="pseudoModalOverlay" hidden>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="pseudoModalName">
+    <button type="button" class="modal-close" id="pseudoModalClose" aria-label="Fermer">✕</button>
+    <div id="pseudoModalBody"></div>
+  </div>
+</div>
 
 <script>
 const DAY1 = [["LeSoumis2Cactus35",363,265,109,"Stuntman","holographic",18],["Monsieur_Tatillon",308,196,99,"Mail-In Rebate","negative",26],["al_rizla97",293,168,93,"Zany Joker","negative",21],["Maxtime019LeSoumis2Cactus",292,173,99,"Canio","none",15],["garg000ille",265,162,92,"Castle","negative",18],["m3r0v1gien",258,158,96,"Cactus","none",17],["Croucroute",254,166,90,"Canio","none",15],["37brice",241,175,92,"Baron","polychrome",13],["M0UTM0UT56",230,144,87,"Cactus","none",17],["forthefutureproject",205,144,90,"Canio","none",15],["cquoilabull",195,138,83,"Runner","polychrome",11],["ghostsoumis2soumis",185,113,65,"Misprint","negative",16],["fandragon_",182,107,69,"Scary Face","negative",16],["elbubbito",169,71,51,"Triboulet","holographic",21],["JohnDuffLeSoumis9",148,120,71,"Wrathful Joker","polychrome",11],["hpaascal",146,96,62,"Photograph","negative",16],["nithror_",144,79,57,"Canio","holographic",21],["zeguro6",141,85,61,"Perkeo","none",15],["megacop27",139,93,57,"Smiley Face","polychrome",11],["to1nio",135,74,55,"Cactus","none",17],["Bichopebitou",133,64,48,"Joker","holographic",13],["MatatraX",131,75,55,"The Tribe","polychrome",13],["ApokalmiX",128,87,65,"Gift Card","polychrome",13],["Tucunared",121,66,49,"Canio","none",15],["arkhann50",115,40,34,"Golden Eye","none",20]];
@@ -1289,6 +1329,7 @@ function attachTip(el, html){
    contre le score officiel de l'API pour les 202 collectionneurs (formule = jokerdex_scoring_system). */
 const TRAJ_DATES = ["2026-06-07","2026-06-10","2026-06-13","2026-06-20","2026-06-30","2026-07-01","2026-07-04","2026-07-05","2026-07-15","2026-07-16","2026-07-17","2026-07-21","2026-07-23","2026-07-24","2026-07-28","2026-08-01","2026-08-02","2026-08-03","2026-08-04","2026-08-06","2026-08-07","2026-08-08","2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15"];
 const TRAJ_SERIES = [["LeSoumis2Cactus35",[70,99,117,122,126,128,137,139,146,174,184,199,200,211,233,237,245,253,269,269,271,291,303,332,352,357,363,363,390]],["Monsieur_Tatillon",[52,64,67,67,84,84,95,99,124,146,150,155,155,186,202,204,209,212,236,236,245,252,270,280,299,301,308,308,324]],["al_rizla97",[0,40,40,65,70,72,72,72,113,130,132,142,159,172,172,172,196,199,221,223,228,236,245,249,274,275,293,293,293]],["Maxtime019LeSoumis2Cactus",[21,40,46,46,46,46,50,53,82,102,105,109,114,142,148,160,171,173,175,180,197,209,212,261,271,278,292,292,315]],["garg000ille",[0,0,0,5,5,5,5,5,13,40,45,58,66,95,102,102,120,130,163,168,172,200,215,237,251,253,265,265,268]],["m3r0v1gien",[0,0,0,0,0,0,0,0,5,19,20,32,33,64,81,91,122,129,158,168,173,208,223,233,252,254,258,258,270]],["Croucroute",[0,0,0,5,5,5,25,26,44,68,77,88,103,123,130,142,154,160,179,182,182,188,207,215,236,242,254,254,259]],["37brice",[0,0,0,0,9,9,20,27,73,99,104,115,122,137,152,153,165,171,180,181,184,198,198,204,209,211,241,241,278]],["M0UTM0UT56",[33,33,33,39,39,39,39,39,42,42,46,56,74,85,88,97,124,133,151,168,169,180,192,211,213,219,230,230,242]],["forthefutureproject",[14,17,17,17,17,17,17,17,17,17,18,25,34,47,47,52,81,84,133,139,144,156,176,188,198,198,205,205,212]]];
+const TRAJ_SERIES_ALL = [["LeSoumis2Cactus35",[70,99,114,119,123,128,136,139,146,174,184,199,200,211,233,235,245,253,269,269,271,291,303,332,352,357,363,371,390]],["Monsieur_Tatillon",[52,64,67,67,82,84,95,99,124,146,150,155,155,186,202,204,209,212,236,236,245,252,270,280,299,301,308,308,324]],["Maxtime019LeSoumis2Cactus",[21,40,46,46,46,46,50,53,82,102,105,109,114,142,148,157,171,173,175,180,197,209,212,261,271,278,292,300,315]],["al_rizla97",[0,39,40,47,65,72,72,72,113,130,132,142,156,172,172,172,196,199,221,223,228,236,245,249,274,275,293,293,293]],["37brice",[0,0,0,0,5,9,14,27,73,99,104,115,122,137,152,152,165,171,180,181,184,198,198,204,209,211,241,254,278]],["m3r0v1gien",[0,0,0,0,0,0,0,0,5,19,20,32,33,64,81,90,122,129,158,168,173,208,223,233,252,254,258,265,270]],["garg000ille",[0,0,0,4,5,5,5,5,13,40,45,58,60,95,102,102,120,130,163,168,172,200,215,237,251,253,265,268,268]],["Croucroute",[0,0,0,3,5,5,16,26,44,68,77,88,97,123,130,141,154,160,179,182,182,188,207,215,236,242,254,255,259]],["M0UTM0UT56",[33,33,33,34,39,39,39,39,42,42,46,56,74,85,88,97,124,133,151,168,169,180,192,211,213,219,230,236,242]],["forthefutureproject",[14,17,17,17,17,17,17,17,17,17,18,25,32,47,47,52,81,84,133,139,144,156,176,188,198,198,205,210,212]],["ghostsoumis2soumis",[0,0,0,0,0,0,0,0,18,44,47,53,55,80,80,80,83,83,86,101,112,129,135,144,156,166,185,189,199]],["fandragon_",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,21,43,80,89,92,117,132,138,154,175,182,184,197]],["cquoilabull",[0,1,1,1,2,6,13,18,31,40,42,44,50,58,66,69,90,96,118,129,138,157,176,192,195,195,195,195,195]],["elbubbito",[0,0,0,0,0,0,2,2,7,40,40,40,40,73,112,112,112,112,114,122,125,125,147,163,167,167,169,181,185]],["JohnDuffLeSoumis9",[9,19,19,24,24,24,24,26,26,27,27,27,33,41,45,47,55,63,83,87,88,98,103,122,141,143,148,157,168]],["MatatraX",[0,0,0,0,0,0,0,0,24,36,43,43,43,43,43,47,47,47,47,47,47,60,89,89,101,108,131,131,152]],["hpaascal",[0,0,0,0,0,0,8,28,35,45,47,48,57,69,78,78,80,81,95,95,100,105,124,126,133,140,146,146,146]],["zeguro6",[0,0,0,0,0,0,0,0,1,20,28,39,50,64,74,79,97,98,116,117,141,141,141,141,141,141,141,141,145]],["nithror_",[75,90,90,95,97,97,104,110,110,110,110,113,120,120,120,120,120,120,120,120,120,120,120,144,144,144,144,144,144]],["megacop27",[70,70,70,78,79,79,79,79,93,102,103,108,108,110,121,121,133,135,135,135,135,139,139,139,139,139,139,139,139]],["to1nio",[29,29,29,29,33,33,35,61,61,70,70,86,94,118,124,129,129,129,129,129,135,135,135,135,135,135,135,135,135]],["Bichopebitou",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,30,34,35,60,71,86,113,133,133,133,133,133,133]],["le__belge",[0,0,0,0,0,18,23,30,30,30,30,53,56,56,56,56,72,78,78,78,78,78,78,87,96,110,115,119,133]],["ApokalmiX",[34,51,58,62,62,62,62,65,85,90,90,92,93,98,98,98,98,98,126,126,126,126,128,128,128,128,128,128,128]],["arkhann50",[0,0,0,0,0,0,0,0,0,0,0,18,18,18,30,64,68,68,68,68,79,79,79,79,81,90,115,125,125]],["Tucunared",[0,0,0,0,0,0,0,0,0,0,0,0,0,3,16,19,30,31,38,38,42,63,74,87,107,115,121,123,123]],["Nodorf",[10,11,11,11,11,11,11,11,23,28,33,33,33,33,33,37,45,45,55,57,60,69,79,91,96,107,111,112,112]],["toinou4173",[0,5,5,5,5,5,5,5,5,41,41,41,52,69,69,69,76,76,76,88,88,105,105,105,105,106,107,107,107]],["baptouu9",[0,2,2,2,3,3,3,3,10,19,20,27,32,41,41,41,45,50,50,52,53,58,81,87,87,89,91,91,103]],["XboxeurMan",[0,11,19,23,27,31,36,44,54,57,57,60,67,67,67,67,67,74,74,74,89,89,93,100,100,100,100,102,102]],["ニリキタ",[0,0,0,0,0,0,0,1,1,1,1,1,5,19,19,19,20,27,29,30,32,38,40,49,63,67,74,85,102]],["DIEUDURIRE",[0,1,1,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,32,32,60,72,81,91,97,101]],["Ghirtor",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,12,34,50,65,86,92,97]],["Fiddjy",[63,74,76,85,88,89,89,89,94,94,94,94,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95,95]],["AdrienCrak",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,7,9,9,22,24,35,58,68,70,75,86,89,89,93]],["Sasha_Yubari",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,30,56,75,81,92]],["Lilubells",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,58,62,67,82,88,88,88,88]],["GiseleKerozene",[18,18,18,19,19,41,41,42,42,42,42,46,46,69,69,69,72,72,72,72,72,72,72,72,72,72,72,84,86]],["Neandre",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,13,17,25,56,72,72,82,82,82,83,83]],["SramRedBlack",[0,4,4,4,4,4,4,4,4,5,5,5,17,21,21,22,24,37,48,48,49,49,55,61,61,61,68,68,80]],["Skypios",[0,0,0,0,0,0,0,0,0,0,0,4,5,33,33,33,33,33,33,53,54,54,54,58,62,62,63,69,78]],["AOPMaroilles",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,25,40,52,56,56,64,73]],["tw0hour",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,30,37,40,50,50,50,62,63,63,66,73]],["honoshadow56",[0,0,0,0,0,0,0,0,0,0,0,0,0,9,9,9,9,9,18,18,18,28,40,52,67,67,67,70,71]],["sylvesterslalome",[0,0,0,0,0,0,0,0,2,2,2,2,4,4,4,11,13,13,13,16,18,38,38,51,53,55,67,70,71]],["gal12_",[0,0,0,0,0,0,0,0,0,4,4,15,16,23,23,23,40,40,40,40,40,46,46,53,53,53,60,60,69]],["airness456",[55,62,62,62,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68]],["andremgn",[0,0,0,0,0,0,7,7,7,9,9,19,28,40,42,44,44,45,45,45,45,45,46,46,59,59,67,67,67]],["mr_patate44",[0,0,0,0,0,0,0,0,16,16,16,20,21,33,45,51,61,61,62,62,62,62,67,67,67,67,67,67,67]],["Archelite",[0,0,3,5,6,6,7,14,16,16,16,16,18,26,26,26,29,31,33,33,33,39,48,56,56,56,66,66,66]],["elicapes",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,35,44,55,65,65,65]],["wengikos",[0,0,0,0,0,0,0,0,1,5,5,16,24,30,34,34,34,34,34,34,35,64,64,64,64,64,64,64,64]],["Idkau",[46,48,48,50,51,51,51,60,60,60,60,60,60,60,60,60,61,61,61,61,61,61,61,61,61,61,61,61,61]],["MichelSemoule",[23,23,23,23,23,23,23,23,23,23,23,23,26,37,39,41,47,49,54,58,58,58,58,58,58,58,58,61,61]],["Kirinn_",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,10,25,25,34,35,46,47,47,47,47,47,47,59,59]],["Verinxin",[25,33,36,36,39,39,39,39,39,39,39,39,39,52,52,52,52,59,59,59,59,59,59,59,59,59,59,59,59]],["pasmoi42",[55,56,56,56,56,56,56,56,56,56,56,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57,57]],["TOMYGOODY",[0,0,0,0,0,0,0,0,0,0,0,0,1,1,3,3,10,11,17,24,24,24,27,51,56,56,56,56,56]],["esketukonai",[0,0,0,0,0,0,0,0,0,0,0,0,11,23,23,23,32,32,32,32,32,32,44,44,44,44,44,44,55]],["Korob735",[5,5,5,5,8,8,8,8,15,15,15,15,18,18,18,18,18,18,18,18,18,18,23,24,44,46,52,55,55]],["HiBillyICanFly",[37,37,37,37,37,37,37,37,37,39,41,46,46,46,46,46,46,47,47,47,47,51,53,53,53,53,53,53,53]],["KreoKiwi",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,20,20,25,31,52]],["umFantasminhaCamarada",[1,1,1,1,1,1,1,1,3,3,3,3,3,14,14,14,15,16,23,27,27,30,33,42,42,42,45,45,51]],["diylbert",[0,0,0,0,0,0,0,0,0,0,0,14,14,19,40,43,45,49,49,49,49,49,49,49,49,49,49,49,50]],["barb_rouss",[0,0,0,0,0,0,0,0,8,23,27,27,27,47,47,47,47,47,47,47,47,47,47,47,47,48,48,48,48]],["ST_Chouette",[0,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,11,11,17,17,17,17,25,31,35,35,35,35,45]],["leo__star",[0,0,0,0,0,0,0,0,0,3,3,9,14,15,16,16,16,16,17,17,17,23,27,31,41,43,43,43,43]],["potimaro_gk",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,7,21,32,42]],["soytto",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,32,33,36,38,39,39,42]],["gandalf_le_rouge",[0,0,0,0,0,0,0,0,0,0,0,0,0,5,7,7,7,7,7,7,7,26,38,38,38,39,39,39,41]],["pauport",[39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,41,41,41,41,41,41,41,41,41,41,41]],["Quiiiche",[0,0,0,0,0,0,0,0,0,0,1,1,1,5,18,18,18,18,20,26,34,35,41,41,41,41,41,41,41]],["Dromux",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,23,38]],["jakytutu",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,15,37,37,37]],["ah_thaozz",[0,0,0,0,0,0,0,0,0,0,0,0,0,23,28,28,32,33,33,33,33,36,36,36,36,36,36,36,36]],["Texmex91",[31,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,34,36]],["eleanor_nagisa",[0,0,0,0,0,0,0,0,7,7,7,7,7,7,7,7,7,7,7,7,7,22,28,34,35,35,35,35,35]],["Robfram",[0,0,0,0,0,0,0,0,0,0,0,0,0,26,26,26,28,29,34,34,34,34,34,34,34,34,34,34,35]],["liouliou82",[0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,11,11,11,11,14,23,25,32,34,34,34,34,34]],["Velorution",[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,4,4,4,11,29,34]],["Arthour_couillere",[32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32]],["eil4roc",[29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,31,31,32,32,32]],["DinisBeifong",[18,28,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29]],["dnvnl",[0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,8,22,23,29,29,29,29,29]],["jojo_jcqt",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,14,14,14,14,19,26,27]],["dvvdddvdvdvd",[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,11,11,11,17,18,18,18,18,18,18,20,26,26]],["Darssynator",[0,0,0,0,0,0,0,0,0,0,0,7,7,8,11,13,15,15,17,17,17,23,23,23,23,23,23,23,23]],["SamFl7x",[0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,7,7,7,7,7,7,8,19,19,19,22,22,22]],["ScarEnix",[6,6,6,6,6,6,7,7,8,9,9,9,9,14,14,21,21,21,21,21,21,21,21,21,21,21,21,21,21]],["hx_u1yss3",[0,2,2,2,2,2,2,2,7,7,7,7,7,7,8,8,8,8,8,8,8,8,10,14,14,15,20,20,20]],["PrytoZ_TV",[0,0,0,0,0,0,0,0,0,0,0,4,10,17,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20]],["LeRagondinSuave",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,8,11,19,19,19,19,19,19,19]],["nicoberjin",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,17,19,19]],["turboluigi",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,15,19]],["celestin_2",[18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18]],["eljoj",[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,11,11,11,13,16,17,17,17,17,18,18]],["lownnii",[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,17,17,17,17,17,17,17,17,17,17,17]],["Bourinus",[0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,8,9,9,12,12,12,12,12,12,12,12,16,16,16]],["iDragoor",[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,3,6,6,6,6,6,6,6,7,10,10,13,13,16]],["Kahklouf",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,16,16,16,16,16,16,16,16,16,16]],["Mozafok",[0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,6,6,6,6,6,6,13,15,16,16,16,16]],["resik75",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,16,16,16,16,16,16,16,16,16,16]],["hiltouille",[0,0,0,0,0,0,0,0,0,0,0,0,10,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14]],["JiiiiiN_X",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,14,14,14,14,14]],["B_L_beat",[0,0,0,0,0,0,0,0,0,0,0,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12]],["Peakilith",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,11,12,12,12,12]],["shinji_panda",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,12,12,12,12,12,12,12]],["anomsocial",[0,0,0,0,0,0,0,0,0,0,0,1,1,5,5,5,7,7,7,7,7,8,8,8,8,11,11,11,11]],["Arthurby",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9,9,9,11,11,11,11,11,11,11,11,11]],["balatoom",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,11,11,11,11,11,11,11]],["ddradle",[0,0,0,0,0,0,0,0,0,0,0,0,0,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11]],["Fiffon",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,11,11,11,11,11,11,11,11]],["livio3619",[0,0,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11]],["chill_nono",[10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]],["chriscamicas",[0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]],["rotagame8",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10]],["bggggggggvgggf",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,8,8,8,9,9,9,9,9,9,9,9,9,9]],["specialtactix",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,9,9]],["spectr_91",[0,0,0,0,0,0,0,0,0,0,0,3,3,5,8,8,8,8,9,9,9,9,9,9,9,9,9,9,9]],["Ticatake",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9,9]],["31youri",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]],["Craquetuss_Le_Piquant",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,8]],["jefflenerf",[0,0,0,0,0,0,0,0,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8]],["marioleboss1",[0,0,0,0,0,0,0,0,0,0,0,0,3,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]],["petitnavet",[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8]],["farn5worth",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,7]],["GuitaTV",[0,0,0,0,0,0,0,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]],["loiclneuf",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7]],["Niajja",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,7,7,7,7,7,7]],["Osadus",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,7,7,7]],["SadZer0_0",[0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]],["soqurve",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,5,6,6,7,7,7,7,7]],["space_pirates01",[0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,7,7,7,7,7,7,7,7,7,7,7,7,7]],["trostyman",[2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7]],["WarlocNiffus",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,7,7,7]],["Feudu",[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]],["LiloLino",[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]],["narvaloutre",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,6]],["rallypi",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,6,6,6,6]],["supertouffe",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,6,6,6,6,6]],["tablebassedesenfers",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,6,6,6,6,6,6,6]],["LuxDincht",[1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]],["Swan_lzr",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,4,5,5,5,5,5,5,5,5,5]],["Thibaal",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5]],["Zygrek",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,3,3,5,5]],["404LogicNotFound",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,4,4,4,4,4]],["Khaelun",[0,0,0,0,0,0,0,0,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]],["M_Shakma",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,4,4,4]],["naingoui",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,4,4,4,4]],["totemmmmm",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,4,4,4,4,4]],["waneguene",[0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4]],["yukior",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,4,4,4,4,4,4]],["axolo_12",[0,0,0,0,0,0,0,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]],["B3LITHR4N",[0,0,0,0,0,0,0,0,0,0,0,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]],["d4d_tv",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,3,3,3,3,3]],["DrackVolsinistr",[0,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]],["iopjklbnmhffc",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,3,3,3]],["paulrqt",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,3]],["Raphabuleux_",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,3,3,3,3,3,3,3]],["tof013",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3]],["VistiiK",[0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]],["artistide_",[0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["BookahTastroff",[0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["brokenledruidee",[0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["David_Roule_En_C6",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2]],["dolphinoa11",[0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["dyeuses",[0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2]],["eggymari",[0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["Harriett___",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2]],["kasmatty",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2]],["Kraoki",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2]],["Krish3253",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,2,2,2,2]],["Mahttyh",[0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["mentzooo",[0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["Snoopaille",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2]],["suistrop",[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]],["VonDC",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2]],["29eraxel",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["bestQc14",[0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["Despe___",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]],["Elbosso88",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1]],["fouruch",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1]],["jbyrdevans",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]],["Jdkateny",[0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["Jfredd",[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["Kokonath_",[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["kravzac83000",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]],["light_hammerrrr",[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["loredox",[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["Nereis_",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1]],["nocolat",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1]],["notadgn",[0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["pastek_sunfavored",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]],["Pawter_",[0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["potiron67",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1]],["Seaulyd",[0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["T0okTOok",[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["Tharuc",[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["thefolin82",[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],["TheWindSoul",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]],["tho311_ttv",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1]],["yell0wbuff",[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1]]]; // [name, scores[]] for EVERY collector on the leaderboard (same TRAJ_DATES checkpoints as TRAJ_SERIES) — built by build_traj_series_all.js. TRAJ_SERIES stays the source of truth for the 10 tracked names (the "Trajectoires" panel and the search modal both prefer it when present).
 const HOARDER_DETAIL = {"37brice":["Scholar","Common",[["2026-07-16","none"],["2026-07-28","none"],["2026-08-01","none"],["2026-08-02","none"],["2026-08-04","none"],["2026-08-04","none"],["2026-08-13","foil"]]],"AdrienCrak":["Clever Joker","Common",[["2026-08-04","none"],["2026-08-06","none"],["2026-08-10","none"]]],"airness456":["Mad Joker","Common",[["2026-06-07","none"],["2026-06-13","none"]]],"al_rizla97":["Wily Joker","Common",[["2026-07-15","none"],["2026-08-03","none"],["2026-08-07","foil"],["2026-08-09","none"],["2026-08-12","none"]]],"andremgn":["Devious Joker","Common",[["2026-07-21","none"],["2026-08-11","none"]]],"AOPMaroilles":["Zany Joker","Common",[["2026-08-10","none"],["2026-08-15","none"]]],"ApokalmiX":["Droll Joker","Common",[["2026-06-10","none"],["2026-07-15","none"],["2026-08-04","none"]]],"arkhann50":["Riff-Raff","Common",[["2026-07-21","none"],["2026-07-28","holographic"],["2026-08-01","none"]]],"baptouu9":["Loyalty Card","Uncommon",[["2026-08-03","none"],["2026-08-10","none"],["2026-08-15","none"]]],"barb_rouss":["Joker","Common",[["2026-07-16","holographic"],["2026-08-12","none"]]],"Bichopebitou":["Joker","Common",[["2026-08-09","none"],["2026-08-10","holographic"],["2026-08-10","foil"]]],"Bourinus":["Clever Joker","Common",[["2026-08-04","none"],["2026-08-04","none"]]],"cquoilabull":["Golden Ticket","Common",[["2026-06-30","none"],["2026-07-05","none"],["2026-07-23","none"],["2026-08-02","none"],["2026-08-10","none"]]],"Croucroute":["Abstract Joker","Common",[["2026-07-16","none"],["2026-08-01","none"],["2026-08-02","foil"],["2026-08-04","none"],["2026-08-04","none"],["2026-08-08","none"],["2026-08-08","none"]]],"Darssynator":["Hallucination","Common",[["2026-08-01","none"],["2026-08-07","none"]]],"DIEUDURIRE":["Half Joker","Common",[["2026-06-10","none"],["2026-08-14","none"],["2026-08-15","none"]]],"DinisBeifong":["Bull","Uncommon",[["2026-06-07","none"],["2026-06-10","foil"]]],"diylbert":["Blue Joker","Common",[["2026-07-21","none"],["2026-08-01","none"],["2026-08-14","none"]]],"Dromux":["Business Card","Common",[["2026-08-13","none"],["2026-08-15","none"]]],"dvvdddvdvdvd":["Jolly Joker","Common",[["2026-08-13","none"],["2026-08-14","foil"]]],"eil4roc":["Misprint","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"elbubbito":["Greedy Joker","Common",[["2026-07-24","none"],["2026-07-28","none"],["2026-08-06","none"],["2026-08-10","none"]]],"eleanor_nagisa":["Droll Joker","Common",[["2026-08-08","none"],["2026-08-08","none"]]],"elicapes":["Crazy Joker","Common",[["2026-08-09","none"],["2026-08-12","none"],["2026-08-13","none"]]],"esketukonai":["Fortune Teller","Common",[["2026-08-14","none"],["2026-08-14","none"]]],"fandragon_":["Half Joker","Common",[["2026-08-04","none"],["2026-08-14","none"],["2026-08-14","none"],["2026-08-14","none"],["2026-08-15","none"]]],"Fiddjy":["Drunkard","Common",[["2026-06-07","none"],["2026-06-07","none"],["2026-06-10","none"]]],"forthefutureproject":["Fortune Teller","Common",[["2026-06-07","none"],["2026-07-23","none"],["2026-07-24","none"],["2026-08-07","none"],["2026-08-14","none"]]],"gal12_":["Lusty Joker","Common",[["2026-07-21","none"],["2026-07-24","none"],["2026-07-24","none"]]],"gandalf_le_rouge":["Droll Joker","Common",[["2026-08-08","none"],["2026-08-08","none"]]],"garg000ille":["Zany Joker","Common",[["2026-07-16","none"],["2026-08-04","polychrome"],["2026-08-04","none"],["2026-08-08","none"],["2026-08-10","none"]]],"Ghirtor":["Fortune Teller","Common",[["2026-08-13","none"],["2026-08-13","none"],["2026-08-14","none"]]],"ghostsoumis2soumis":["Banner","Common",[["2026-07-16","none"],["2026-07-24","none"],["2026-08-04","none"],["2026-08-04","none"],["2026-08-14","none"]]],"GiseleKerozene":["Sly Joker","Common",[["2026-07-24","none"],["2026-07-24","foil"]]],"HiBillyICanFly":["Mail-In Rebate","Common",[["2026-06-07","none"],["2026-06-07","none"],["2026-07-21","foil"]]],"honoshadow56":["Hallucination","Common",[["2026-08-10","none"],["2026-08-11","none"],["2026-08-13","none"]]],"hpaascal":["Credit Card","Common",[["2026-07-05","none"],["2026-07-28","none"],["2026-08-10","none"],["2026-08-13","none"]]],"hx_u1yss3":["Drunkard","Common",[["2026-07-28","none"],["2026-08-12","none"]]],"Idkau":["Mad Joker","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"ニリキタ":["Gluttonous Joker","Common",[["2026-08-02","none"],["2026-08-04","none"],["2026-08-04","none"],["2026-08-08","none"]]],"jakytutu":["Banner","Common",[["2026-08-10","none"],["2026-08-12","none"]]],"JohnDuffLeSoumis9":["Superposition","Common",[["2026-06-10","polychrome"],["2026-07-05","none"],["2026-07-24","none"],["2026-08-01","none"],["2026-08-03","none"],["2026-08-11","none"],["2026-08-15","foil"]]],"Korob735":["Hanging Chad","Common",[["2026-06-07","none"],["2026-07-15","none"],["2026-08-13","none"]]],"KreoKiwi":["Business Card","Common",[["2026-08-10","holographic"],["2026-08-14","none"],["2026-08-14","none"]]],"leo__star":["Banner","Common",[["2026-07-23","none"],["2026-07-23","none"]]],"LeSoumis2Cactus35":["Chaos the Clown","Common",[["2026-06-07","none"],["2026-07-17","none"],["2026-07-21","none"],["2026-08-01","none"],["2026-08-04","none"],["2026-08-08","none"],["2026-08-11","none"]]],"le__belge":["Mad Joker","Common",[["2026-07-21","none"],["2026-07-23","none"],["2026-08-02","none"],["2026-08-14","none"]]],"Lilubells":["Gluttonous Joker","Common",[["2026-08-08","none"],["2026-08-10","none"]]],"liouliou82":["Banner","Common",[["2026-08-08","none"],["2026-08-11","none"]]],"M0UTM0UT56":["Odd Todd","Common",[["2026-08-09","none"],["2026-08-10","none"],["2026-08-10","none"],["2026-08-13","none"],["2026-08-13","none"]]],"m3r0v1gien":["Sly Joker","Common",[["2026-07-21","none"],["2026-08-04","none"],["2026-08-07","none"],["2026-08-15","none"]]],"MatatraX":["Credit Card","Common",[["2026-07-15","none"],["2026-07-16","none"],["2026-08-09","none"],["2026-08-09","none"]]],"Maxtime019LeSoumis2Cactus":["Lusty Joker","Common",[["2026-07-15","foil"],["2026-07-16","none"],["2026-08-02","none"],["2026-08-03","none"],["2026-08-04","none"],["2026-08-10","holographic"]]],"megacop27":["8 Ball","Common",[["2026-06-07","none"],["2026-08-02","none"],["2026-08-03","none"],["2026-08-03","none"],["2026-08-08","none"]]],"MichelSemoule":["Devious Joker","Common",[["2026-06-07","none"],["2026-06-07","foil"],["2026-08-06","none"]]],"Monsieur_Tatillon":["Joker","Common",[["2026-07-04","none"],["2026-08-07","foil"],["2026-08-08","none"],["2026-08-08","none"],["2026-08-11","none"]]],"Mozafok":["Egg","Common",[["2026-08-11","none"],["2026-08-11","none"]]],"mr_patate44":["Ice Cream","Common",[["2026-07-28","none"],["2026-08-06","none"],["2026-08-06","none"],["2026-08-09","none"]]],"Neandre":["Half Joker","Common",[["2026-08-07","none"],["2026-08-08","none"],["2026-08-14","none"]]],"Niajja":["Splash","Common",[["2026-08-04","foil"],["2026-08-04","none"]]],"nithror_":["Gluttonous Joker","Common",[["2026-06-07","none"],["2026-06-07","none"],["2026-06-07","none"]]],"Nodorf":["Wily Joker","Common",[["2026-07-15","none"],["2026-08-04","foil"],["2026-08-09","none"],["2026-08-10","none"]]],"pasmoi42":["Devious Joker","Common",[["2026-06-07","none"],["2026-06-10","none"]]],"pauport":["Wrathful Joker","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"potimaro_gk":["Jolly Joker","Common",[["2026-08-13","none"],["2026-08-14","none"]]],"Quiiiche":["Popcorn","Common",[["2026-07-24","none"],["2026-07-28","none"]]],"Robfram":["Scary Face","Common",[["2026-07-24","none"],["2026-07-24","none"]]],"SamFl7x":["Banner","Common",[["2026-08-09","none"],["2026-08-09","none"]]],"Sasha_Yubari":["Reserved Parking","Common",[["2026-08-12","none"],["2026-08-14","none"],["2026-08-15","none"]]],"ScarEnix":["Mystic Summit","Common",[["2026-06-07","none"],["2026-07-24","none"]]],"Skypios":["Walkie Talkie","Common",[["2026-07-24","none"],["2026-07-24","none"],["2026-07-24","none"],["2026-08-14","none"]]],"soytto":["Odd Todd","Common",[["2026-08-09","none"],["2026-08-12","none"]]],"SramRedBlack":["Mystic Summit","Common",[["2026-08-03","none"],["2026-08-15","none"],["2026-08-15","none"]]],"ST_Chouette":["Wrathful Joker","Common",[["2026-08-09","none"],["2026-08-10","none"]]],"sylvesterslalome":["Green Joker","Common",[["2026-08-08","none"],["2026-08-10","holographic"],["2026-08-15","none"]]],"Texmex91":["Green Joker","Common",[["2026-06-07","none"],["2026-06-07","none"]]],"to1nio":["Superposition","Common",[["2026-06-07","none"],["2026-07-05","none"],["2026-07-16","none"],["2026-07-21","none"],["2026-07-28","none"]]],"toinou4173":["Mail-In Rebate","Common",[["2026-07-16","none"],["2026-07-23","none"],["2026-07-24","polychrome"],["2026-08-12","none"]]],"TOMYGOODY":["Credit Card","Common",[["2026-08-11","none"],["2026-08-11","none"]]],"Tucunared":["Banner","Common",[["2026-08-07","none"],["2026-08-10","none"],["2026-08-11","none"]]],"tw0hour":["Chaos the Clown","Common",[["2026-08-04","none"],["2026-08-07","none"],["2026-08-11","none"]]],"umFantasminhaCamarada":["Crafty Joker","Common",[["2026-08-01","none"],["2026-08-10","none"],["2026-08-11","none"]]],"Velorution":["Egg","Common",[["2026-08-10","none"],["2026-08-15","none"]]],"Verinxin":["Mad Joker","Common",[["2026-06-10","none"],["2026-06-10","none"],["2026-06-13","none"],["2026-07-24","foil"]]],"wengikos":["Ice Cream","Common",[["2026-07-23","none"],["2026-07-24","none"],["2026-08-08","none"]]],"XboxeurMan":["Mystic Summit","Common",[["2026-06-10","none"],["2026-06-10","none"],["2026-08-01","none"],["2026-08-10","foil"]]],"zeguro6":["Half Joker","Common",[["2026-07-15","none"],["2026-07-16","none"],["2026-07-24","none"],["2026-07-24","none"]]]}; // collectorName -> [cardName, rarity, [[dateISO, editionKey], ...]] for their single most-duplicated card
 
 /* jokerName -> mainTileId in the official sprite sheet (danstacollection.fr/sprites/jokers.png, 71x95 tiles, 10 cols). Hidden/custom jokers use JOKER_CUSTOM_IMG instead. */
@@ -1948,8 +1989,10 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
 (function(){
   const input = document.getElementById('pseudoSearch');
   const suggestBox = document.getElementById('pseudoSuggest');
-  const card = document.getElementById('pseudoCard');
-  const empty = document.getElementById('pseudoEmpty');
+  const overlay = document.getElementById('pseudoModalOverlay');
+  const modalDialog = overlay.querySelector('.modal-dialog');
+  const modalBody = document.getElementById('pseudoModalBody');
+  const modalClose = document.getElementById('pseudoModalClose');
 
   const EDITION_LABEL_SEARCH = {none:'sans édition', foil:'Brillant', holographic:'Holographique', polychrome:'Polychrome', negative:'Négatif'};
 
@@ -1960,6 +2003,15 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   }));
   const byRank = new Map(roster.map(r => [r.rank, r]));
   const byName = new Map(roster.map(r => [r.name.toLowerCase(), r]));
+  // TRAJ_SERIES_ALL couvre les 202 collectionneurs ; TRAJ_SERIES (10 noms suivis, source de vérité
+  // du panel "Trajectoires") l'écrase volontairement pour ces 10-là, pour rester rigoureusement
+  // identique à ce qui est déjà affiché plus bas sur la page.
+  const trajByName = new Map((typeof TRAJ_SERIES_ALL !== 'undefined' ? TRAJ_SERIES_ALL : []).map(([name, scores]) => [name, scores]));
+  TRAJ_SERIES.forEach(([name, scores]) => trajByName.set(name, scores));
+
+  // Échelle commune (202 collectionneurs) pour le bloc "Rendement" — un seul calcul, réutilisé à chaque ouverture.
+  const ppbAll = roster.filter(r => r.total > 0).map(r => r.score / r.total);
+  const maxDevAll = Math.max(...ppbAll.map(v => Math.abs(v - EV))) || 1;
 
   function esc(s){
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1994,16 +2046,61 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     </div>`;
   }
 
-  function renderCard(r){
-    if(!r){
-      card.style.display = 'none';
-      empty.style.display = 'block';
-      empty.textContent = 'Aucun collectionneur ne correspond à ce pseudo.';
-      return;
-    }
-    empty.style.display = 'none';
-    card.style.display = 'block';
+  function rendementBlock(r){
+    const ppb = r.total > 0 ? r.score / r.total : 0;
+    const dev = ppb - EV;
+    const w = (Math.abs(dev) / maxDevAll * 50).toFixed(1);
+    const pos = dev >= 0;
+    return `
+      <div class="diverge">
+        <div class="dv-row">
+          <span class="dv-name">Points par booster</span>
+          <span class="dv-track">
+            <span class="dv-mid"></span>
+            <span class="dv-fill ${pos?'pos':'neg'}" style="${pos?`left:50%;width:${w}%`:`right:50%;width:${w}%`}"></span>
+          </span>
+          <span class="dv-val ${pos?'pos':'neg'}">${pos?'+':''}${dev.toFixed(2)}</span>
+        </div>
+      </div>
+      <p class="bars-note">${fmtPts(ppb)} pts / booster, contre <b>${fmtPts(EV)}</b> attendus en moyenne selon les taux de drop annoncés — ${pos ? 'au-dessus' : 'en-dessous'} de la moyenne.</p>`;
+  }
 
+  const fmtTrajDate = d => { const [,m,day] = d.split('-'); return `${day}/${m}`; };
+
+  function trajSVG(fullScores){
+    const lastN = Math.min(10, TRAJ_DATES.length);
+    const dates = TRAJ_DATES.slice(-lastN);
+    const scores = fullScores.slice(-lastN);
+    const priorScore = fullScores[fullScores.length - lastN - 1];
+    const n = dates.length;
+    const plotX0 = 40, plotX1 = 506, plotYTop = 20, plotYBot = 132;
+    const xs = dates.map((_,idx)=> plotX0 + idx*(plotX1-plotX0)/(n-1));
+    const midIdx = Math.floor((n-1)/2);
+    const minV = Math.min(...scores), maxV = Math.max(...scores);
+    const range = maxV - minV;
+    const ys = scores.map(v => range===0 ? (plotYTop+plotYBot)/2 : plotYBot - (v-minV)/range*(plotYBot-plotYTop));
+    const path = xs.map((x,idx)=> (idx===0?'M':'L') + x.toFixed(1) + ',' + ys[idx].toFixed(1)).join(' ');
+    const delta = scores[scores.length-1] - scores[0];
+    const hits = xs.map((x,idx)=> `<circle cx="${x.toFixed(1)}" cy="${ys[idx].toFixed(1)}" r="12" class="traj-hit"/>`).join('');
+    const html = `
+      <svg class="traj-chart" viewBox="0 0 520 176">
+        <line x1="${plotX0}" y1="${plotYTop}" x2="${plotX1}" y2="${plotYTop}" class="traj-grid-line"/>
+        <line x1="${plotX0}" y1="${plotYBot}" x2="${plotX1}" y2="${plotYBot}" class="traj-grid-line"/>
+        <text x="36" y="24" text-anchor="end" class="traj-axis-label">${maxV}</text>
+        <text x="36" y="146" text-anchor="end" class="traj-axis-label">${minV}</text>
+        <path d="${path}" class="traj-line"/>
+        <circle cx="${xs[0].toFixed(1)}" cy="${ys[0].toFixed(1)}" r="4" class="traj-dot-start"/>
+        <circle cx="${xs[n-1].toFixed(1)}" cy="${ys[n-1].toFixed(1)}" r="4" class="traj-dot-end"/>
+        <text x="${plotX0}" y="166" text-anchor="start" class="traj-axis-label">${fmtTrajDate(dates[0])}</text>
+        <text x="${xs[midIdx].toFixed(1)}" y="166" text-anchor="middle" class="traj-axis-label">${fmtTrajDate(dates[midIdx])}</text>
+        <text x="${plotX1}" y="166" text-anchor="end" class="traj-axis-label">${fmtTrajDate(dates[n-1])}</text>
+        ${hits}
+      </svg>
+      <span class="traj-foot${delta>0?' up':''}">${delta>0?'+':''}${delta} pts depuis le ${fmtTrajDate(dates[0])} (${lastN} relevés)</span>`;
+    return { html, dates, scores, priorScore };
+  }
+
+  function buildModalHTML(r){
     const above = byRank.get(r.rank - 1);
     const below = byRank.get(r.rank + 1);
 
@@ -2016,11 +2113,13 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
 
     const editionMax = Math.max(r.foil, r.holo, r.poly, r.neg, 1);
     const rarityMax = Math.max(r.common, r.uncommon, r.rare, r.legendary, 1);
+    const trajScores = trajByName.get(r.name);
+    const traj = trajScores ? trajSVG(trajScores) : null;
 
-    card.innerHTML = `
+    const html = `
       <div class="pseudo-head">
         <span class="pseudo-rank">#${r.rank} / ${roster.length}</span>
-        <span class="pseudo-name">${esc(r.name)}</span>
+        <span class="pseudo-name" id="pseudoModalName">${esc(r.name)}</span>
         <span class="pseudo-score">${fmtInt(r.score)} <small>pts</small></span>
       </div>
       <div class="hero-stats pseudo-tiles">
@@ -2047,12 +2146,50 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
         </div>
       </div>
       <p class="pseudo-top">Meilleure pêche : <b>${esc(r.topJoker)}</b> (${EDITION_LABEL_SEARCH[r.topEdition] || esc(r.topEdition)}) — ${fmtPts(r.topPts)} pts.</p>
-      <div class="neighbor-grid">
-        ${neighborBlock(above, 'Juste devant', r)}
-        ${neighborBlock(below, 'Juste derrière', r)}
+      <div class="pseudo-section">
+        <h3>Rendement</h3>
+        ${rendementBlock(r)}
+      </div>
+      ${traj ? `
+      <div class="pseudo-section">
+        <h3>Trajectoire — 10 derniers relevés</h3>
+        ${traj.html}
+      </div>` : ''}
+      <div class="pseudo-section">
+        <h3>Face à ses voisins directs</h3>
+        <div class="neighbor-grid">
+          ${neighborBlock(above, 'Juste devant', r)}
+          ${neighborBlock(below, 'Juste derrière', r)}
+        </div>
       </div>
     `;
+    return { html, traj };
   }
+
+  function openModal(r){
+    if(!r) return;
+    const built = buildModalHTML(r);
+    modalBody.innerHTML = built.html;
+    if(built.traj){
+      const { dates, scores, priorScore } = built.traj;
+      modalBody.querySelectorAll('.traj-hit').forEach((hit, pi) => {
+        const prev = pi===0 ? priorScore : scores[pi-1];
+        const gain = scores[pi] - prev;
+        const gainColor = gain>0 ? 'var(--blue)' : 'var(--text-muted)';
+        attachTip(hit, `<b>${fmtTrajDate(dates[pi])}</b><br>${scores[pi]} pts<br><span style="color:${gainColor}">${gain>0?'+':''}${gain} pts vs relevé précédent</span>`);
+      });
+    }
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    modalClose.focus();
+  }
+  function closeModal(){
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+  }
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('mousedown', e => { if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !overlay.hidden) closeModal(); });
 
   let currentMatches = [];
   let activeIndex = -1;
@@ -2094,7 +2231,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   function pick(r){
     input.value = r.name;
     suggestBox.style.display = 'none';
-    renderCard(r);
+    openModal(r);
   }
 
   input.addEventListener('input', () => renderSuggestions(input.value));
