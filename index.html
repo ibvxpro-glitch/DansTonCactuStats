@@ -1996,6 +1996,8 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const modalClose = document.getElementById('pseudoModalClose');
 
   const EDITION_LABEL_SEARCH = {none:'sans édition', foil:'Brillant', holographic:'Holographique', polychrome:'Polychrome', negative:'Négatif'};
+  /* Ces 5 jokers légendaires secrets n'ont qu'une carte-placeholder (nom écrit dessus, pas de vraie illustration) dans le sprite officiel — on masque la vignette tant qu'il n'y a pas d'image dédiée dans JOKER_CUSTOM_IMG. */
+  const SPRITE_PLACEHOLDER_ONLY = new Set(['Canio', 'Triboulet', 'Yorick', 'Chicot', 'Perkeo']);
 
   const roster = OFFICIAL_LEADERBOARD.map(r => ({
     rank:r[0], name:r[1], score:r[2], total:r[3], uniq:r[4], dupes:r[5], maxStack:r[6], pct:r[7],
@@ -2122,7 +2124,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
       const customTop = JOKER_CUSTOM_IMG[r.topJoker];
       if (customTop) {
         topThumb = `<span class="pseudo-top-thumb custom" style="background-image:url('${customTop}')" title="${esc(r.topJoker)}"></span>`;
-      } else if (JOKER_TILE[r.topJoker] != null) {
+      } else if (JOKER_TILE[r.topJoker] != null && !SPRITE_PLACEHOLDER_ONLY.has(r.topJoker)) {
         const tileId = JOKER_TILE[r.topJoker];
         const col = tileId % 10, row = Math.floor(tileId / 10);
         topThumb = `<span class="pseudo-top-thumb" style="background-position:-${col*32}px -${row*43}px" title="${esc(r.topJoker)}"></span>`;
