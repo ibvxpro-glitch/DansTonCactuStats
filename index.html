@@ -468,6 +468,8 @@ h1.title{
 .scatter-svg{ display:block; }
 .scatter-dot{ fill: var(--gold); stroke: var(--bg-2); stroke-width:1.5; cursor:default; }
 .scatter-dot:hover{ fill: var(--text-primary); }
+.scatter-dot.alt{ fill: var(--blue); }
+.scatter-dot.alt:hover{ fill: var(--text-primary); }
 .scatter-axis-label{
   font-family: var(--font-display); font-size: 10px; fill: var(--text-muted);
   text-transform: uppercase;
@@ -965,8 +967,21 @@ footer code{
     </div>
     <div class="panel-body">
       <div class="scatter-wrap" id="scatterWrap"></div>
-      <p class="bars-note" style="margin-top:22px;"><b>Classement des doublons</b> — les 5 collectionneurs avec la plus grande part de doublons dans leurs boosters ouverts.</p>
-      <div class="trophy-list compact" id="dupeList"></div>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span>Doublons / boosters ouverts</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span>Doublons / collection (jokers uniques)</span>
+      </div>
+      <p class="bars-note" style="margin-top:22px;"><b>Classement des doublons</b> — les 5 collectionneurs avec la plus grande part de doublons, selon les deux lectures.</p>
+      <div class="io-grid">
+        <div class="io-col">
+          <h3 style="color:var(--gold);">Vs boosters ouverts</h3>
+          <div class="trophy-list compact" id="dupeList"></div>
+        </div>
+        <div class="io-col">
+          <h3 style="color:var(--blue);">Vs collection (jokers uniques)</h3>
+          <div class="trophy-list compact" id="dupeListCollection"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1533,19 +1548,26 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
   });
 })();
 
-/* ---------- Scatter: boosters vs dupe rate ---------- */
+/* ---------- Scatter: boosters vs dupe rate (+ dupe/collection ratio) ---------- */
 (function(){
-  const rows = Object.entries(d3).map(([name,v])=>({
-    name, total: v.total, dupeRate: (1 - v.uniq/v.total)*100
-  }));
+  const rows = Object.entries(d3).map(([name,v])=>{
+    const dupes = v.total - v.uniq;
+    return {
+      name, total: v.total, dupes,
+      dupeRate: dupes/v.total*100,
+      dupeVsCollection: dupes/v.uniq*100
+    };
+  });
   const W = 720, H = 320, M = {l:44,r:20,t:16,b:36};
   const xMax = Math.max(...rows.map(r=>r.total))*1.05;
-  const yMax = Math.max(...rows.map(r=>r.dupeRate))*1.1;
+  const yMax = Math.max(...rows.map(r=>Math.max(r.dupeRate, r.dupeVsCollection)))*1.1;
   const x = v => M.l + (v/xMax)*(W-M.l-M.r);
   const y = v => H-M.b - (v/yMax)*(H-M.t-M.b);
 
   const xTicks = [0,50,100,150,200,250].filter(t=>t<=xMax);
-  const yTicks = [0,10,20,30,40,50,60].filter(t=>t<=yMax);
+  const yStep = yMax>120 ? 25 : 10;
+  const yTicks = [];
+  for(let t=0; t<=yMax; t+=yStep) yTicks.push(t);
 
   const gridLines = [
     ...xTicks.map(t=>`<line x1="${x(t)}" y1="${M.t}" x2="${x(t)}" y2="${H-M.b}" />`),
@@ -1555,6 +1577,7 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
   const yLabels = yTicks.map(t=>`<text class="scatter-axis-label" x="${M.l-10}" y="${y(t)+3}" text-anchor="end">${t}%</text>`).join('');
 
   const dots = rows.map(r=>`<circle class="scatter-dot" data-name="${r.name}" data-total="${r.total}" data-dupe="${r.dupeRate.toFixed(1)}" cx="${x(r.total).toFixed(1)}" cy="${y(r.dupeRate).toFixed(1)}" r="5.5"/>`).join('');
+  const dotsAlt = rows.map(r=>`<circle class="scatter-dot alt" data-name="${r.name}" data-total="${r.total}" data-dupe="${r.dupeVsCollection.toFixed(1)}" cx="${x(r.total).toFixed(1)}" cy="${y(r.dupeVsCollection).toFixed(1)}" r="5.5"/>`).join('');
 
   document.getElementById('scatterWrap').innerHTML = `
     <svg class="scatter-svg" viewBox="0 0 ${W} ${H}" width="100%" height="${H}">
@@ -1562,22 +1585,25 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
       ${xLabels}${yLabels}
       <text class="scatter-axis-label" x="${(W+M.l-M.r)/2}" y="${H-2}" text-anchor="middle">Boosters ouverts (cumulé)</text>
       <text class="scatter-axis-label" x="14" y="${(H)/2}" text-anchor="middle" transform="rotate(-90 14 ${(H)/2})">Taux de doublons</text>
-      ${dots}
+      ${dots}${dotsAlt}
     </svg>`;
 
-  document.querySelectorAll('.scatter-dot').forEach(el=>{
+  document.querySelectorAll('.scatter-dot:not(.alt)').forEach(el=>{
     const n = el.dataset.name, t = el.dataset.total, dRate = el.dataset.dupe;
-    attachTip(el, `<b>${n}</b><br>${t} boosters ouverts<br>${dRate} % de doublons`);
+    attachTip(el, `<b>${n}</b><br>${t} boosters ouverts<br>${dRate} % de doublons / boosters`);
+  });
+  document.querySelectorAll('.scatter-dot.alt').forEach(el=>{
+    const n = el.dataset.name, t = el.dataset.total, dRate = el.dataset.dupe;
+    attachTip(el, `<b>${n}</b><br>${t} boosters ouverts<br>${dRate} % de doublons / collection`);
   });
 
   const mostDupes = [...rows].sort((a,b)=>b.dupeRate-a.dupeRate);
   const dupeRow = (r,i)=>{
-    const dCount = Math.round(r.total * r.dupeRate/100);
     return `<div class="trophy-row" data-name="${r.name}" data-total="${r.total}" data-dupe="${r.dupeRate.toFixed(1)}">
       <span class="trophy-rank">${i+1}</span>
       <span>
         <span class="trophy-name">${r.name}</span>
-        <div class="trophy-sub">~${dCount} doublons sur ${r.total} boosters</div>
+        <div class="trophy-sub">~${r.dupes} doublons sur ${r.total} boosters</div>
       </span>
       <span class="trophy-count">${r.dupeRate.toFixed(1)}<small>% doublons</small></span>
     </div>`;
@@ -1585,7 +1611,24 @@ const TOP_HOLDERS = {"Raised Fist":[["LeSoumis2Cactus35","negative","2026-07-16"
   document.getElementById('dupeList').innerHTML = splitList(mostDupes, 5, dupeRow);
   document.querySelectorAll('#dupeList .trophy-row').forEach(el=>{
     const n = el.dataset.name, t = el.dataset.total, dRate = el.dataset.dupe;
-    attachTip(el, `<b>${n}</b><br>${t} boosters ouverts<br>${dRate} % de doublons`);
+    attachTip(el, `<b>${n}</b><br>${t} boosters ouverts<br>${dRate} % de doublons / boosters`);
+  });
+
+  const mostDupesCollection = [...rows].sort((a,b)=>b.dupeVsCollection-a.dupeVsCollection);
+  const dupeRowCollection = (r,i)=>{
+    return `<div class="trophy-row" data-name="${r.name}" data-uniq="${r.total-r.dupes}" data-dupe="${r.dupeVsCollection.toFixed(1)}">
+      <span class="trophy-rank">${i+1}</span>
+      <span>
+        <span class="trophy-name">${r.name}</span>
+        <div class="trophy-sub">${r.dupes} doublons pour ${r.total-r.dupes} jokers uniques</div>
+      </span>
+      <span class="trophy-count">${r.dupeVsCollection.toFixed(1)}<small>% doublons</small></span>
+    </div>`;
+  };
+  document.getElementById('dupeListCollection').innerHTML = splitList(mostDupesCollection, 5, dupeRowCollection);
+  document.querySelectorAll('#dupeListCollection .trophy-row').forEach(el=>{
+    const n = el.dataset.name, u = el.dataset.uniq, dRate = el.dataset.dupe;
+    attachTip(el, `<b>${n}</b><br>${u} jokers uniques<br>${dRate} % de doublons / collection`);
   });
 })();
 
