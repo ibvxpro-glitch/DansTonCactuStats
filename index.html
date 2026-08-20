@@ -634,7 +634,7 @@ h1.title{
 .pseudo-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
 .pseudo-rank{ font-family: var(--font-display); font-size:0.85rem; color: var(--text-muted); }
 .pseudo-name{ font-family: var(--font-display); font-weight:700; font-size:1.3rem; color: var(--text-primary); }
-.pseudo-score{ margin-left:auto; font-family: var(--font-display); font-weight:700; font-size:1.2rem; color: var(--gold); }
+.pseudo-score{ margin-left:auto; margin-right:32px; font-family: var(--font-display); font-weight:700; font-size:1.2rem; color: var(--gold); }
 .pseudo-score small{ font-size:0.68rem; font-weight:400; color: var(--text-secondary); text-transform:uppercase; letter-spacing:.04em; }
 .pseudo-tiles{ grid-template-columns: repeat(4, 1fr); margin-bottom: 22px; }
 .pseudo-breakdown{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; margin-bottom: 18px; }
@@ -655,6 +655,7 @@ h1.title{
 .neighbor-delta{ font-family: var(--font-display); font-size:0.8rem; font-variant-numeric:tabular-nums; }
 .neighbor-delta.up{ color: var(--blue); }
 .neighbor-delta.down{ color: var(--red); }
+.neighbor-pace{ margin:10px 0 0; padding-top:10px; border-top:1px solid var(--border-soft); font-size:0.78rem; color: var(--text-secondary); }
 .pseudo-section{ padding-top:18px; margin-top:18px; border-top:1px dashed var(--border-soft); }
 .pseudo-section h3{
   font-family: var(--font-display); font-size:0.72rem; text-transform:uppercase; letter-spacing:.06em; color: var(--text-secondary); margin:0 0 12px;
@@ -696,6 +697,34 @@ h1.title{
 @media (max-width: 620px){
   .modal-overlay{ padding: 0; }
   .modal-dialog{ max-width:none; min-height:100%; border-radius:0; border-left:none; border-right:none; }
+}
+
+/* ---------- Nouveautés (bouton flottant + modal) ---------- */
+.changelog-trigger{
+  position: fixed; bottom: 20px; right: 20px; z-index: 200;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-primary); font-size: 1.15rem; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+  cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+.changelog-trigger:hover{ border-color: var(--gold); }
+.changelog-dot{
+  position:absolute; top:1px; right:1px; width:11px; height:11px; border-radius:50%;
+  background: var(--red); border:2px solid var(--surface);
+}
+.changelog-dialog{ max-width: 460px; }
+.changelog-entry{ margin-bottom: 18px; }
+.changelog-entry:last-child{ margin-bottom:0; }
+.changelog-date{
+  display:block; font-family: var(--font-display); font-size:0.68rem; text-transform:uppercase;
+  letter-spacing:.06em; color: var(--gold); margin-bottom:8px;
+}
+.changelog-entry ul{ margin:0; padding-left:18px; color: var(--text-secondary); font-size:0.88rem; line-height:1.5; }
+.changelog-entry li{ margin-bottom:4px; }
+.changelog-entry li:last-child{ margin-bottom:0; }
+@media (max-width: 620px){
+  .changelog-trigger{ bottom:16px; right:16px; }
 }
 
 /* ---------- Sommaire ---------- */
@@ -1419,6 +1448,17 @@ footer code{
   </div>
 </div>
 
+<button type="button" class="changelog-trigger" id="changelogTrigger" title="Nouveautés" aria-label="Nouveautés">
+  🆕<span class="changelog-dot" id="changelogDot" hidden></span>
+</button>
+<div class="modal-overlay" id="changelogOverlay" hidden>
+  <div class="modal-dialog changelog-dialog" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
+    <button type="button" class="modal-close" id="changelogClose" aria-label="Fermer">✕</button>
+    <h3 id="changelogTitle" class="pseudo-finder-title" style="margin-bottom:18px;">Nouveautés</h3>
+    <div id="changelogBody"></div>
+  </div>
+</div>
+
 <script>
 const DAY1 = [["LeSoumis2Cactus35",371,273,110,"Stuntman","holographic",18],["Monsieur_Tatillon",308,196,99,"Mail-In Rebate","negative",26],["Maxtime019LeSoumis2Cactus",300,180,101,"Canio","none",15],["al_rizla97",293,168,93,"Zany Joker","negative",21],["garg000ille",268,169,94,"Castle","negative",18],["m3r0v1gien",265,165,99,"Cactus","none",17],["Croucroute",255,169,91,"Canio","none",15],["37brice",254,183,98,"Baron","polychrome",13],["M0UTM0UT56",236,150,89,"Cactus","none",17],["forthefutureproject",210,149,90,"Canio","none",15],["cquoilabull",195,138,83,"Runner","polychrome",11],["ghostsoumis2soumis",189,116,67,"Misprint","negative",16],["fandragon_",184,114,71,"Scary Face","negative",16],["elbubbito",181,77,54,"Triboulet","holographic",21],["JohnDuffLeSoumis9",157,129,75,"Wrathful Joker","polychrome",11],["hpaascal",146,97,62,"Photograph","negative",16],["nithror_",144,79,57,"Canio","holographic",21],["zeguro6",141,85,61,"Perkeo","none",15],["megacop27",139,93,57,"Smiley Face","polychrome",11],["to1nio",135,74,55,"Cactus","none",17],["Bichopebitou",133,64,48,"Joker","holographic",13],["MatatraX",131,75,55,"The Tribe","polychrome",13],["ApokalmiX",128,87,65,"Gift Card","polychrome",13],["arkhann50",125,46,39,"Golden Eye","none",20],["le__belge",119,71,52,"Trading Card","polychrome",11]];
 const DAY2 = [["LeSoumis2Cactus35",390,282,113,"Stuntman","holographic",18],["Monsieur_Tatillon",324,205,102,"Mail-In Rebate","negative",26],["Maxtime019LeSoumis2Cactus",315,192,104,"Canio","none",15],["al_rizla97",293,168,93,"Zany Joker","negative",21],["37brice",278,199,101,"Baron","polychrome",13],["m3r0v1gien",270,173,102,"Cactus","none",17],["garg000ille",268,171,94,"Castle","negative",18],["Croucroute",259,172,92,"Canio","none",15],["M0UTM0UT56",242,163,91,"Cactus","none",17],["forthefutureproject",212,155,91,"Canio","none",15],["ghostsoumis2soumis",199,126,73,"Misprint","negative",16],["fandragon_",197,126,74,"Scary Face","negative",16],["cquoilabull",195,138,83,"Runner","polychrome",11],["elbubbito",185,80,55,"Triboulet","holographic",21],["JohnDuffLeSoumis9",168,137,77,"Superposition","polychrome",16],["MatatraX",152,82,62,"The Tribe","polychrome",13],["hpaascal",146,98,62,"Photograph","negative",16],["zeguro6",145,91,64,"Perkeo","none",15],["nithror_",144,79,57,"Canio","holographic",21],["megacop27",139,93,57,"Smiley Face","polychrome",11],["to1nio",135,74,55,"Cactus","none",17],["Bichopebitou",133,64,48,"Joker","holographic",13],["le__belge",133,81,60,"Trading Card","polychrome",11],["ApokalmiX",128,87,65,"Gift Card","polychrome",13],["arkhann50",125,46,39,"Golden Eye","none",20]];
@@ -1453,6 +1493,19 @@ const EV = RARITY_EV + EDITION_EV;
 
 function fmtInt(n){ return n.toLocaleString('fr-FR'); }
 function fmtPts(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+/* ---------- Nouveautés du site (à compléter à chaque ajout — entrée la plus récente en premier) ---------- */
+const SITE_CHANGELOG = [
+  { date: '2026-08-20', items: [
+    'Sélecteur de thème en haut à droite (Défaut / Arcade / Table de jeu).',
+    'Fiche collectionneur : estimation "à ce rythme" du délai avant de dépasser ou d\'être dépassé par ton voisin direct au classement.'
+  ]},
+  { date: '2026-08-19', items: [
+    'Badge "Nouveau" sur les entrées fraîches de 5 panels (Accumulateurs, Le vrai tiercé, Pages complètes, Premium, Extrêmes).'
+  ]}
+];
+const MONTHS_FR = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+function fmtLongDate(d){ const [y,m,day] = d.split('-').map(Number); return `${day} ${MONTHS_FR[m-1]} ${y}`; }
 
 /* ---------- Listes tronquées + bouton "voir tout" ---------- */
 function splitList(sorted, visibleCount, rowFn){
@@ -2367,6 +2420,42 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     </div>`;
   }
 
+  // Rythme récent d'un collectionneur (pts/jour), mesuré sur les WINDOW derniers relevés — pas
+  // sur tout l'historique, pour refléter la forme actuelle plutôt qu'une moyenne diluée par
+  // d'anciennes périodes très/peu actives. Renvoie null si pas assez d'historique.
+  function recentRatePerDay(name, windowPoints = 6){
+    const series = trajByName.get(name);
+    if(!series || series.length < 2) return null;
+    const n = series.length;
+    const span = Math.min(windowPoints, n) - 1;
+    if(span < 1) return null;
+    const iStart = n - 1 - span;
+    const days = (new Date(TRAJ_DATES[n-1]) - new Date(TRAJ_DATES[iStart])) / 86400000;
+    if(days <= 0) return null;
+    return (series[n-1] - series[iStart]) / days;
+  }
+
+  // Estimation simple, PAS un modèle statistique : extrapolation linéaire du rythme récent de
+  // chacun. Volontairement conservatrice — en dessous d'un rythme de rattrapage dérisoire (0,1
+  // pt/jour) on affiche "n'évolue pas" plutôt qu'un nombre de jours qui donnerait une fausse
+  // précision. Assumé stable ce qu'on ne peut pas prédire (nouvelles sessions, forme du moment).
+  function pacingNote(chaser, chasee, gap){
+    const rChaser = recentRatePerDay(chaser.name);
+    const rChasee = recentRatePerDay(chasee.name);
+    if(rChaser == null || rChasee == null) return null;
+    const closingRate = rChaser - rChasee;
+    if(closingRate < 0.1) return { closing:false };
+    const days = gap / closingRate;
+    return { closing:true, days };
+  }
+
+  function paceLabel(days){
+    if(days < 1.5) return 'd\'ici la prochaine session';
+    if(days <= 30) return `dans environ ${Math.round(days)} jours`;
+    if(days <= 180) return `dans environ ${Math.round(days/7)} semaines`;
+    return null; // trop loin pour rester honnête sur une extrapolation linéaire
+  }
+
   function neighborBlock(n, tag, ref){
     if(!n){
       const msg = tag === 'Juste devant' ? '1ère place — personne devant.' : 'Dernière place — personne derrière.';
@@ -2376,6 +2465,23 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     const dUniq = ref.uniq - n.uniq;
     const dDupes = ref.dupes - n.dupes;
     const row = (d, unit) => `<span class="neighbor-delta ${d>=0?'up':'down'}">${d>=0?'+':''}${fmtInt(d)} ${unit}</span>`;
+    const chaser = tag === 'Juste devant' ? ref : n;
+    const chasee = tag === 'Juste devant' ? n : ref;
+    const pace = pacingNote(chaser, chasee, Math.abs(dScore));
+    let paceHtml = '';
+    if(pace){
+      if(!pace.closing){
+        paceHtml = `<p class="neighbor-pace">Écart stable ou qui se creuse, au rythme des derniers jours.<span class="new-badge">Nouveau</span></p>`;
+      } else {
+        const label = paceLabel(pace.days);
+        if(label){
+          const sentence = tag === 'Juste devant'
+            ? `l'écart serait comblé ${label}`
+            : `${esc(n.name)} repasserait devant ${label}`;
+          paceHtml = `<p class="neighbor-pace">Au rythme des derniers jours, ${sentence}.<span class="new-badge">Nouveau</span></p>`;
+        }
+      }
+    }
     return `<div class="neighbor-card">
       <span class="neighbor-tag">${tag}</span>
       <span class="neighbor-name">#${n.rank} · ${esc(n.name)}</span>
@@ -2384,6 +2490,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
         ${row(dUniq, 'uniques')}
         ${row(dDupes, 'doublons')}
       </div>
+      ${paceHtml}
     </div>`;
   }
 
@@ -2518,6 +2625,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
           ${neighborBlock(above, 'Juste devant', r)}
           ${neighborBlock(below, 'Juste derrière', r)}
         </div>
+        <p class="bars-note">Estimation : extrapolation du rythme de score des <b>6 derniers relevés</b> de chacun — pas une probabilité, juste "à ce rythme-là". Une bonne (ou mauvaise) session peut la rendre caduque du jour au lendemain.</p>
       </div>
     `;
     return { html, traj };
@@ -2602,5 +2710,49 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
       else if(e.key === 'Escape'){ suggestBox.style.display = 'none'; }
     }
   });
+})();
+
+/* ---------- Nouveautés (modal + pastille) ---------- */
+(function(){
+  const trigger = document.getElementById('changelogTrigger');
+  const dot = document.getElementById('changelogDot');
+  const overlay = document.getElementById('changelogOverlay');
+  const closeBtn = document.getElementById('changelogClose');
+  const body = document.getElementById('changelogBody');
+  const KEY = 'radarChangelogSeen';
+
+  body.innerHTML = SITE_CHANGELOG.map(e => `
+    <div class="changelog-entry">
+      <span class="changelog-date">${fmtLongDate(e.date)}</span>
+      <ul>${e.items.map(t => `<li>${t}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  const latest = SITE_CHANGELOG[0].date;
+
+  function openChangelog(){
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    dot.hidden = true;
+    try{ localStorage.setItem(KEY, latest); }catch(err){}
+    closeBtn.focus();
+  }
+  function closeChangelog(){
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+  }
+  trigger.addEventListener('click', openChangelog);
+  closeBtn.addEventListener('click', closeChangelog);
+  overlay.addEventListener('mousedown', e => { if(e.target === overlay) closeChangelog(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !overlay.hidden) closeChangelog(); });
+
+  let seen = null;
+  try{ seen = localStorage.getItem(KEY); }catch(err){}
+  if(seen === null){
+    // Première visite sur ce navigateur : ne pas imposer tout l'historique, juste mémoriser.
+    try{ localStorage.setItem(KEY, latest); }catch(err){}
+  } else if(seen < latest){
+    dot.hidden = false;
+    openChangelog();
+  }
 })();
 </script>
