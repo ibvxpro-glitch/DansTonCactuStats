@@ -1504,6 +1504,9 @@ function fmtPts(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits:2, m
 
 /* ---------- Nouveautés du site (à compléter à chaque ajout — entrée la plus récente en premier) ---------- */
 const SITE_CHANGELOG = [
+  { date: '2026-08-21', items: [
+    'Fiche collectionneur : les jokers obtenus lors du dernier stream, avec l\'heure de chaque tirage et les points marqués (doublons affichés grisés, à 0 pt).'
+  ]},
   { date: '2026-08-20', items: [
     'Sélecteur de thème en haut à droite (Défaut / Arcade / Table de jeu).',
     'Fiche collectionneur : estimation "à ce rythme" du délai avant de dépasser ou d\'être dépassé par ton voisin direct au classement.'
@@ -2532,7 +2535,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     const { session, pulls } = LAST_STREAM_PULLS;
     const items = pulls[r.name.toLowerCase()] || [];
     const dateLbl = fmtTrajDate(session.date);
-    const title = `Dernier stream — ${dateLbl} (${session.start}–${session.end})`;
+    const title = `Dernier stream — ${dateLbl} (${session.start}–${session.end}) <span class="new-badge">Nouveau</span>`;
     if(!items.length){
       return { html: `<div class="pseudo-section"><h3>${title}</h3><p class="bars-note">Aucun joker obtenu par ${esc(r.name)} pendant ce stream.</p></div>`, items: [] };
     }
