@@ -1799,9 +1799,14 @@ const TOP_HOLDERS = {"Stuntman":[["LeSoumis2Cactus35","holographic","2026-07-17"
   const xs = dates.map((_,idx)=> plotX0 + idx*(plotX1-plotX0)/(n-1));
   const midIdx = Math.floor((n-1)/2);
 
-  // Classement par score actuel (dernier relevé) — l'ordre brut de TRAJ_SERIES ne
-  // reflète pas forcément le rang réel du 25 août.
-  const rankedSeries = [...TRAJ_SERIES].sort((a,b)=> b[1][b[1].length-1] - a[1][a[1].length-1]);
+  // Top 10 COURANT du classement (OFFICIAL_LEADERBOARD est déjà trié par score), pas une
+  // liste figée. Séries : TRAJ_SERIES pour les 10 noms qu'il suit (référence), sinon
+  // TRAJ_SERIES_ALL (rafraîchi à chaque relevé, couvre tout le monde).
+  const trackedMap = new Map(TRAJ_SERIES.map(([nm,sc]) => [nm, sc]));
+  const trajAllMap = new Map((typeof TRAJ_SERIES_ALL !== 'undefined' ? TRAJ_SERIES_ALL : []).map(([nm,sc]) => [nm, sc]));
+  const rankedSeries = OFFICIAL_LEADERBOARD.slice(0, 10)
+    .map(r => [r[1], trackedMap.get(r[1]) || trajAllMap.get(r[1])])
+    .filter(([, sc]) => Array.isArray(sc) && sc.length);
 
   const cardData = [];
   document.getElementById('sparkGrid').innerHTML = rankedSeries.map(([name, fullScores], i)=>{
