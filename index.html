@@ -1661,8 +1661,8 @@ function attachTip(el, html){
 
 /* ---------- Activity bars (vrais boosters payants uniquement, mini-jeux/pages exclus) ---------- */
 (function(){
-  const rows = allNames
-    .filter(n=>d2[n] && d3[n])
+  // Top 25 COURANT (d3 = FULL.slice(0,25)), pas restreint à un cohort figé de relevé passé.
+  const rows = Object.keys(d3)
     .map(n=>({ name:n, boosters: (BOOSTER_GRID_LASTDAY[n] && BOOSTER_GRID_LASTDAY[n].gridPulls) || 0 }))
     .sort((a,b)=>b.boosters-a.boosters);
 
