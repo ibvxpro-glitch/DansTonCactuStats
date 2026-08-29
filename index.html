@@ -467,6 +467,17 @@ h1.title{
   background: var(--gold); color: var(--bg-2);
   margin-left:6px; vertical-align:1px;
 }
+/* Pastilles « nouveauté du dashboard » : analyse = nouveau calcul sur des données déjà là,
+   data = nouveau relevé de données ajouté au dashboard. */
+.tag-kpi, .tag-data{
+  display:inline-flex; align-items:center;
+  font-family: var(--font-display); font-size:0.56rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:.04em;
+  padding: 1px 7px; border-radius:999px;
+  margin-left:6px; vertical-align:2px; white-space:nowrap; cursor:help;
+}
+.tag-kpi{ background: var(--violet); color: var(--bg-2); }
+.tag-data{ background: var(--green); color:#fff; }
 .trophy-row.new, .io-item.new, .bar-row.new{ border-left: 3px solid var(--gold); }
 .bar-row.new .bar-name{ overflow:visible; }
 .trophy-row.clickable:hover{ background: var(--surface-3); }
@@ -786,6 +797,89 @@ html{ scroll-behavior: smooth; }
   .toc-label{ flex-basis:100%; margin: 6px 0 -2px; }
   .toc-label:first-child{ margin-top:0; }
 }
+
+/* ---------- Navigation 2 niveaux : accueil + sous-vues ---------- */
+.panel{ scroll-margin-top: 118px; }
+
+/* Lignes dépliables « Grosses récoltes » */
+#historyClimbList .mover-item{ grid-template-columns: 1fr 118px 78px; }
+#historyClimbList .mover-delta{ white-space:nowrap; }
+#historyClimbList .mover-ranks{ line-height:1.25; }
+#historyClimbList .climb-jk{ display:block; font-size:0.66rem; color:var(--text-muted); margin-top:1px; }
+.climb-wrap .mover-item.clickable{ cursor:pointer; }
+.climb-wrap .mover-item.clickable:hover{ border-color: var(--gold); }
+.climb-wrap .mover-item .trophy-chevron{ margin-left:4px; }
+.climb-wrap .trophy-detail{ margin-top:6px; }
+@media (max-width: 620px){ #historyClimbList .mover-item{ grid-template-columns: 1fr 96px 74px; } }
+
+#homeView[hidden]{ display:none; }
+.home-intro{ color: var(--text-secondary); font-size: 0.98rem; margin: 4px 0 22px; max-width: 60ch; }
+.home-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 8px; }
+.home-card:last-child:nth-child(odd){ grid-column: 1 / -1; }
+.home-card{
+  font-family: var(--font-body);
+  text-align:left; cursor:pointer; position:relative;
+  border:1px solid var(--border); border-radius:16px;
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  padding: 22px 22px 20px; color: inherit;
+  display:flex; flex-direction:column; gap:8px;
+  transition: border-color .12s ease, transform .12s ease;
+}
+.home-card:hover{ border-color: var(--gold); transform: translateY(-2px); }
+.home-card:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+.hc-kicker{ font-family: var(--font-display); font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase; color: var(--gold); }
+.hc-title{ font-family: var(--font-display); font-size:1.05rem; color: var(--text-primary); }
+.hc-stat{ color: var(--text-secondary); font-size:0.9rem; }
+.hc-meta{ margin-top:6px; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.05em; color: var(--text-muted); display:flex; align-items:center; flex-wrap:wrap; gap:6px 8px; }
+.hc-arrow{ position:absolute; top:20px; right:22px; color: var(--text-muted); font-family: var(--font-display); font-size:1rem; }
+.home-card:hover .hc-arrow{ color: var(--gold); }
+
+.sectionbar{
+  position: sticky; top: 62px; z-index: 90;
+  display:flex; align-items:center; gap:10px;
+  padding: 12px 16px; margin: 4px 0 28px;
+  background: var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow: 0 8px 20px -12px rgba(0,0,0,0.55);
+  overflow-x:auto;
+}
+.sectionbar[hidden]{ display:none; }
+.sb-home{
+  font-family: var(--font-display); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em;
+  color: var(--gold); background: var(--surface-2); border:1px solid var(--border-soft);
+  border-radius:999px; padding:6px 12px; cursor:pointer; white-space:nowrap; flex:none;
+}
+.sb-home:hover{ border-color: var(--gold); }
+.sb-label{
+  font-family: var(--font-display); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em;
+  color: var(--text-primary); white-space:nowrap; flex:none;
+}
+.sb-sep{ width:1px; align-self:stretch; min-height:20px; background: var(--border-soft); flex:none; }
+.sb-chips{ display:flex; gap:8px; flex-wrap:wrap; }
+.sb-chip{
+  font-size:0.76rem; color: var(--text-secondary); text-decoration:none;
+  background: var(--surface-2); border:1px solid var(--border-soft);
+  border-radius:999px; padding:5px 11px; white-space:nowrap;
+}
+.sb-chip:hover{ color: var(--text-primary); border-color: var(--gold); background: var(--surface-3); }
+
+.section-foot{
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  margin: 4px 0 8px; padding-top: 20px; border-top:1px solid var(--border-soft);
+}
+.section-foot[hidden]{ display:none; }
+.section-foot button{
+  font-family: var(--font-display); font-size:0.74rem; text-transform:uppercase; letter-spacing:0.06em;
+  color: var(--text-secondary); background: var(--surface-2); border:1px solid var(--border-soft);
+  border-radius:999px; padding:8px 14px; cursor:pointer;
+}
+.section-foot button:hover{ color: var(--text-primary); border-color: var(--gold); }
+
+@media (max-width: 760px){
+  .home-grid{ grid-template-columns: 1fr; }
+  .sectionbar{ gap:8px; }
+  .sb-chips{ flex-wrap:nowrap; }
+}
+
 
 /* ---------- Tooltip ---------- */
 #tooltip{
@@ -1109,35 +1203,12 @@ footer code{
     </div>
   </section>
 
-  <nav class="toc" aria-label="Sommaire">
-    <span class="toc-label">Top 25</span>
-    <a class="toc-link" href="#panelActivity">Activité</a>
-    <a class="toc-link" href="#panelSpending">Achats</a>
-    <a class="toc-link" href="#panelChance">Rendement</a>
-    <a class="toc-link" href="#panelSpark">Trajectoires</a>
-    <a class="toc-link" href="#panelMovers">Ça grimpe, ça glisse</a>
-    <a class="toc-link" href="#panelTrophy">Trophées</a>
-    <a class="toc-link" href="#panelCompletion">Vers les 150</a>
-    <a class="toc-link" href="#panelPages">Pages complètes</a>
-    <a class="toc-link" href="#panelScatter">Doublons</a>
-    <a class="toc-link" href="#panelIO">Entrées / sorties</a>
-    <span class="toc-sep" aria-hidden="true"></span>
-    <span class="toc-label">Communauté</span>
-    <a class="toc-link" href="#panelCommunityScale">Ampleur</a>
-    <a class="toc-link" href="#panelCommunityTrophy">Le vrai tiercé</a>
-    <a class="toc-link" href="#panelHoarders">Accumulateurs</a>
-    <a class="toc-link" href="#panelPremium">Premium</a>
-    <span class="toc-sep" aria-hidden="true"></span>
-    <span class="toc-label">Jokerdex</span>
-    <a class="toc-link" href="#panelValidation">Grand tirage</a>
-    <a class="toc-link" href="#panelExtremes">Extrêmes</a>
-    <a class="toc-link" href="#panelHoardedJokers">Biais du tirage</a>
-    <span class="toc-sep" aria-hidden="true"></span>
-    <span class="toc-label">Stream</span>
-    <a class="toc-link" href="#panelSessions">Sessions</a>
-    <a class="toc-link" href="#panelBoosterRecords">Boosters historiques</a>
-    <a class="toc-link" href="#panelMinigames">Mini-jeux</a>
-  </nav>
+  <div id="homeView">
+    <p class="home-intro">Le dashboard est découpé en sections. Choisis-en une pour l'explorer &mdash; ou cherche directement un collectionneur ci-dessus.</p>
+    <div class="home-grid"></div>
+  </div>
+
+  <nav class="sectionbar" id="sectionBar" aria-label="Sommaire de section" hidden></nav>
 
   <section class="panel" id="panelActivity">
     <div class="panel-head">
@@ -1364,6 +1435,19 @@ footer code{
     </div>
   </section>
 
+  <section class="panel" id="panelIndivRecords">
+    <div class="panel-head">
+      <div>
+        <h2>Les records individuels <span class="tag-kpi" title="Nouvelle analyse — calculée à partir de données déjà relevées">Nouveau · analyse</span></h2>
+        <p>Quelques extrêmes à l'échelle d'un seul collectionneur, sur l'état actuel (28 août).</p>
+      </div>
+      <span class="panel-tag">Records perso</span>
+    </div>
+    <div class="panel-body">
+      <div class="hero-stats" id="indivRecordsStats"></div>
+    </div>
+  </section>
+
   <div class="section-divider-wrap">
     <div class="section-divider"><span class="line"></span><span class="label">Le Jokerdex complet</span><span class="line"></span></div>
     <p class="section-divider-sub" style="color:var(--text-muted); font-size:0.86rem; max-width:70ch;">Un cran plus large : les 150 jokers de base + les jokers cachés, avec le nombre de tirages cumulés par <b style="color:var(--text-secondary)">toute la communauté</b> de danstacollection.fr — pas seulement les 25 premiers du classement.</p>
@@ -1431,6 +1515,20 @@ footer code{
     </div>
   </section>
 
+  <section class="panel" id="panelTopJokers">
+    <div class="panel-head">
+      <div>
+        <h2>Le tableau de chasse <span class="tag-data" title="Nouveau relevé de données ajouté au dashboard (qui a eu quel joker, dans quelle édition, à quelle date)">Nouveau · data</span></h2>
+        <p>Les combinaisons <b>joker + édition</b> qui rapportent le plus de points, classées par valeur. Clique une ligne pour voir tous ceux qui l'ont obtenue et à quelle date — le premier de la liste est le pionnier.</p>
+      </div>
+      <span class="panel-tag">Top prises · points</span>
+    </div>
+    <div class="panel-body">
+      <div class="trophy-list compact" id="topJokersList"></div>
+      <p class="bars-note" id="topJokersNote"></p>
+    </div>
+  </section>
+
   <div class="section-divider-wrap">
     <div class="section-divider"><span class="line"></span><span class="label">Coulisses du stream</span><span class="line"></span></div>
     <p class="section-divider-sub" style="color:var(--text-muted); font-size:0.86rem; max-width:70ch;">38 sessions de stream, du <b style="color:var(--text-secondary)">7 juin</b> au <b style="color:var(--text-secondary)">28 août</b> — d'où viennent vraiment les 8 980 jokers distribués.</p>
@@ -1495,6 +1593,35 @@ footer code{
       <h3 style="font-family:var(--font-display); font-size:0.95rem; margin:28px 0 4px;">Qui a eu le plus de jokers en une fois</h3>
       <p class="bars-note" style="margin:0 0 12px;">Le plus gros lot reçu d'un seul coup (même instant) par chaque collectionneur — son record personnel, avec la date où c'est arrivé.</p>
       <div class="bars" id="minigameBiggestBatch"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panelHistoryStreaks">
+    <div class="panel-head">
+      <div>
+        <h2>Les meilleures séries <span class="tag-kpi" title="Nouvelle analyse — calculée à partir de données déjà relevées">Nouveau · analyse</span></h2>
+        <p>La plus longue suite de relevés consécutifs où le score n'a fait que monter — un relevé = une date de stream où au moins un joker a été distribué, depuis le 7 juin. Toute la communauté.</p>
+      </div>
+      <span class="panel-tag">Relevés consécutifs en hausse</span>
+    </div>
+    <div class="panel-body">
+      <div class="hero-stats" id="historyStats" style="margin-bottom:22px;"></div>
+      <div class="trophy-list compact" id="historyStreaksList"></div>
+      <p class="bars-note" id="historyStreaksNote"></p>
+    </div>
+  </section>
+
+  <section class="panel" id="panelHistoryClimb">
+    <div class="panel-head">
+      <div>
+        <h2>Les plus grosses récoltes en une session <span class="tag-kpi" title="Nouvelle analyse — calculée à partir de données déjà relevées">Nouveau · analyse</span> <span class="tag-data" title="Nouveau relevé de données : le détail des jokers obtenus, visible en dépliant une ligne">Nouveau · data</span></h2>
+        <p>Le plus gros bond de score réalisé par un collectionneur entre deux relevés consécutifs — son meilleur stream depuis le 7 juin. Un record par collectionneur.</p>
+      </div>
+      <span class="panel-tag">Meilleur gain sur un relevé</span>
+    </div>
+    <div class="panel-body">
+      <div class="mover-list" id="historyClimbList"></div>
+      <p class="bars-note" id="historyClimbNote"></p>
     </div>
   </section>
 
@@ -1570,6 +1697,14 @@ function fmtPts(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits:2, m
 
 /* ---------- Nouveautés du site (à compléter à chaque ajout — entrée la plus récente en premier) ---------- */
 const SITE_CHANGELOG = [
+  { date: '2026-08-29', items: [
+    'Refonte de la navigation : le dashboard est découpé en sections (Top 25, Depuis le début, Communauté, Jokerdex, Stream, Boosters & mini-jeux) — une page d\'accueil avec des cartes, une section à la fois.',
+    'Nouvelle section « Depuis le début » : les plus longues séries de relevés en hausse, les plus grosses récoltes de points en une session (avec le détail des jokers obtenus en dépliant une ligne), et des repères d\'évolution depuis le 7 juin.',
+    'Nouveau panneau « Le tableau de chasse » (section Jokerdex) : les jokers + éditions qui rapportent le plus de points, et qui les a eus en premier.',
+    'Nouveau panneau « Les records individuels » (section Communauté) : collection la plus propre, roi des Négatifs, record de pile, mise Balatro la plus haute atteinte.',
+    'Une trentaine de nouveaux indicateurs répartis dans les panneaux existants (dex communautaire débloqué, taux de doublons, croissance de l\'audience, rendement des boosters, cadeaux…).',
+    'Deux pastilles pour repérer les nouveautés : « analyse » (nouveau calcul sur des données déjà relevées) et « data » (nouveau relevé de données ajouté au dashboard).'
+  ]},
   { date: '2026-08-28', items: [
     'Relevés mis à jour au 28 août : nouvelle session de stream (#49), 243 collectionneurs.'
   ]},
@@ -1650,11 +1785,18 @@ function attachTip(el, html){
   const ppbAvg = top25Grid.reduce((s,r)=>s+(r.gridPulls?r.gridPoints/r.gridPulls:0),0)/top25Grid.length;
   const gapPct = ((ppbAvg-EV)/EV*100);
 
+  const baseJokers = OFFICIAL_COLLECTION.filter(r=>r[0]<1000);
+  const dexPulled = baseJokers.filter(r=>r[3]>0).length;
+  const dexFillPct = dexPulled/baseJokers.length*100;
+  const communityScore = FULL.reduce((s,r)=>s+r[1],0);
+
   const tiles = [
     { val: fmtInt(totalBoosters), lbl: 'Boosters payants ouverts (top 25, cumulé)', delta: `= ${fmtInt(totalEpines)} épines`, cls:'' },
     { val: `${bestCompletion.uniq}<small>/150</small>`, lbl: `Meilleure complétion — ${bestCompletion.name}`, delta: `${(bestCompletion.uniq/150*100).toFixed(0)} % de la collection`, cls:'up' },
     { val: `${fmtPts(ppbAvg)}<small> pts</small>`, lbl: 'Points marqués par booster, en moyenne', delta: `${gapPct>=0?'+':''}${gapPct.toFixed(1)} % vs les ${fmtPts(EV)} pts attendus — les doublons ne rapportent rien`, cls: gapPct>=0?'up':'down' },
     { val: `25`, lbl: 'Collectionneurs suivis au 28 août', delta: 'DIEUDURIRE entre, nithror_ sort', cls:'' },
+    { val: `${dexFillPct.toFixed(0)}<small>%</small>`, lbl: 'Dex communautaire débloqué (150 jokers de base)', delta: `${dexPulled}/${baseJokers.length} jokers déjà tirés par au moins un collectionneur`, cls:'up' },
+    { val: fmtInt(communityScore), lbl: 'Score cumulé de toute la communauté', delta: `${fmtInt(FULL.length)} collectionneurs`, cls:'' },
   ];
   document.getElementById('heroStats').innerHTML = tiles.map(t=>`
     <div class="stat-tile">
@@ -1790,6 +1932,8 @@ const STAKE_IMG = {"white":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAA
 const PAGE_COMPLETION = [["37brice",[1,4,6],false],["LeSoumis2Cactus35",[1,8],false],["m3r0v1gien",[1,2],false],["garg000ille",[1],false],["M0UTM0UT56",[1],false],["Maxtime019LeSoumis2Cactus",[1],false],["Monsieur_Tatillon",[1],false]]; // [name, completedPages[], hasPage11] for collectors with at least one full page (15/15 jokers in catalogue order) — built by build_page_completion.js. Part of the canonical pipeline: run it every update, before build_daily_changes.js.
 const DAILY_CHANGES = {"priorDate":"2026-08-27","accumulateurs":["Croucroute","elbubbito","forthefutureproject","hpaascal","arkhann50","KreoKiwi","Texmex91","AOPMaroilles","airness456","turboluigi","narvaloutre","eljoj","Pugman296","dnvnl","STIMDIT","Mowimax","n0rberr","valro81","astronautatwo","Branks_","itsnakyri","raiden2twitch"],"vraiTierce":["Mail-In Rebate","Banner","Vagabond","Smiley Face","Red Card","Baseball Card","Delayed Gratification","Runner","Ride the Bus","Half Joker","Green Joker","Cloud 9","Certificate","Acrobat","Juggler","Arrowhead"],"pagesCompletes":["37brice","Maxtime019LeSoumis2Cactus"],"premium":["esketukonai","Carrazarre","Pugman296"],"extremesMostPulled":[23],"extremesLeastPulled":[]}; // day-over-day "what changed" flags vs the most recent prior snapshot, built by build_daily_changes.js.
 const LAST_STREAM_PULLS = {"session":{"num":49,"date":"2026-08-28","start":"18:34","end":"00:03"},"pulls":{"37brice":[{"name":"Joker","edition":"none","time":"19:02","points":0,"dup":true},{"name":"DNA","edition":"foil","time":"19:10","points":8,"dup":false},{"name":"Red Card","edition":"none","time":"19:10","points":0,"dup":true},{"name":"Delayed Gratification","edition":"none","time":"19:10","points":0,"dup":true},{"name":"Supernova","edition":"none","time":"19:10","points":1,"dup":false},{"name":"Business Card","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Greedy Joker","edition":"none","time":"19:37","points":0,"dup":true},{"name":"Banner","edition":"polychrome","time":"19:37","points":10,"dup":false},{"name":"Runner","edition":"none","time":"19:37","points":0,"dup":true},{"name":"Midas Mask ","edition":"none","time":"19:37","points":0,"dup":true},{"name":"Cartomancer","edition":"none","time":"20:05","points":0,"dup":true},{"name":"Drunkard","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Rocket","edition":"none","time":"21:06","points":0,"dup":true},{"name":"Hanging Chad","edition":"none","time":"21:42","points":0,"dup":true},{"name":"Odd Todd","edition":"holographic","time":"22:05","points":7,"dup":false},{"name":"Lusty Joker","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Half Joker","edition":"none","time":"23:05","points":0,"dup":true},{"name":"Golden Joker","edition":"none","time":"23:35","points":0,"dup":true}],"adriencrak":[{"name":"Delayed Gratification","edition":"none","time":"18:46","points":0,"dup":true},{"name":"Reserved Parking","edition":"foil","time":"19:23","points":5,"dup":false},{"name":"Red Card","edition":"none","time":"19:36","points":1,"dup":false},{"name":"Lusty Joker","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Credit Card","edition":"foil","time":"21:36","points":5,"dup":false},{"name":"Joker Stencil","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Crazy Joker","edition":"none","time":"23:06","points":0,"dup":true}],"airness456":[{"name":"Ice Cream","edition":"none","time":"18:41","points":0,"dup":true},{"name":"Popcorn","edition":"none","time":"19:06","points":0,"dup":true},{"name":"Wily Joker","edition":"none","time":"19:36","points":0,"dup":true},{"name":"Zany Joker","edition":"none","time":"20:06","points":0,"dup":true},{"name":"Clever Joker","edition":"none","time":"20:35","points":1,"dup":false},{"name":"Fibonacci","edition":"none","time":"22:12","points":0,"dup":true},{"name":"Vampire","edition":"none","time":"22:36","points":2,"dup":false},{"name":"Delayed Gratification","edition":"none","time":"23:45","points":0,"dup":true},{"name":"Drunkard","edition":"none","time":"00:03","points":0,"dup":true}],"al_rizla97":[{"name":"Chaos the Clown","edition":"none","time":"19:26","points":0,"dup":true},{"name":"Greedy Joker","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Runner","edition":"none","time":"20:34","points":0,"dup":true},{"name":"Showman","edition":"none","time":"20:36","points":0,"dup":true},{"name":"Onyx Agate","edition":"none","time":"21:05","points":2,"dup":false},{"name":"Sock and Buskin","edition":"none","time":"21:36","points":0,"dup":true},{"name":"Smiley Face","edition":"none","time":"22:06","points":0,"dup":true},{"name":"Superposition","edition":"none","time":"22:48","points":0,"dup":true},{"name":"Merry Andy","edition":"none","time":"23:49","points":2,"dup":false}],"aopmaroilles":[{"name":"Swashbuckler","edition":"none","time":"19:14","points":1,"dup":false},{"name":"Even Steven","edition":"none","time":"19:36","points":0,"dup":true},{"name":"Square Joker","edition":"none","time":"20:05","points":0,"dup":true},{"name":"Blackboard","edition":"none","time":"20:35","points":0,"dup":true},{"name":"8 Ball","edition":"none","time":"21:05","points":1,"dup":false},{"name":"Obelisk","edition":"none","time":"21:35","points":4,"dup":false},{"name":"Chaos the Clown","edition":"none","time":"22:05","points":0,"dup":true},{"name":"Square Joker","edition":"none","time":"22:35","points":0,"dup":true},{"name":"8 Ball","edition":"none","time":"23:09","points":0,"dup":true},{"name":"Superposition","edition":"none","time":"23:41","points":0,"dup":true}],"apokalmix":[{"name":"Mad Joker","edition":"none","time":"19:43","points":0,"dup":true},{"name":"Joker","edition":"none","time":"20:07","points":1,"dup":false},{"name":"Golden Joker","edition":"none","time":"20:36","points":0,"dup":true},{"name":"Devious Joker","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Satellite","edition":"none","time":"21:35","points":2,"dup":false},{"name":"Credit Card","edition":"none","time":"22:24","points":0,"dup":true},{"name":"Trading Card","edition":"none","time":"22:37","points":2,"dup":false},{"name":"Square Joker","edition":"none","time":"23:35","points":0,"dup":true},{"name":"Constellation","edition":"none","time":"23:35","points":0,"dup":true}],"archelite":[{"name":"Egg","edition":"none","time":"18:35","points":1,"dup":false},{"name":"Scholar","edition":"none","time":"23:11","points":1,"dup":false}],"arkhann50":[{"name":"Riff-Raff","edition":"holographic","time":"20:19","points":0,"dup":true},{"name":"Bloodstone","edition":"none","time":"21:19","points":2,"dup":false},{"name":"Chaos the Clown","edition":"none","time":"21:36","points":1,"dup":false}],"astronautatwo":[{"name":"Green Joker","edition":"none","time":"22:04","points":1,"dup":false}],"bichopebitou":[{"name":"Sock and Buskin","edition":"none","time":"19:52","points":2,"dup":false},{"name":"Walkie Talkie","edition":"none","time":"23:48","points":0,"dup":true}],"branks_":[{"name":"Red Card","edition":"none","time":"23:05","points":1,"dup":false}],"carrazarre":[{"name":"Red Card","edition":"none","time":"18:45","points":0,"dup":true},{"name":"Sly Joker","edition":"none","time":"19:51","points":1,"dup":false},{"name":"Popcorn","edition":"none","time":"20:36","points":1,"dup":false},{"name":"Raised Fist","edition":"none","time":"21:09","points":1,"dup":false}],"cquoilabull":[{"name":"Square Joker","edition":"none","time":"23:05","points":0,"dup":true},{"name":"Invisible Joker","edition":"none","time":"23:05","points":4,"dup":false}],"croucroute":[{"name":"Splash","edition":"none","time":"18:37","points":0,"dup":true},{"name":"Mail-In Rebate","edition":"none","time":"19:05","points":0,"dup":true},{"name":"Photograph","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Ice Cream","edition":"foil","time":"20:09","points":5,"dup":false},{"name":"Ice Cream","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Greedy Joker","edition":"none","time":"21:05","points":1,"dup":false},{"name":"Hanging Chad","edition":"polychrome","time":"21:35","points":10,"dup":false},{"name":"Midas Mask ","edition":"holographic","time":"22:06","points":8,"dup":false},{"name":"Devious Joker","edition":"holographic","time":"22:36","points":7,"dup":false},{"name":"Jolly Joker","edition":"none","time":"23:05","points":0,"dup":true},{"name":"The Order","edition":"none","time":"23:36","points":4,"dup":false},{"name":"Square Joker","edition":"none","time":"00:03","points":0,"dup":true}],"daguiiva":[{"name":"Green Joker","edition":"none","time":"19:26","points":1,"dup":false},{"name":"Reserved Parking","edition":"none","time":"19:42","points":0,"dup":true},{"name":"Crafty Joker","edition":"none","time":"22:38","points":1,"dup":false},{"name":"Green Joker","edition":"none","time":"23:41","points":0,"dup":true}],"dieudurire":[{"name":"Crazy Joker","edition":"none","time":"18:35","points":0,"dup":true},{"name":"Crazy Joker","edition":"none","time":"19:05","points":0,"dup":true},{"name":"Ice Cream","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Drunkard","edition":"none","time":"20:06","points":0,"dup":true},{"name":"Abstract Joker","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Square Joker","edition":"none","time":"21:12","points":1,"dup":false},{"name":"Erosion","edition":"foil","time":"21:35","points":6,"dup":false},{"name":"Mystic Summit","edition":"none","time":"22:06","points":1,"dup":false},{"name":"Crafty Joker","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Merry Andy","edition":"none","time":"23:06","points":2,"dup":false},{"name":"Blueprint","edition":"none","time":"23:36","points":4,"dup":false},{"name":"Vampire","edition":"none","time":"00:02","points":2,"dup":false},{"name":"Fortune Teller","edition":"none","time":"00:02","points":1,"dup":false}],"dnvnl":[{"name":"Square Joker","edition":"none","time":"18:59","points":0,"dup":true},{"name":"Crafty Joker","edition":"none","time":"19:06","points":1,"dup":false}],"dromux":[{"name":"Troubadour","edition":"none","time":"19:01","points":2,"dup":false},{"name":"Splash","edition":"foil","time":"19:28","points":5,"dup":false},{"name":"The Duo","edition":"none","time":"20:36","points":0,"dup":true},{"name":"Swashbuckler","edition":"none","time":"21:05","points":1,"dup":false},{"name":"Certificate","edition":"none","time":"21:35","points":2,"dup":false},{"name":"DNA","edition":"none","time":"22:05","points":0,"dup":true},{"name":"Walkie Talkie","edition":"none","time":"22:35","points":1,"dup":false},{"name":"Erosion","edition":"none","time":"23:36","points":2,"dup":false}],"dvvdddvdvdvd":[{"name":"Superposition","edition":"none","time":"22:12","points":0,"dup":true},{"name":"Juggler","edition":"none","time":"22:39","points":0,"dup":true},{"name":"Sly Joker","edition":"none","time":"23:06","points":1,"dup":false}],"elbubbito":[{"name":"Juggler","edition":"none","time":"18:58","points":0,"dup":true},{"name":"Golden Ticket","edition":"none","time":"19:06","points":0,"dup":true},{"name":"Card Sharp","edition":"none","time":"19:35","points":2,"dup":false},{"name":"Lusty Joker","edition":"none","time":"20:07","points":0,"dup":true},{"name":"Drunkard","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Business Card","edition":"none","time":"21:05","points":1,"dup":false},{"name":"Mr. Bones","edition":"none","time":"21:38","points":2,"dup":false},{"name":"Gluttonous Joker","edition":"polychrome","time":"22:08","points":10,"dup":false},{"name":"Scholar","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Mad Joker","edition":"foil","time":"23:06","points":5,"dup":false},{"name":"Blue Joker","edition":"none","time":"23:36","points":1,"dup":false}],"elicapes":[{"name":"Mail-In Rebate","edition":"none","time":"19:56","points":1,"dup":false},{"name":"Banner","edition":"none","time":"20:05","points":0,"dup":true}],"eljoj":[{"name":"Greedy Joker","edition":"none","time":"18:43","points":1,"dup":false},{"name":"Mystic Summit","edition":"none","time":"19:05","points":1,"dup":false},{"name":"Golden Joker","edition":"none","time":"19:54","points":1,"dup":false},{"name":"Square Joker","edition":"none","time":"20:11","points":0,"dup":true},{"name":"Trading Card","edition":"none","time":"21:05","points":2,"dup":false},{"name":"Brainstorm","edition":"none","time":"21:36","points":4,"dup":false},{"name":"Delayed Gratification","edition":"none","time":"22:14","points":0,"dup":true},{"name":"Abstract Joker","edition":"none","time":"22:36","points":0,"dup":true}],"esketukonai":[{"name":"Droll Joker","edition":"none","time":"23:52","points":1,"dup":false}],"fandragon_":[{"name":"Business Card","edition":"none","time":"23:12","points":0,"dup":true},{"name":"Banner","edition":"none","time":"23:35","points":0,"dup":true}],"forthefutureproject":[{"name":"Odd Todd","edition":"none","time":"18:35","points":1,"dup":false},{"name":"Blue Joker","edition":"none","time":"19:06","points":0,"dup":true},{"name":"Reserved Parking","edition":"none","time":"19:35","points":1,"dup":false},{"name":"Fortune Teller","edition":"none","time":"20:05","points":0,"dup":true},{"name":"Popcorn","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Green Joker","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Swashbuckler","edition":"none","time":"21:35","points":0,"dup":true},{"name":"To the Moon","edition":"none","time":"22:06","points":2,"dup":false},{"name":"Runner","edition":"none","time":"22:36","points":0,"dup":true}],"frozorg36":[{"name":"Bull","edition":"none","time":"18:35","points":2,"dup":false},{"name":"Blue Joker","edition":"none","time":"19:05","points":1,"dup":false},{"name":"Clever Joker","edition":"none","time":"20:16","points":1,"dup":false},{"name":"Steel Joker","edition":"none","time":"20:51","points":2,"dup":false},{"name":"Wily Joker","edition":"none","time":"21:13","points":1,"dup":false},{"name":"Sock and Buskin","edition":"none","time":"21:36","points":2,"dup":false},{"name":"Superposition","edition":"none","time":"22:06","points":1,"dup":false},{"name":"Certificate","edition":"none","time":"22:36","points":2,"dup":false}],"gal12_":[{"name":"Smeared Joker","edition":"none","time":"19:57","points":2,"dup":false},{"name":"Spare Trousers","edition":"none","time":"20:06","points":0,"dup":true},{"name":"Blue Joker","edition":"none","time":"23:20","points":1,"dup":false},{"name":"Bloodstone","edition":"none","time":"23:36","points":0,"dup":true}],"gandalf_le_rouge":[{"name":"Burnt Joker","edition":"none","time":"18:49","points":4,"dup":false},{"name":"Drunkard","edition":"none","time":"19:10","points":1,"dup":false},{"name":"Mystic Summit","edition":"none","time":"19:38","points":0,"dup":true}],"garg000ille":[{"name":"Egg","edition":"none","time":"18:43","points":0,"dup":true},{"name":"Splash","edition":"none","time":"19:31","points":0,"dup":true},{"name":"Wily Joker","edition":"none","time":"19:39","points":0,"dup":true},{"name":"8 Ball","edition":"none","time":"21:16","points":0,"dup":true}],"ghostsoumis2soumis":[{"name":"Marble Joker","edition":"none","time":"18:35","points":2,"dup":false},{"name":"Green Joker","edition":"none","time":"19:05","points":0,"dup":true},{"name":"Wily Joker","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Juggler","edition":"none","time":"20:06","points":0,"dup":true},{"name":"Splash","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Juggler","edition":"none","time":"21:12","points":0,"dup":true},{"name":"Acrobat","edition":"none","time":"21:35","points":2,"dup":false},{"name":"Glass Joker","edition":"none","time":"22:05","points":0,"dup":true},{"name":"Gros Michel","edition":"none","time":"22:35","points":1,"dup":false},{"name":"Arrowhead","edition":"none","time":"23:36","points":2,"dup":false},{"name":"Supernova","edition":"none","time":"00:02","points":0,"dup":true}],"giselekerozene":[{"name":"Juggler","edition":"foil","time":"18:47","points":5,"dup":false},{"name":"Diet Cola","edition":"none","time":"22:20","points":0,"dup":true},{"name":"Riff-Raff","edition":"none","time":"23:20","points":0,"dup":true},{"name":"Wrathful Joker","edition":"none","time":"23:35","points":0,"dup":true}],"hpaascal":[{"name":"Gluttonous Joker","edition":"none","time":"18:35","points":0,"dup":true},{"name":"Cavendish","edition":"none","time":"19:05","points":0,"dup":true},{"name":"Glass Joker","edition":"none","time":"19:35","points":2,"dup":false},{"name":"Jolly Joker","edition":"none","time":"20:05","points":1,"dup":false},{"name":"Shortcut","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Walkie Talkie","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Supernova","edition":"none","time":"21:35","points":0,"dup":true},{"name":"Runner","edition":"none","time":"22:05","points":0,"dup":true},{"name":"Flash Card","edition":"none","time":"22:35","points":2,"dup":false},{"name":"Odd Todd","edition":"none","time":"23:05","points":0,"dup":true},{"name":"Photograph","edition":"holographic","time":"23:35","points":7,"dup":false}],"idragoor":[{"name":"Photograph","edition":"none","time":"23:44","points":0,"dup":true}],"ニリキタ":[{"name":"Droll Joker","edition":"none","time":"18:35","points":0,"dup":true},{"name":"Zany Joker","edition":"none","time":"19:45","points":0,"dup":true},{"name":"Even Steven","edition":"none","time":"20:05","points":0,"dup":true},{"name":"Wrathful Joker","edition":"none","time":"23:44","points":1,"dup":false}],"itsnakyri":[{"name":"Juggler","edition":"none","time":"22:53","points":1,"dup":false}],"johndufflesoumis9":[{"name":"Mystic Summit","edition":"none","time":"18:35","points":0,"dup":true},{"name":"Juggler","edition":"none","time":"19:22","points":1,"dup":false},{"name":"Glass Joker","edition":"none","time":"20:11","points":0,"dup":true},{"name":"Turtle Bean","edition":"none","time":"20:45","points":2,"dup":false},{"name":"Lusty Joker","edition":"none","time":"21:09","points":0,"dup":true},{"name":"Splash","edition":"none","time":"21:35","points":1,"dup":false},{"name":"Egg","edition":"none","time":"22:12","points":0,"dup":true},{"name":"Mystic Summit","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Photograph","edition":"none","time":"23:14","points":0,"dup":true},{"name":"Greedy Joker","edition":"none","time":"23:49","points":0,"dup":true}],"kirinn_":[{"name":"Cartomancer","edition":"foil","time":"22:17","points":6,"dup":false},{"name":"Odd Todd","edition":"foil","time":"22:35","points":5,"dup":false},{"name":"Gluttonous Joker","edition":"none","time":"23:05","points":0,"dup":true},{"name":"Space Joker","edition":"none","time":"23:36","points":2,"dup":false}],"kreokiwi":[{"name":"Sly Joker","edition":"negative","time":"19:22","points":15,"dup":false},{"name":"Mail-In Rebate","edition":"polychrome","time":"19:35","points":10,"dup":false},{"name":"Droll Joker","edition":"none","time":"20:05","points":0,"dup":true}],"lesoumis2cactus35":[{"name":"Egg","edition":"none","time":"18:34","points":0,"dup":true},{"name":"Delayed Gratification","edition":"none","time":"19:05","points":0,"dup":true},{"name":"Square Joker","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Ride the Bus","edition":"none","time":"20:05","points":0,"dup":true},{"name":"Gift Card","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Sly Joker","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Turtle Bean","edition":"none","time":"21:35","points":0,"dup":true},{"name":"Hallucination","edition":"none","time":"22:05","points":0,"dup":true},{"name":"Riff-Raff","edition":"none","time":"22:44","points":0,"dup":true},{"name":"Even Steven","edition":"none","time":"23:05","points":1,"dup":false},{"name":"Hit the Road","edition":"none","time":"23:35","points":4,"dup":false}],"lilubells":[{"name":"Odd Todd","edition":"none","time":"18:58","points":1,"dup":false},{"name":"Reserved Parking","edition":"none","time":"19:06","points":0,"dup":true},{"name":"Showman","edition":"none","time":"19:35","points":2,"dup":false},{"name":"Acrobat","edition":"none","time":"20:10","points":2,"dup":false},{"name":"Photograph","edition":"none","time":"20:37","points":1,"dup":false},{"name":"Sly Joker","edition":"none","time":"21:09","points":0,"dup":true},{"name":"Credit Card","edition":"none","time":"22:01","points":0,"dup":true},{"name":"Devious Joker","edition":"none","time":"22:05","points":1,"dup":false},{"name":"Gluttonous Joker","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Campfire","edition":"none","time":"23:06","points":4,"dup":false},{"name":"Oops! All 6s","edition":"none","time":"23:36","points":2,"dup":false}],"m0utm0ut56":[{"name":"To the Moon","edition":"none","time":"18:44","points":0,"dup":true},{"name":"Splash","edition":"polychrome","time":"19:06","points":10,"dup":false},{"name":"Ride the Bus","edition":"none","time":"19:45","points":0,"dup":true},{"name":"Wily Joker","edition":"none","time":"20:06","points":0,"dup":true},{"name":"Scary Face","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Devious Joker","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Bull","edition":"none","time":"21:53","points":2,"dup":false},{"name":"Diet Cola","edition":"none","time":"22:06","points":2,"dup":false},{"name":"Merry Andy","edition":"none","time":"22:55","points":2,"dup":false},{"name":"Green Joker","edition":"none","time":"23:11","points":0,"dup":true},{"name":"Odd Todd","edition":"none","time":"23:51","points":0,"dup":true}],"m3r0v1gien":[{"name":"Card Sharp","edition":"none","time":"18:35","points":2,"dup":false},{"name":"Pareidolia","edition":"none","time":"19:05","points":2,"dup":false},{"name":"Hanging Chad","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Joker Stencil","edition":"none","time":"20:09","points":0,"dup":true},{"name":"Reserved Parking","edition":"holographic","time":"20:41","points":7,"dup":false},{"name":"Red Card","edition":"none","time":"21:30","points":0,"dup":true},{"name":"Half Joker","edition":"none","time":"21:50","points":0,"dup":true},{"name":"Mad Joker","edition":"none","time":"22:06","points":0,"dup":true},{"name":"Red Card","edition":"none","time":"22:43","points":0,"dup":true},{"name":"Business Card","edition":"none","time":"23:32","points":0,"dup":true},{"name":"Credit Card","edition":"none","time":"23:36","points":0,"dup":true}],"matatrax":[{"name":"Marble Joker","edition":"none","time":"18:41","points":2,"dup":false},{"name":"Greedy Joker","edition":"none","time":"19:05","points":1,"dup":false},{"name":"8 Ball","edition":"none","time":"19:35","points":1,"dup":false},{"name":"Brainstorm","edition":"none","time":"20:12","points":4,"dup":false},{"name":"Ice Cream","edition":"none","time":"20:36","points":0,"dup":true},{"name":"Smeared Joker","edition":"none","time":"21:05","points":2,"dup":false},{"name":"Baron","edition":"none","time":"21:35","points":4,"dup":false},{"name":"Smiley Face","edition":"none","time":"22:06","points":0,"dup":true}],"maxtime019lesoumis2cactus":[{"name":"Runner","edition":"none","time":"18:37","points":1,"dup":false},{"name":"Ride the Bus","edition":"none","time":"19:21","points":0,"dup":true},{"name":"Droll Joker","edition":"none","time":"19:51","points":1,"dup":false},{"name":"Blue Joker","edition":"none","time":"20:05","points":0,"dup":true},{"name":"Credit Card","edition":"none","time":"20:11","points":0,"dup":true},{"name":"Riff-Raff","edition":"none","time":"20:11","points":0,"dup":true},{"name":"Delayed Gratification","edition":"foil","time":"20:43","points":5,"dup":false},{"name":"Reserved Parking","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Joker","edition":"none","time":"21:35","points":0,"dup":true},{"name":"Joker","edition":"none","time":"22:05","points":0,"dup":true},{"name":"Blue Joker","edition":"foil","time":"22:35","points":5,"dup":false},{"name":"Wily Joker","edition":"none","time":"23:30","points":0,"dup":true}],"mf_iso_izoumis":[{"name":"Cloud 9","edition":"none","time":"19:30","points":2,"dup":false}],"michelsemoule":[{"name":"Swashbuckler","edition":"none","time":"19:37","points":0,"dup":true},{"name":"Faceless Joker","edition":"none","time":"20:05","points":1,"dup":false},{"name":"8 Ball","edition":"none","time":"20:38","points":1,"dup":false},{"name":"Egg","edition":"none","time":"23:27","points":1,"dup":false},{"name":"Red Card","edition":"none","time":"23:35","points":0,"dup":true}],"monsieur_tatillon":[{"name":"Steel Joker","edition":"none","time":"18:35","points":2,"dup":false},{"name":"Crazy Joker","edition":"none","time":"19:05","points":0,"dup":true},{"name":"Wily Joker","edition":"none","time":"19:36","points":0,"dup":true},{"name":"Scholar","edition":"none","time":"20:05","points":0,"dup":true},{"name":"Scary Face","edition":"none","time":"20:40","points":0,"dup":true},{"name":"Ramen","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Greedy Joker","edition":"none","time":"21:35","points":0,"dup":true}],"mowimax":[{"name":"Smiley Face","edition":"foil","time":"22:57","points":5,"dup":false}],"n0rberr":[{"name":"Smiley Face","edition":"none","time":"20:54","points":1,"dup":false},{"name":"Popcorn","edition":"none","time":"21:06","points":1,"dup":false},{"name":"Green Joker","edition":"none","time":"22:59","points":1,"dup":false}],"narvaloutre":[{"name":"Golden Ticket","edition":"none","time":"18:41","points":1,"dup":false},{"name":"Crafty Joker","edition":"none","time":"19:07","points":0,"dup":true},{"name":"Wrathful Joker","edition":"none","time":"19:42","points":1,"dup":false},{"name":"Cartomancer","edition":"foil","time":"20:05","points":6,"dup":false},{"name":"Showman","edition":"none","time":"20:35","points":2,"dup":false},{"name":"Juggler","edition":"none","time":"21:05","points":1,"dup":false},{"name":"The Idol","edition":"none","time":"21:35","points":2,"dup":false},{"name":"Rocket","edition":"none","time":"22:05","points":2,"dup":false},{"name":"Crafty Joker","edition":"none","time":"22:35","points":0,"dup":true},{"name":"Even Steven","edition":"none","time":"23:05","points":0,"dup":true},{"name":"Lusty Joker","edition":"none","time":"23:35","points":0,"dup":true}],"nereis_":[{"name":"To Do List","edition":"none","time":"18:37","points":1,"dup":false}],"nicoberjin":[{"name":"Mad Joker","edition":"none","time":"18:58","points":0,"dup":true},{"name":"Fortune Teller","edition":"foil","time":"19:06","points":5,"dup":false},{"name":"Half Joker","edition":"none","time":"19:41","points":1,"dup":false},{"name":"Egg","edition":"none","time":"20:06","points":1,"dup":false},{"name":"Swashbuckler","edition":"none","time":"20:46","points":1,"dup":false},{"name":"Credit Card","edition":"none","time":"21:06","points":1,"dup":false},{"name":"Reserved Parking","edition":"none","time":"21:49","points":1,"dup":false}],"nodorf":[{"name":"Sly Joker","edition":"none","time":"18:45","points":0,"dup":true}],"nono_12862":[{"name":"Runner","edition":"none","time":"22:05","points":1,"dup":false}],"osadus":[{"name":"Rough Gem","edition":"none","time":"21:32","points":2,"dup":false},{"name":"Smiley Face","edition":"none","time":"21:35","points":1,"dup":false},{"name":"Juggler","edition":"foil","time":"22:06","points":5,"dup":false}],"peakilith":[{"name":"Seltzer","edition":"none","time":"19:54","points":2,"dup":false}],"pugman296":[{"name":"To Do List","edition":"none","time":"20:58","points":1,"dup":false},{"name":"Mail-In Rebate","edition":"none","time":"21:05","points":1,"dup":false},{"name":"Delayed Gratification","edition":"none","time":"21:36","points":1,"dup":false},{"name":"Loyalty Card","edition":"none","time":"22:07","points":0,"dup":true},{"name":"Sock and Buskin","edition":"none","time":"22:36","points":2,"dup":false},{"name":"Stone Joker","edition":"none","time":"23:05","points":2,"dup":false},{"name":"To Do List","edition":"none","time":"23:44","points":0,"dup":true}],"raiden2twitch":[{"name":"Ride the Bus","edition":"none","time":"19:12","points":1,"dup":false}],"robfram":[{"name":"Devious Joker","edition":"none","time":"23:06","points":1,"dup":false},{"name":"Red Card","edition":"none","time":"23:35","points":0,"dup":true}],"so__stupid":[{"name":"Onyx Agate","edition":"none","time":"20:58","points":2,"dup":false},{"name":"Hiker","edition":"none","time":"21:06","points":2,"dup":false},{"name":"Superposition","edition":"none","time":"21:36","points":1,"dup":false},{"name":"Acrobat","edition":"none","time":"22:05","points":2,"dup":false},{"name":"Credit Card","edition":"none","time":"22:36","points":1,"dup":false},{"name":"Riff-Raff","edition":"none","time":"23:05","points":1,"dup":false},{"name":"Swashbuckler","edition":"none","time":"23:43","points":1,"dup":false}],"sramredblack":[{"name":"Red Card","edition":"none","time":"19:34","points":0,"dup":true},{"name":"Supernova","edition":"holographic","time":"19:36","points":7,"dup":false},{"name":"Golden Joker","edition":"none","time":"20:56","points":0,"dup":true},{"name":"Zany Joker","edition":"none","time":"23:23","points":0,"dup":true},{"name":"Swashbuckler","edition":"none","time":"23:43","points":0,"dup":true}],"stimdit":[{"name":"Gift Card","edition":"none","time":"21:06","points":2,"dup":false},{"name":"Baseball Card","edition":"none","time":"21:36","points":4,"dup":false}],"st_chouette":[{"name":"The Duo","edition":"none","time":"18:58","points":4,"dup":false},{"name":"Greedy Joker","edition":"none","time":"20:14","points":1,"dup":false},{"name":"Misprint","edition":"none","time":"20:58","points":1,"dup":false},{"name":"Invisible Joker","edition":"none","time":"23:11","points":4,"dup":false}],"swan_lzr":[{"name":"Hallucination","edition":"none","time":"21:35","points":1,"dup":false}],"texmex91":[{"name":"Joker Stencil","edition":"none","time":"18:53","points":2,"dup":false},{"name":"Shoot the Moon","edition":"none","time":"19:09","points":1,"dup":false},{"name":"Faceless Joker","edition":"none","time":"19:43","points":1,"dup":false},{"name":"Fortune Teller","edition":"none","time":"20:10","points":1,"dup":false},{"name":"The Idol","edition":"none","time":"20:48","points":0,"dup":true},{"name":"Fortune Teller","edition":"none","time":"21:13","points":0,"dup":true},{"name":"Mystic Summit","edition":"none","time":"21:45","points":0,"dup":true},{"name":"Smiley Face","edition":"none","time":"22:12","points":0,"dup":true},{"name":"Jolly Joker","edition":"none","time":"23:30","points":1,"dup":false},{"name":"Devious Joker","edition":"none","time":"23:36","points":1,"dup":false}],"thewindsoul":[{"name":"Half Joker","edition":"none","time":"19:12","points":1,"dup":false}],"the_notorious_jess":[{"name":"Scary Face","edition":"none","time":"19:48","points":1,"dup":false},{"name":"Arrowhead","edition":"none","time":"20:42","points":2,"dup":false}],"to1nio":[{"name":"Scary Face","edition":"none","time":"18:52","points":1,"dup":false},{"name":"Satellite","edition":"none","time":"19:16","points":0,"dup":true},{"name":"Chaos the Clown","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Ice Cream","edition":"none","time":"20:28","points":0,"dup":true},{"name":"Egg","edition":"none","time":"20:35","points":0,"dup":true},{"name":"Bootstraps","edition":"none","time":"21:06","points":0,"dup":true},{"name":"Abstract Joker","edition":"none","time":"21:36","points":0,"dup":true},{"name":"Scary Face","edition":"none","time":"22:07","points":0,"dup":true},{"name":"Odd Todd","edition":"none","time":"22:53","points":0,"dup":true},{"name":"Troubadour","edition":"none","time":"23:06","points":2,"dup":false},{"name":"Crafty Joker","edition":"none","time":"23:37","points":1,"dup":false}],"toinou4173":[{"name":"Gluttonous Joker","edition":"polychrome","time":"21:22","points":10,"dup":false},{"name":"Supernova","edition":"none","time":"21:39","points":0,"dup":true},{"name":"Smiley Face","edition":"none","time":"22:05","points":1,"dup":false},{"name":"Droll Joker","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Runner","edition":"none","time":"23:06","points":1,"dup":false},{"name":"The Order","edition":"foil","time":"23:36","points":8,"dup":false}],"trostyman":[{"name":"Bloodstone","edition":"none","time":"21:37","points":2,"dup":false},{"name":"Delayed Gratification","edition":"holographic","time":"22:06","points":7,"dup":false},{"name":"Droll Joker","edition":"none","time":"22:36","points":1,"dup":false},{"name":"Cloud 9","edition":"none","time":"23:08","points":2,"dup":false},{"name":"Business Card","edition":"none","time":"23:36","points":1,"dup":false}],"truitosaure345":[{"name":"Cloud 9","edition":"holographic","time":"21:30","points":8,"dup":false},{"name":"Wrathful Joker","edition":"none","time":"21:38","points":1,"dup":false},{"name":"Sixth Sense","edition":"none","time":"22:11","points":2,"dup":false},{"name":"Banner","edition":"none","time":"22:42","points":1,"dup":false}],"tucunared":[{"name":"Scholar","edition":"none","time":"18:37","points":0,"dup":true},{"name":"Séance","edition":"none","time":"19:05","points":2,"dup":false},{"name":"Popcorn","edition":"none","time":"19:37","points":1,"dup":false},{"name":"Spare Trousers","edition":"none","time":"20:08","points":2,"dup":false},{"name":"Clever Joker","edition":"none","time":"20:36","points":0,"dup":true},{"name":"Ice Cream","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Shoot the Moon","edition":"none","time":"21:43","points":1,"dup":false},{"name":"Fortune Teller","edition":"foil","time":"22:07","points":5,"dup":false},{"name":"Throwback","edition":"none","time":"22:53","points":2,"dup":false},{"name":"Baseball Card","edition":"none","time":"23:07","points":0,"dup":true},{"name":"Flash Card","edition":"none","time":"23:37","points":2,"dup":false}],"turboluigi":[{"name":"Business Card","edition":"none","time":"19:19","points":0,"dup":true},{"name":"8 Ball","edition":"none","time":"20:27","points":0,"dup":true},{"name":"Reserved Parking","edition":"none","time":"20:36","points":0,"dup":true},{"name":"Scary Face","edition":"none","time":"21:11","points":0,"dup":true},{"name":"Campfire","edition":"none","time":"22:01","points":4,"dup":false},{"name":"Scholar","edition":"none","time":"22:05","points":0,"dup":true}],"tw0hour":[{"name":"Invisible Joker","edition":"none","time":"20:12","points":4,"dup":false},{"name":"Constellation","edition":"none","time":"20:36","points":0,"dup":true},{"name":"Splash","edition":"none","time":"22:51","points":0,"dup":true},{"name":"Onyx Agate","edition":"none","time":"23:05","points":0,"dup":true}],"umfantasminhacamarada":[{"name":"Photograph","edition":"none","time":"19:16","points":0,"dup":true},{"name":"Runner","edition":"holographic","time":"19:55","points":7,"dup":false},{"name":"The Order","edition":"none","time":"20:11","points":4,"dup":false},{"name":"Ride the Bus","edition":"none","time":"20:36","points":1,"dup":false},{"name":"Smeared Joker","edition":"none","time":"21:35","points":2,"dup":false},{"name":"Arrowhead","edition":"none","time":"22:53","points":2,"dup":false},{"name":"Zany Joker","edition":"none","time":"23:05","points":0,"dup":true},{"name":"To Do List","edition":"foil","time":"23:36","points":5,"dup":false}],"valro81":[{"name":"Half Joker","edition":"none","time":"23:07","points":1,"dup":false},{"name":"Runner","edition":"none","time":"23:36","points":1,"dup":false}],"verinxin":[{"name":"Acrobat","edition":"none","time":"23:10","points":0,"dup":true},{"name":"Seltzer","edition":"none","time":"23:37","points":0,"dup":true}],"wengikos":[{"name":"Mr. Bones","edition":"none","time":"19:24","points":0,"dup":true},{"name":"Mail-In Rebate","edition":"none","time":"20:41","points":0,"dup":true},{"name":"Steel Joker","edition":"none","time":"21:06","points":2,"dup":false},{"name":"Stone Joker","edition":"none","time":"21:35","points":0,"dup":true},{"name":"Shortcut","edition":"none","time":"22:05","points":2,"dup":false},{"name":"Faceless Joker","edition":"none","time":"22:35","points":1,"dup":false},{"name":"Ramen","edition":"none","time":"23:06","points":2,"dup":false},{"name":"The Idol","edition":"none","time":"23:35","points":2,"dup":false}],"xflyes":[{"name":"Riff-Raff","edition":"none","time":"18:36","points":1,"dup":false},{"name":"The Family","edition":"none","time":"19:07","points":4,"dup":false},{"name":"Hallucination","edition":"none","time":"19:35","points":1,"dup":false},{"name":"Ride the Bus","edition":"none","time":"20:05","points":1,"dup":false},{"name":"Mail-In Rebate","edition":"none","time":"20:35","points":1,"dup":false},{"name":"Riff-Raff","edition":"none","time":"21:05","points":0,"dup":true},{"name":"To Do List","edition":"none","time":"21:35","points":0,"dup":true},{"name":"Lusty Joker","edition":"foil","time":"22:06","points":5,"dup":false},{"name":"Splash","edition":"none","time":"22:36","points":0,"dup":true},{"name":"Square Joker","edition":"none","time":"23:06","points":0,"dup":true},{"name":"Mail-In Rebate","edition":"none","time":"23:36","points":0,"dup":true}],"yell0wbuff":[{"name":"Clever Joker","edition":"none","time":"22:04","points":1,"dup":false},{"name":"Red Card","edition":"none","time":"23:00","points":1,"dup":false}],"yu_ba_ri":[{"name":"Swashbuckler","edition":"none","time":"18:35","points":0,"dup":true},{"name":"Wily Joker","edition":"none","time":"19:05","points":1,"dup":false},{"name":"Lusty Joker","edition":"none","time":"19:35","points":0,"dup":true},{"name":"Mystic Summit","edition":"none","time":"20:05","points":1,"dup":false},{"name":"Faceless Joker","edition":"none","time":"20:37","points":1,"dup":false},{"name":"Smiley Face","edition":"none","time":"21:13","points":0,"dup":true},{"name":"Midas Mask ","edition":"none","time":"21:35","points":2,"dup":false},{"name":"Mystic Summit","edition":"none","time":"22:06","points":0,"dup":true},{"name":"Diet Cola","edition":"none","time":"22:35","points":2,"dup":false},{"name":"Misprint","edition":"none","time":"23:06","points":0,"dup":true},{"name":"Misprint","edition":"none","time":"23:36","points":0,"dup":true}],"zeguro6":[{"name":"Photograph","edition":"none","time":"19:57","points":0,"dup":true},{"name":"To the Moon","edition":"none","time":"20:06","points":2,"dup":false},{"name":"Flash Card","edition":"none","time":"20:42","points":0,"dup":true},{"name":"Faceless Joker","edition":"none","time":"21:05","points":0,"dup":true},{"name":"Zany Joker","edition":"none","time":"21:36","points":0,"dup":true},{"name":"Delayed Gratification","edition":"none","time":"22:05","points":1,"dup":false},{"name":"Rocket","edition":"none","time":"22:36","points":2,"dup":false},{"name":"Mad Joker","edition":"none","time":"23:30","points":1,"dup":false},{"name":"Certificate","edition":"none","time":"23:36","points":2,"dup":false}],"zygrek":[{"name":"Juggler","edition":"none","time":"23:10","points":1,"dup":false}]}}; // { session:{num,date,start,end}, pulls:{ nameLower: [{name,edition,time,points}, ...] } } for the most recent stream session — built by build_last_stream_pulls.js, NOT part of the main pipeline (session bounds set by hand like OFFICIAL_SESSIONS), run it by hand first.
+const HISTORY_SESSION_DETAIL = {"lilubells":{"date":"2026-08-08","from":"2026-08-07","gain":54,"items":[{"name":"Half Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Gros Michel","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Banner","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Superposition","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Chicot","edition":"negative","points":29,"dup":false,"at":"2026-08-08"},{"name":"Mime","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Sly Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Golden Ticket","edition":"holographic","points":7,"dup":false,"at":"2026-08-08"},{"name":"Rough Gem","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Lusty Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Drunkard","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Mad Joker","edition":"foil","points":5,"dup":false,"at":"2026-08-08"},{"name":"Scary Face","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Gluttonous Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Wily Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"}]},"maxtime019lesoumis2cactus":{"date":"2026-08-10","from":"2026-08-09","gain":49,"items":[{"name":"Golden Joker","edition":"holographic","points":7,"dup":false,"at":"2026-08-10"},{"name":"Hack","edition":"none","points":2,"dup":false,"at":"2026-08-10"},{"name":"Walkie Talkie","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"Arrowhead","edition":"foil","points":6,"dup":false,"at":"2026-08-10"},{"name":"Even Steven","edition":"none","points":0,"dup":true,"at":"2026-08-10"},{"name":"Canio","edition":"none","points":15,"dup":false,"at":"2026-08-10"},{"name":"Hit the Road","edition":"none","points":4,"dup":false,"at":"2026-08-10"},{"name":"Cavendish","edition":"foil","points":5,"dup":false,"at":"2026-08-10"},{"name":"Lusty Joker","edition":"holographic","points":7,"dup":false,"at":"2026-08-10"},{"name":"Flash Card","edition":"none","points":0,"dup":true,"at":"2026-08-10"},{"name":"Golden Ticket","edition":"none","points":0,"dup":true,"at":"2026-08-10"},{"name":"Diet Cola","edition":"none","points":2,"dup":false,"at":"2026-08-10"}]},"forthefutureproject":{"date":"2026-08-04","from":"2026-08-03","gain":49,"items":[{"name":"Canio","edition":"none","points":15,"dup":false,"at":"2026-08-04"},{"name":"8 Ball","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Crafty Joker","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Square Joker","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Gluttonous Joker","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Ice Cream","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Gluttonous Joker","edition":"none","points":0,"dup":true,"at":"2026-08-04"},{"name":"Half Joker","edition":"foil","points":5,"dup":false,"at":"2026-08-04"},{"name":"Wily Joker","edition":"holographic","points":7,"dup":false,"at":"2026-08-04"},{"name":"Showman","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Juggler","edition":"none","points":0,"dup":true,"at":"2026-08-04"},{"name":"Golden Joker","edition":"none","points":0,"dup":true,"at":"2026-08-04"},{"name":"Hallucination","edition":"none","points":0,"dup":true,"at":"2026-08-04"},{"name":"Cavendish","edition":"none","points":0,"dup":true,"at":"2026-08-04"},{"name":"Yorick","edition":"none","points":15,"dup":false,"at":"2026-08-04"}]},"37brice":{"date":"2026-07-15","from":"2026-07-05","gain":46,"items":[{"name":"Astronomer","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Onyx Agate","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Abstract Joker","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Hiker","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Seltzer","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"8 Ball","edition":"foil","points":5,"dup":false,"at":"2026-07-15"},{"name":"Golden Ticket","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Diet Cola","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Joker","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Banner","edition":"foil","points":5,"dup":false,"at":"2026-07-15"},{"name":"Diet Cola","edition":"none","points":0,"dup":true,"at":"2026-07-15"},{"name":"Half Joker","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Fibonacci","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Golden Joker","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Rocket","edition":"holographic","points":8,"dup":false,"at":"2026-07-15"},{"name":"Faceless Joker","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Ride the Bus","edition":"polychrome","points":10,"dup":false,"at":"2026-07-15"}]},"al_rizla97":{"date":"2026-07-15","from":"2026-07-05","gain":41,"items":[{"name":"Satellite","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Marble Joker","edition":"holographic","points":8,"dup":false,"at":"2026-07-15"},{"name":"Hanging Chad","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Certificate","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Baseball Card","edition":"negative","points":18,"dup":false,"at":"2026-07-15"},{"name":"Blue Joker","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Blueprint","edition":"none","points":4,"dup":false,"at":"2026-07-15"},{"name":"Wily Joker","edition":"none","points":1,"dup":false,"at":"2026-07-15"},{"name":"Bull","edition":"none","points":2,"dup":false,"at":"2026-07-15"},{"name":"Joker Stencil","edition":"none","points":2,"dup":false,"at":"2026-07-15"}]},"elbubbito":{"date":"2026-07-28","from":"2026-07-24","gain":39,"items":[{"name":"Chaos the Clown","edition":"none","points":1,"dup":false,"at":"2026-07-28"},{"name":"Greedy Joker","edition":"none","points":0,"dup":true,"at":"2026-07-28"},{"name":"Sly Joker","edition":"foil","points":5,"dup":false,"at":"2026-07-28"},{"name":"Credit Card","edition":"none","points":1,"dup":false,"at":"2026-07-28"},{"name":"Drunkard","edition":"none","points":0,"dup":true,"at":"2026-07-28"},{"name":"Chaos the Clown","edition":"polychrome","points":10,"dup":false,"at":"2026-07-28"},{"name":"Zany Joker","edition":"none","points":1,"dup":false,"at":"2026-07-28"},{"name":"Jolly Joker","edition":"none","points":1,"dup":false,"at":"2026-07-28"},{"name":"Faceless Joker","edition":"none","points":1,"dup":false,"at":"2026-07-28"},{"name":"Chicot","edition":"foil","points":19,"dup":false,"at":"2026-07-28"},{"name":"Jolly Joker","edition":"none","points":0,"dup":true,"at":"2026-07-28"},{"name":"Scholar","edition":"none","points":0,"dup":true,"at":"2026-07-28"}]},"fandragon_":{"date":"2026-08-04","from":"2026-08-03","gain":37,"items":[{"name":"Turtle Bean","edition":"foil","points":6,"dup":false,"at":"2026-08-04"},{"name":"Mad Joker","edition":"none","points":0,"dup":true,"at":"2026-08-04"},{"name":"Lusty Joker","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Gros Michel","edition":"foil","points":5,"dup":false,"at":"2026-08-04"},{"name":"Cavendish","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Superposition","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Credit Card","edition":"none","points":0,"dup":true,"at":"2026-08-04"},{"name":"Half Joker","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Card Sharp","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Hologram","edition":"holographic","points":8,"dup":false,"at":"2026-08-04"},{"name":"The Idol","edition":"foil","points":6,"dup":false,"at":"2026-08-04"},{"name":"Odd Todd","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Matador","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Runner","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"The Idol","edition":"none","points":2,"dup":false,"at":"2026-08-04"}]},"toinou4173":{"date":"2026-07-16","from":"2026-07-15","gain":36,"items":[{"name":"Crazy Joker","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Mr. Bones","edition":"none","points":2,"dup":false,"at":"2026-07-16"},{"name":"Gluttonous Joker","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Shortcut","edition":"none","points":2,"dup":false,"at":"2026-07-16"},{"name":"Chicot","edition":"none","points":15,"dup":false,"at":"2026-07-16"},{"name":"Hanging Chad","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Baron","edition":"polychrome","points":13,"dup":false,"at":"2026-07-16"},{"name":"Mail-In Rebate","edition":"none","points":1,"dup":false,"at":"2026-07-16"}]},"m3r0v1gien":{"date":"2026-08-08","from":"2026-08-07","gain":35,"items":[{"name":"Crazy Joker","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Hit the Road","edition":"foil","points":8,"dup":false,"at":"2026-08-08"},{"name":"Crafty Joker","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Hack","edition":"foil","points":6,"dup":false,"at":"2026-08-08"},{"name":"Misprint","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Troubadour","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Riff-Raff","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Jolly Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Dusk","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Troubadour","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Zany Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"DNA","edition":"none","points":4,"dup":false,"at":"2026-08-08"},{"name":"Fortune Teller","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Zany Joker","edition":"polychrome","points":10,"dup":false,"at":"2026-08-08"},{"name":"Turtle Bean","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Green Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Fortune Teller","edition":"none","points":0,"dup":true,"at":"2026-08-08"}]},"garg000ille":{"date":"2026-07-24","from":"2026-07-23","gain":35,"items":[{"name":"Misprint","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Gift Card","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Ancient Joker","edition":"none","points":4,"dup":false,"at":"2026-07-24"},{"name":"Runner","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Smiley Face","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Chaos the Clown","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Splash","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Castle","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Devious Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Raised Fist","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Baron","edition":"none","points":4,"dup":false,"at":"2026-07-24"},{"name":"Hiker","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Obelisk","edition":"foil","points":8,"dup":false,"at":"2026-07-24"},{"name":"Gluttonous Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Fortune Teller","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Supernova","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Business Card","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Gros Michel","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Shortcut","edition":"none","points":2,"dup":false,"at":"2026-07-24"}]},"arkhann50":{"date":"2026-08-01","from":"2026-07-28","gain":34,"items":[{"name":"Sly Joker","edition":"holographic","points":7,"dup":false,"at":"2026-08-01"},{"name":"Riff-Raff","edition":"none","points":0,"dup":true,"at":"2026-08-01"},{"name":"Golden Eye","edition":"none","points":20,"dup":false,"at":"2026-08-01"},{"name":"Onyx Agate","edition":"none","points":2,"dup":false,"at":"2026-08-01"},{"name":"Swashbuckler","edition":"foil","points":5,"dup":false,"at":"2026-08-01"}]},"monsieur_tatillon":{"date":"2026-07-24","from":"2026-07-23","gain":31,"items":[{"name":"Banner","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Even Steven","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Faceless Joker","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Wily Joker","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"To Do List","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Smiley Face","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Four Fingers","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Egg","edition":"foil","points":5,"dup":false,"at":"2026-07-24"},{"name":"Cartomancer","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Scary Face","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Mad Joker","edition":"foil","points":5,"dup":false,"at":"2026-07-24"},{"name":"Scholar","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Smiley Face","edition":"holographic","points":7,"dup":false,"at":"2026-07-24"},{"name":"Misprint","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Shoot the Moon","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Superposition","edition":"foil","points":5,"dup":false,"at":"2026-07-24"}]},"johndufflesoumis9":{"date":"2026-08-23","from":"2026-08-21","gain":31,"items":[{"name":"Matador","edition":"none","points":2,"dup":false,"at":"2026-08-23"},{"name":"Golden Ticket","edition":"none","points":0,"dup":true,"at":"2026-08-23"},{"name":"Ride the Bus","edition":"foil","points":5,"dup":false,"at":"2026-08-23"},{"name":"Flash Card","edition":"none","points":2,"dup":false,"at":"2026-08-23"},{"name":"Baron","edition":"polychrome","points":13,"dup":false,"at":"2026-08-23"},{"name":"Mail-In Rebate","edition":"none","points":0,"dup":true,"at":"2026-08-23"},{"name":"Hanging Chad","edition":"none","points":1,"dup":false,"at":"2026-08-23"},{"name":"Drunkard","edition":"holographic","points":7,"dup":false,"at":"2026-08-23"},{"name":"Popcorn","edition":"none","points":1,"dup":false,"at":"2026-08-23"}]},"neandre":{"date":"2026-08-08","from":"2026-08-07","gain":31,"items":[{"name":"Walkie Talkie","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Egg","edition":"polychrome","points":10,"dup":false,"at":"2026-08-08"},{"name":"Swashbuckler","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Reserved Parking","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Merry Andy","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"The Idol","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Bloodstone","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Marble Joker","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Drunkard","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Riff-Raff","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Credit Card","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Half Joker","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Clever Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Riff-Raff","edition":"foil","points":5,"dup":false,"at":"2026-08-08"},{"name":"Superposition","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Mad Joker","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Chaos the Clown","edition":"none","points":1,"dup":false,"at":"2026-08-08"}]},"apokalmix":{"date":"2026-08-26","from":"2026-08-24","gain":30,"items":[{"name":"Perkeo","edition":"none","points":15,"dup":false,"at":"2026-08-25"},{"name":"Throwback","edition":"none","points":2,"dup":false,"at":"2026-08-26"},{"name":"Lucky Cat","edition":"none","points":0,"dup":true,"at":"2026-08-26"},{"name":"Mystic Summit","edition":"none","points":0,"dup":true,"at":"2026-08-26"},{"name":"Crafty Joker","edition":"none","points":0,"dup":true,"at":"2026-08-26"},{"name":"Superposition","edition":"polychrome","points":10,"dup":false,"at":"2026-08-26"},{"name":"Devious Joker","edition":"none","points":1,"dup":false,"at":"2026-08-26"},{"name":"Marble Joker","edition":"none","points":2,"dup":false,"at":"2026-08-26"}]},"tw0hour":{"date":"2026-08-04","from":"2026-08-03","gain":30,"items":[{"name":"Ice Cream","edition":"foil","points":5,"dup":false,"at":"2026-08-04"},{"name":"Banner","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Hiker","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Luchador","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Popcorn","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Flower Pot","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Seltzer","edition":"foil","points":6,"dup":false,"at":"2026-08-04"},{"name":"Chaos the Clown","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Glass Joker","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Mr. Bones","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Golden Ticket","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Sock and Buskin","edition":"none","points":2,"dup":false,"at":"2026-08-04"},{"name":"Scholar","edition":"none","points":1,"dup":false,"at":"2026-08-04"},{"name":"Onyx Agate","edition":"none","points":2,"dup":false,"at":"2026-08-04"}]},"lesoumis2cactus35":{"date":"2026-06-10","from":"2026-06-07","gain":29,"items":[{"name":"Devious Joker","edition":"none","points":1,"dup":false,"at":"2026-06-10"},{"name":"Hiker","edition":"none","points":2,"dup":false,"at":"2026-06-10"},{"name":"Acrobat","edition":"none","points":2,"dup":false,"at":"2026-06-10"},{"name":"Misprint","edition":"holographic","points":7,"dup":false,"at":"2026-06-10"},{"name":"Scholar","edition":"none","points":1,"dup":false,"at":"2026-06-10"},{"name":"The Family","edition":"holographic","points":10,"dup":false,"at":"2026-06-10"},{"name":"Mail-In Rebate","edition":"none","points":1,"dup":false,"at":"2026-06-10"},{"name":"Bootstraps","edition":"none","points":2,"dup":false,"at":"2026-06-10"},{"name":"Splash","edition":"none","points":1,"dup":false,"at":"2026-06-10"},{"name":"Mail-In Rebate","edition":"none","points":0,"dup":true,"at":"2026-06-10"},{"name":"Vampire","edition":"none","points":2,"dup":false,"at":"2026-06-10"}]},"matatrax":{"date":"2026-08-09","from":"2026-08-08","gain":29,"items":[{"name":"The Tribe","edition":"polychrome","points":13,"dup":false,"at":"2026-08-09"},{"name":"Even Steven","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Golden Ticket","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Credit Card","edition":"none","points":0,"dup":true,"at":"2026-08-09"},{"name":"Ice Cream","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Square Joker","edition":"none","points":0,"dup":true,"at":"2026-08-09"},{"name":"Sly Joker","edition":"foil","points":5,"dup":false,"at":"2026-08-09"},{"name":"Popcorn","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Hallucination","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Constellation","edition":"none","points":0,"dup":true,"at":"2026-08-09"},{"name":"Runner","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Credit Card","edition":"none","points":0,"dup":true,"at":"2026-08-09"},{"name":"Blue Joker","edition":"foil","points":5,"dup":false,"at":"2026-08-09"}]},"wengikos":{"date":"2026-08-08","from":"2026-08-07","gain":29,"items":[{"name":"Ice Cream","edition":"none","points":0,"dup":true,"at":"2026-08-08"},{"name":"Red Card","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Vagabond","edition":"foil","points":8,"dup":false,"at":"2026-08-08"},{"name":"Seeing Double","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Mystic Summit","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"Onyx Agate","edition":"none","points":2,"dup":false,"at":"2026-08-08"},{"name":"Four Fingers","edition":"foil","points":6,"dup":false,"at":"2026-08-08"},{"name":"Cavendish","edition":"holographic","points":7,"dup":false,"at":"2026-08-08"},{"name":"Abstract Joker","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"To Do List","edition":"none","points":1,"dup":false,"at":"2026-08-08"},{"name":"To Do List","edition":"none","points":0,"dup":true,"at":"2026-08-08"}]},"dieudurire":{"date":"2026-08-10","from":"2026-08-09","gain":28,"items":[{"name":"Ice Cream","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"8 Ball","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"Odd Todd","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"Marble Joker","edition":"none","points":2,"dup":false,"at":"2026-08-10"},{"name":"Smiley Face","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"Scary Face","edition":"foil","points":5,"dup":false,"at":"2026-08-10"},{"name":"Splash","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"Joker Stencil","edition":"none","points":2,"dup":false,"at":"2026-08-10"},{"name":"Crafty Joker","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"Walkie Talkie","edition":"none","points":1,"dup":false,"at":"2026-08-10"},{"name":"Swashbuckler","edition":"none","points":0,"dup":true,"at":"2026-08-10"},{"name":"Photograph","edition":"polychrome","points":10,"dup":false,"at":"2026-08-10"},{"name":"Stone Joker","edition":"none","points":2,"dup":false,"at":"2026-08-10"}]},"skypios":{"date":"2026-07-24","from":"2026-07-23","gain":28,"items":[{"name":"8 Ball","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Ice Cream","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Fortune Teller","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Baron","edition":"none","points":4,"dup":false,"at":"2026-07-24"},{"name":"Wrathful Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Hit the Road","edition":"none","points":4,"dup":false,"at":"2026-07-24"},{"name":"Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Crazy Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Walkie Talkie","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Walkie Talkie","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Supernova","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Hallucination","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Walkie Talkie","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Clever Joker","edition":"foil","points":5,"dup":false,"at":"2026-07-24"},{"name":"Joker","edition":"holographic","points":7,"dup":false,"at":"2026-07-24"}]},"m0utm0ut56":{"date":"2026-08-02","from":"2026-08-01","gain":27,"items":[{"name":"Mail-In Rebate","edition":"none","points":0,"dup":true,"at":"2026-08-02"},{"name":"Green Joker","edition":"none","points":0,"dup":true,"at":"2026-08-02"},{"name":"Mad Joker","edition":"foil","points":5,"dup":false,"at":"2026-08-02"},{"name":"Green Joker","edition":"none","points":0,"dup":true,"at":"2026-08-02"},{"name":"Seeing Double","edition":"none","points":2,"dup":false,"at":"2026-08-02"},{"name":"Hit the Road","edition":"none","points":4,"dup":false,"at":"2026-08-02"},{"name":"Egg","edition":"foil","points":5,"dup":false,"at":"2026-08-02"},{"name":"Loyalty Card","edition":"polychrome","points":11,"dup":false,"at":"2026-08-02"}]},"bichopebitou":{"date":"2026-08-09","from":"2026-08-08","gain":27,"items":[{"name":"Flower Pot","edition":"none","points":0,"dup":true,"at":"2026-08-09"},{"name":"Superposition","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Satellite","edition":"none","points":2,"dup":false,"at":"2026-08-09"},{"name":"Blackboard","edition":"foil","points":6,"dup":false,"at":"2026-08-09"},{"name":"Wily Joker","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Matador","edition":"none","points":2,"dup":false,"at":"2026-08-09"},{"name":"Red Card","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Midas Mask ","edition":"none","points":2,"dup":false,"at":"2026-08-09"},{"name":"Joker","edition":"none","points":1,"dup":false,"at":"2026-08-09"},{"name":"Wily Joker","edition":"polychrome","points":10,"dup":false,"at":"2026-08-09"},{"name":"Delayed Gratification","edition":"none","points":1,"dup":false,"at":"2026-08-09"}]},"gal12_":{"date":"2026-08-27","from":"2026-08-26","gain":27,"items":[{"name":"Business Card","edition":"polychrome","points":10,"dup":false,"at":"2026-08-27"},{"name":"Golden Ticket","edition":"none","points":1,"dup":false,"at":"2026-08-27"},{"name":"Rough Gem","edition":"none","points":2,"dup":false,"at":"2026-08-27"},{"name":"Spare Trousers","edition":"none","points":2,"dup":false,"at":"2026-08-27"},{"name":"Ride the Bus","edition":"foil","points":5,"dup":false,"at":"2026-08-27"},{"name":"Half Joker","edition":"holographic","points":7,"dup":false,"at":"2026-08-27"}]},"velorution":{"date":"2026-08-17","from":"2026-08-15","gain":27,"items":[{"name":"Satellite","edition":"none","points":0,"dup":true,"at":"2026-08-17"},{"name":"Seltzer","edition":"none","points":2,"dup":false,"at":"2026-08-17"},{"name":"Red Card","edition":"none","points":1,"dup":false,"at":"2026-08-17"},{"name":"Yorick","edition":"none","points":15,"dup":false,"at":"2026-08-17"},{"name":"Reserved Parking","edition":"none","points":0,"dup":true,"at":"2026-08-17"},{"name":"Zany Joker","edition":"none","points":1,"dup":false,"at":"2026-08-17"},{"name":"Seltzer","edition":"foil","points":6,"dup":false,"at":"2026-08-17"},{"name":"Space Joker","edition":"none","points":2,"dup":false,"at":"2026-08-17"}]},"croucroute":{"date":"2026-07-24","from":"2026-07-23","gain":26,"items":[{"name":"Gift Card","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Four Fingers","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Arrowhead","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Hanging Chad","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Photograph","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Constellation","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Square Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Splash","edition":"foil","points":0,"dup":true,"at":"2026-07-24"},{"name":"Even Steven","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Popcorn","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Satellite","edition":"none","points":2,"dup":false,"at":"2026-07-24"},{"name":"Canio","edition":"none","points":15,"dup":false,"at":"2026-07-24"},{"name":"Jolly Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"}]},"ghostsoumis2soumis":{"date":"2026-07-16","from":"2026-07-15","gain":26,"items":[{"name":"Chaos the Clown","edition":"none","points":0,"dup":true,"at":"2026-07-16"},{"name":"Gluttonous Joker","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Banner","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Mystic Summit","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Joker Stencil","edition":"foil","points":6,"dup":false,"at":"2026-07-16"},{"name":"Crafty Joker","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Hologram","edition":"none","points":2,"dup":false,"at":"2026-07-16"},{"name":"Juggler","edition":"holographic","points":7,"dup":false,"at":"2026-07-16"},{"name":"Mad Joker","edition":"foil","points":5,"dup":false,"at":"2026-07-16"},{"name":"Smiley Face","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Sly Joker","edition":"none","points":1,"dup":false,"at":"2026-07-16"},{"name":"Gluttonous Joker","edition":"none","points":0,"dup":true,"at":"2026-07-16"}]},"to1nio":{"date":"2026-07-05","from":"2026-07-04","gain":26,"items":[{"name":"Cactus","edition":"none","points":17,"dup":false,"at":"2026-07-05"},{"name":"Cavendish","edition":"holographic","points":7,"dup":false,"at":"2026-07-05"},{"name":"Swashbuckler","edition":"none","points":1,"dup":false,"at":"2026-07-05"},{"name":"Mystic Summit","edition":"none","points":1,"dup":false,"at":"2026-07-05"},{"name":"Superposition","edition":"none","points":0,"dup":true,"at":"2026-07-05"}]},"yu_ba_ri":{"date":"2026-08-12","from":"2026-08-11","gain":26,"items":[{"name":"Jolly Joker","edition":"none","points":1,"dup":false,"at":"2026-08-12"},{"name":"Golden Eye","edition":"none","points":20,"dup":false,"at":"2026-08-12"},{"name":"Reserved Parking","edition":"none","points":1,"dup":false,"at":"2026-08-12"},{"name":"Cloud 9","edition":"none","points":2,"dup":false,"at":"2026-08-12"},{"name":"Troubadour","edition":"none","points":2,"dup":false,"at":"2026-08-12"}]},"robfram":{"date":"2026-07-24","from":"2026-07-23","gain":26,"items":[{"name":"Hit the Road","edition":"foil","points":8,"dup":false,"at":"2026-07-24"},{"name":"Red Card","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Scary Face","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Superposition","edition":"polychrome","points":10,"dup":false,"at":"2026-07-24"},{"name":"Obelisk","edition":"none","points":4,"dup":false,"at":"2026-07-24"},{"name":"Abstract Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"},{"name":"Scary Face","edition":"none","points":0,"dup":true,"at":"2026-07-24"},{"name":"Crazy Joker","edition":"none","points":1,"dup":false,"at":"2026-07-24"}]}}; // { nameLower: { date, from, gain, items:[{name,edition,points,dup,at}] } } for the ~30 biggest single-checkpoint score jumps — built by build_history_session_detail.js. Run it every update.
+const TOP_JOKERS = [{"name":"Chicot","edition":"negative","rarity":"Legendary","points":29,"holders":[["Lilubells","2026-08-08"]]},{"name":"Canio","edition":"holographic","rarity":"Legendary","points":21,"holders":[["nithror_","2026-06-07"]]},{"name":"Triboulet","edition":"holographic","rarity":"Legendary","points":21,"holders":[["elbubbito","2026-08-09"]]},{"name":"Golden Eye","edition":"none","rarity":"Legendary","points":20,"holders":[["arkhann50","2026-08-01"],["Yu_Ba_Ri","2026-08-12"]]},{"name":"Chicot","edition":"foil","rarity":"Legendary","points":19,"holders":[["elbubbito","2026-07-28"]]},{"name":"Baseball Card","edition":"negative","rarity":"Rare","points":18,"holders":[["al_rizla97","2026-07-15"]]},{"name":"Stuntman","edition":"negative","rarity":"Rare","points":18,"holders":[["Ampheur","2026-08-25"]]},{"name":"Cactus","edition":"none","rarity":"Legendary","points":17,"holders":[["M0UTM0UT56","2026-06-07"],["to1nio","2026-07-05"],["m3r0v1gien","2026-08-04"]]},{"name":"Castle","edition":"negative","rarity":"Uncommon","points":16,"holders":[["garg000ille","2026-08-08"]]},{"name":"Showman","edition":"negative","rarity":"Uncommon","points":16,"holders":[["Kahklouf","2026-08-04"]]},{"name":"Canio","edition":"none","rarity":"Legendary","points":15,"holders":[["Croucroute","2026-07-24"],["forthefutureproject","2026-08-04"],["baptouu9","2026-08-09"],["Maxtime019LeSoumis2Cactus","2026-08-10"],["Tucunared","2026-08-11"],["to1nio","2026-08-18"]]},{"name":"Chaos the Clown","edition":"negative","rarity":"Common","points":15,"holders":[["gal12_","2026-08-23"]]},{"name":"Chicot","edition":"none","rarity":"Legendary","points":15,"holders":[["toinou4173","2026-07-16"],["Monsieur_Tatillon","2026-07-16"],["M0UTM0UT56","2026-07-23"],["garg000ille","2026-08-10"],["SramRedBlack","2026-08-26"]]},{"name":"Drunkard","edition":"negative","rarity":"Common","points":15,"holders":[["m3r0v1gien","2026-08-02"]]},{"name":"Fortune Teller","edition":"negative","rarity":"Common","points":15,"holders":[["al_rizla97","2026-06-10"]]},{"name":"Golden Ticket","edition":"negative","rarity":"Common","points":15,"holders":[["pasmoi42","2026-06-07"]]},{"name":"Joker","edition":"negative","rarity":"Common","points":15,"holders":[["Skypios","2026-08-06"]]},{"name":"Mail-In Rebate","edition":"negative","rarity":"Common","points":15,"holders":[["Monsieur_Tatillon","2026-06-30"]]},{"name":"Misprint","edition":"negative","rarity":"Common","points":15,"holders":[["ghostsoumis2soumis","2026-08-13"]]},{"name":"Perkeo","edition":"none","rarity":"Legendary","points":15,"holders":[["al_rizla97","2026-08-02"],["zeguro6","2026-08-07"],["toinou4173","2026-08-08"],["Croucroute","2026-08-11"],["ApokalmiX","2026-08-25"]]},{"name":"Photograph","edition":"negative","rarity":"Common","points":15,"holders":[["hpaascal","2026-08-09"]]},{"name":"Raised Fist","edition":"negative","rarity":"Common","points":15,"holders":[["LeSoumis2Cactus35","2026-07-16"]]},{"name":"Scary Face","edition":"negative","rarity":"Common","points":15,"holders":[["fandragon_","2026-08-03"],["gal12_","2026-08-18"]]},{"name":"Sly Joker","edition":"negative","rarity":"Common","points":15,"holders":[["KreoKiwi","2026-08-28"]]},{"name":"Superposition","edition":"negative","rarity":"Common","points":15,"holders":[["elbubbito","2026-07-16"]]},{"name":"Triboulet","edition":"none","rarity":"Legendary","points":15,"holders":[["hpaascal","2026-07-05"],["narvaloutre","2026-08-21"]]},{"name":"Yorick","edition":"none","rarity":"Legendary","points":15,"holders":[["barb_rouss","2026-07-24"],["forthefutureproject","2026-08-04"],["Velorution","2026-08-17"]]},{"name":"Zany Joker","edition":"negative","rarity":"Common","points":15,"holders":[["al_rizla97","2026-06-21"]]},{"name":"Baron","edition":"polychrome","rarity":"Rare","points":13,"holders":[["toinou4173","2026-07-16"],["37brice","2026-08-13"],["JohnDuffLeSoumis9","2026-08-23"]]},{"name":"Burnt Joker","edition":"polychrome","rarity":"Rare","points":13,"holders":[["Dromux","2026-08-14"]]}]; // [{name, edition, rarity, points, holders:[[collector, dateISO], ...]}] — top ~30 (joker, edition) combos by points, holders oldest-first — built by build_top_jokers.js. Run it every update.
 
 const TOP_HOLDERS = {"Stuntman":[["LeSoumis2Cactus35","holographic","2026-07-17"]],"Mail-In Rebate":[["Monsieur_Tatillon","negative","2026-06-30"]],"Canio":[["Maxtime019LeSoumis2Cactus","none","2026-08-10"],["Croucroute","none","2026-07-24"],["Tucunared","none","2026-08-11"]],"Cactus":[["m3r0v1gien","none","2026-08-04"],["M0UTM0UT56","none","2026-06-07"],["to1nio","none","2026-07-04"]],"Banner":[["37brice","polychrome","2026-08-28"]],"Fortune Teller":[["al_rizla97","negative","2026-06-10"]],"Castle":[["garg000ille","negative","2026-08-08"]],"Misprint":[["ghostsoumis2soumis","negative","2026-08-13"]],"Hit the Road":[["fandragon_","polychrome","2026-08-12"]],"Triboulet":[["elbubbito","holographic","2026-08-09"]],"Yorick":[["forthefutureproject","none","2026-08-04"]],"Baron":[["JohnDuffLeSoumis9","polychrome","2026-08-23"]],"Chaos the Clown":[["cquoilabull","polychrome","2026-08-17"]],"Golden Eye":[["Yu_Ba_Ri","none","2026-08-12"],["arkhann50","none","2026-08-01"]],"The Tribe":[["MatatraX","polychrome","2026-08-09"]],"Photograph":[["hpaascal","negative","2026-08-09"],["DIEUDURIRE","polychrome","2026-08-10"]],"Perkeo":[["zeguro6","none","2026-08-07"],["ApokalmiX","none","2026-08-24"]],"Satellite":[["Bichopebitou","polychrome","2026-08-01"]]}; // jokerName -> [[collectorName, editionKey, dateISO], ...] — current top 25 whose top card is this joker (any edition), édition propre à chaque personne
 (function(){
@@ -2072,11 +2216,21 @@ const TOP_HOLDERS = {"Stuntman":[["LeSoumis2Cactus35","holographic","2026-07-17"
   const top25Share = top25Boosters/totalBoosters*100;
   const oneAndDone = rows.filter(r=>r.grid.gridPulls===1).length;
 
+  const median = a => { const s=[...a].sort((x,y)=>x-y); const m=s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
+  const medUniq = median(rows.map(r=>r.uniq));
+  const totalInstances = rows.reduce((s,r)=>s+r.total,0);
+  const totalDupes = rows.reduce((s,r)=>s+(r.total-r.uniq),0);
+  const dupeShare = totalDupes/totalInstances*100;
+  const nearDone = rows.filter(r=>r.uniq/150>=0.75).length;
+
   const tiles = [
     { val: fmtInt(rows.length), lbl: 'Collectionneurs actifs recensés', delta: 'relevé du 28 août', cls:'' },
     { val: fmtInt(totalBoosters), lbl: 'Boosters payants ouverts, toute la communauté', delta: `= ${fmtInt(totalEpines)} épines dépensées`, cls:'' },
     { val: `${top25Share.toFixed(0)}<small>%</small>`, lbl: 'de l’activité totale concentrée sur le top 25', delta: `${((25/rows.length)*100).toFixed(0)}% des collectionneurs`, cls:'up' },
     { val: fmtInt(oneAndDone), lbl: 'ont ouvert un seul booster payant, jamais revenus', delta: `${(oneAndDone/rows.length*100).toFixed(0)}% de la communauté`, cls:'down' },
+    { val: `${medUniq}<small>/150</small>`, lbl: 'Collection médiane (jokers uniques)', delta: `soit ${(medUniq/150*100).toFixed(1)} % du dex pour le collectionneur médian`, cls:'' },
+    { val: `${dupeShare.toFixed(0)}<small>%</small>`, lbl: 'des jokers tirés sont des doublons, toute la communauté', delta: `${fmtInt(totalDupes)} doublons sur ${fmtInt(totalInstances)} tirages`, cls:'down' },
+    { val: fmtInt(nearDone), lbl: 'complétionnistes à 75 % du dex ou plus', delta: `${(nearDone/rows.length*100).toFixed(1)}% de la communauté`, cls:'up' },
   ];
   document.getElementById('communityStats').innerHTML = tiles.map(t=>`
     <div class="stat-tile">
@@ -2292,6 +2446,9 @@ const TOP_HOLDERS = {"Stuntman":[["LeSoumis2Cactus35","holographic","2026-07-17"
   // 1re page = 2, 2e = 3, etc. -> un collectionneur qui a complété p pages a reçu 2+3+…+(p+1).
   const pageReward = p => p * (p + 3) / 2;
   const totalPageJokers = PAGE_COMPLETION.reduce((s, r) => s + pageReward(r[1].length), 0);
+  const pageTally = {};
+  PAGE_COMPLETION.forEach(r => r[1].forEach(p => { if (p >= 1 && p <= 10) pageTally[p] = (pageTally[p] || 0) + 1; }));
+  const topPage = Object.entries(pageTally).sort((a, b) => b[1] - a[1])[0];
   document.getElementById('pagesStats').innerHTML = `
     <div class="stat-tile">
       <span class="val">${qualifying}<small>/${totalCollectors}</small></span>
@@ -2302,7 +2459,12 @@ const TOP_HOLDERS = {"Stuntman":[["LeSoumis2Cactus35","holographic","2026-07-17"
       <span class="val">${totalPageJokers}</span>
       <span class="lbl">Jokers offerts distribués via les paliers de page</span>
       <span class="delta">1ʳᵉ page = 2 jokers, 2ᵉ = 3, etc.</span>
-    </div>`;
+    </div>${topPage ? `
+    <div class="stat-tile">
+      <span class="val">Page ${topPage[0]}</span>
+      <span class="lbl">La page de 15 jokers la plus souvent complétée</span>
+      <span class="delta">cochée par ${topPage[1]} collectionneur${topPage[1]>1?'s':''}</span>
+    </div>` : ''}`;
   document.getElementById('pagesList').innerHTML = PAGE_COMPLETION.map((row,i)=>{
     const [name, pages, hasPage11] = row;
     const pageSet = new Set(pages);
@@ -2357,11 +2519,25 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   Object.entries(editionAgg).forEach(([k,c])=>{ editionEV += (c/totalPulls)*EDITION_PTS[k]; });
   const observedEV = rarityEV + editionEV;
 
+  const neverPulled = jokerBase.filter(j=>j.count===0);
+  const rarestInPlay = [...jokerBase].filter(j=>j.count>0).sort((a,b)=>a.count-b.count)[0];
+  const biasRows = OFFICIAL_COLLECTION
+    .filter(r=>r[0]<1000 && r[3]>=20)
+    .map(r=>({ name:r[1], rel:(r[9]-r[10])/r[10]*100 }))
+    .sort((a,b)=>b.rel-a.rel);
+  const topBias = biasRows[0];
+  const negInCirc = OFFICIAL_COLLECTION.filter(r=>r[0]<1000 && r[4] && r[4].negative>0).length;
+
   const tiles = [
     { val: fmtInt(totalPulls), lbl: 'Jokers tirés au total (dex entier)', delta: `dont ${fmtInt(totalEdited)} avec édition`, cls:'' },
     { val: `${(rarityAgg.Common/totalPulls*100).toFixed(1)}<small>%</small>`, lbl: 'Taux de commun observé', delta: `vs 70 % annoncé`, cls:'' },
     { val: `${(rarityAgg.Legendary/totalPulls*100).toFixed(2)}<small>%</small>`, lbl: 'Taux de légendaire observé', delta: `vs 0,3 % annoncé — ${rarityAgg.Legendary} tirages`, cls:'' },
     { val: `${fmtPts(observedEV)}<small> pts</small>`, lbl: 'Espérance recalculée sur ce dex', delta: `vs ${fmtPts(EV)} pts en théorie (écart ${((observedEV-EV)/EV*100).toFixed(1)}%)`, cls: observedEV>=EV?'up':'down' },
+    { val: fmtInt(neverPulled.length), lbl: 'Jokers de base que personne n’a encore', delta: neverPulled.length ? neverPulled.map(j=>j.name).join(', ') : 'les 150 jokers de base ont tous été tirés au moins une fois', cls: neverPulled.length ? 'down' : 'up' },
+    { val: `${rarestInPlay.name}`, lbl: 'Le joker de base le plus rare en circulation', delta: `${rarestInPlay.count} exemplaire${rarestInPlay.count>1?'s':''} dans toute la communauté`, cls:'' },
+    { val: fmtInt(editionAgg.negative), lbl: 'Exemplaires en édition Négatif en circulation', delta: 'l’édition la plus chère : +14 pts', cls:'up' },
+    { val: `+${topBias.rel.toFixed(0)}<small>%</small>`, lbl: `Plus gros biais du tirage — ${topBias.name}`, delta: 'sort bien plus souvent que ne le voudrait sa seule rareté', cls:'up' },
+    { val: `${negInCirc}<small>/150</small>`, lbl: 'Jokers de base qui existent en Négatif quelque part', delta: 'l’édition la plus rare (0,3 %) et la plus chère (+14 pts)', cls:'' },
   ];
   document.getElementById('jokerdexStats').innerHTML = tiles.map(t=>`
     <div class="stat-tile">
@@ -2471,12 +2647,29 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const longest = [...sessions].sort((a,b)=>b.duree-a.duree)[0];
   const busiestDate = Object.entries(BOOSTER_ACTIVE_PLAYERS_BY_DATE).sort((a,b)=>b[1]-a[1])[0];
 
+  const medianS = a => { const s=[...a].sort((x,y)=>x-y); const m=s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
+  const firstFiveAud = medianS(sessions.slice(0,5).map(r=>r.viewersServis));
+  const lastFiveAud = medianS(sessions.slice(-5).map(r=>r.viewersServis));
+  const audGrowth = lastFiveAud/firstFiveAud;
+  const firstDay = new Date(sessions[0].date), lastDay = new Date(sessions[sessions.length-1].date);
+  const weeks = (lastDay - firstDay) / (7*86400000);
+  const perWeek = sessions.length / weeks;
+  let maxGap = 0, gapFrom = '', gapTo = '';
+  for(let k=1;k<sessions.length;k++){
+    const g = (new Date(sessions[k].date) - new Date(sessions[k-1].date)) / 86400000;
+    if(g > maxGap){ maxGap = g; gapFrom = sessions[k-1].date; gapTo = sessions[k].date; }
+  }
+
   const tiles = [
     { val: fmtInt(sessions.length), lbl: 'Sessions de stream recensées', delta: `du ${sessions[0].date} au ${sessions[sessions.length-1].date}`, cls:'' },
     { val: `${fmtPts(totalHeures)}<small> h</small>`, lbl: 'Temps de stream cumulé', delta: `= ${fmtInt(totalDistribues)} jokers distribués`, cls:'' },
     { val: `${fmtPts(avgParHeure)}<small>/h</small>`, lbl: 'Jokers distribués par heure, en moyenne', delta: `record : ${fmtPts(best.jokersParHeure)}/h le ${best.date}`, cls:'up' },
     { val: `${fmtPts(longest.duree)}<small> h</small>`, lbl: 'Session la plus longue', delta: `le ${longest.date} (${longest.jokersDistribues} jokers)`, cls:'' },
     { val: fmtInt(busiestDate[1]), lbl: 'Collectionneurs actifs, record en une session', delta: `le ${busiestDate[0]}`, cls:'up' },
+    { val: `×${audGrowth.toFixed(1)}`, lbl: 'Croissance de l’audience (5 premières sessions → 5 dernières)', delta: `${firstFiveAud} → ${lastFiveAud} collectionneurs servis par session, en médiane`, cls:'up' },
+    { val: `${perWeek.toFixed(1)}<small>/sem.</small>`, lbl: 'Sessions par semaine, en moyenne depuis le 7 juin', delta: `${sessions.length} sessions sur ${Math.round(weeks)} semaines`, cls:'' },
+    { val: `${Math.round(maxGap)}<small> j</small>`, lbl: 'Plus longue pause entre deux streams', delta: `du ${gapFrom} au ${gapTo}`, cls:'down' },
+    { val: `${Math.round((lastDay - firstDay) / 86400000)}<small> j</small>`, lbl: 'Âge de la chasse', delta: `du 1ᵉʳ stream le ${sessions[0].date} au dernier le ${sessions[sessions.length-1].date}`, cls:'' },
   ];
   document.getElementById('sessionStats').innerHTML = tiles.map(t=>`
     <div class="stat-tile">
@@ -2517,10 +2710,33 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const zeroPct = (R.zeroCount/R.totalBoosters*100).toFixed(1);
   const hundredPct = (R.hundredCount/R.totalBoosters*100).toFixed(1);
 
+  const avgDupRate = R.points.reduce((s,p)=>s+p[2],0)/R.points.length;
+  const paidPulls = Object.values(BOOSTER_GRID_TOTALS).reduce((s,v)=>s+v.gridPulls,0);
+  const freePulls = MINIGAME_STATS.collectivePulls + MINIGAME_STATS.soloPageLikePulls;
+  const paidShare = paidPulls/(paidPulls+freePulls)*100;
+  const totalUniques = FULL.reduce((s,r)=>s+r[3],0);
+  const epinesPerUnique = paidPulls*150/totalUniques;
+
+  const first10Dup = R.points.slice(0,10).reduce((s,p)=>s+p[2],0)/Math.min(10,R.points.length);
+  const last10Dup = R.points.slice(-10).reduce((s,p)=>s+p[2],0)/Math.min(10,R.points.length);
+  const dirtiest = [...R.points].sort((a,b)=>b[2]-a[2])[0];
+  const dirtiestDate = new Date(dirtiest[0]).toLocaleDateString('fr-FR', {timeZone:'Europe/Paris', day:'numeric', month:'long', year:'numeric'});
+  const yieldRows = Object.entries(BOOSTER_GRID_TOTALS)
+    .filter(([,v])=>v.gridPulls>=10)
+    .map(([name,v])=>({ name, ppb: v.gridPoints/v.gridPulls, n:v.gridPulls }))
+    .sort((a,b)=>b.ppb-a.ppb);
+  const topYield = yieldRows[0];
+
   const tiles = [
     { val: fmtInt(R.crowd.players), lbl: 'La plus grande ouverture', delta: `${fmtLongDate(R.crowd.date)}, ${R.crowd.time} — ${R.crowd.dupCount} doublon${R.crowd.dupCount>1?'s':''} sur ${R.crowd.pulls} (${R.crowd.dupRate}%)`, cls:'' },
     { val: fmtInt(R.zeroCount), lbl: 'Ouvertures à 0% de doublons', delta: `${zeroPct}% des ouvertures — jamais au-delà de ${R.clean.players} joueurs`, cls:'up' },
     { val: fmtInt(R.hundredCount), lbl: 'Ouvertures à 100% de doublons', delta: R.hundredCount>0 ? `${hundredPct}% des ouvertures` : `jamais arrivé sur les ${fmtInt(R.totalBoosters)} vraies ouvertures — trop de joueurs à la fois pour que tout le monde tombe sur un doublon`, cls:'down' },
+    { val: `${avgDupRate.toFixed(0)}<small>%</small>`, lbl: 'Taux de doublons moyen d’une ouverture payante', delta: `sur les ${fmtInt(R.points.length)} ouvertures payantes recensées`, cls:'' },
+    { val: `${paidShare.toFixed(0)}<small>%</small>`, lbl: 'des jokers distribués viennent de boosters payants', delta: `le reste (${(100-paidShare).toFixed(0)}%) : mini-jeux et cadeaux`, cls:'' },
+    { val: `${fmtInt(Math.round(epinesPerUnique))}<small> épines</small>`, lbl: 'Coût moyen d’un joker unique en boosters payants', delta: `${fmtInt(paidPulls*150)} épines pour ${fmtInt(totalUniques)} jokers uniques cumulés`, cls:'' },
+    { val: `${first10Dup.toFixed(0)}% → ${last10Dup.toFixed(0)}<small>%</small>`, lbl: 'Taux de doublons par ouverture : 10 premières → 10 dernières', delta: 'plus la communauté grandit, plus les doublons montent mécaniquement', cls:'down' },
+    { val: `${dirtiest[2]}<small>%</small>`, lbl: 'L’ouverture la plus chargée en doublons', delta: `le ${dirtiestDate} — ${dirtiest[1]} joueurs servis`, cls:'down' },
+    { val: `${fmtPts(topYield.ppb)}<small> pts</small>`, lbl: `Meilleur rendement — ${topYield.name}`, delta: `points marqués par booster payant, sur ${topYield.n} ouvertures (min. 10)`, cls:'up' },
   ];
   document.getElementById('boosterRecordsStats').innerHTML = tiles.map(t=>`
     <div class="stat-tile">
@@ -2642,11 +2858,19 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   document.getElementById('minigamesTag').textContent = `${fmtInt(M.collectiveCount)} mini-jeux collectifs recensés`;
 
   const totalFreePulls = M.collectivePulls + M.soloPageLikePulls;
+  const miniKing = M.topWinners[0];
+  const giftEntries = Object.entries(GIFT_RECIPIENTS_BY_NAME);
+  const topGiftBatch = [...giftEntries].sort((a,b)=>b[1].biggest-a[1].biggest)[0];
+  const topGiftTotal = [...giftEntries].sort((a,b)=>b[1].jokers-a[1].jokers)[0];
+
   const tiles = [
     { val: fmtInt(M.collectiveCount), lbl: 'Mini-jeux collectifs distincts', delta: `${fmtInt(M.collectivePulls)} jokers gratuits distribués`, cls:'' },
     { val: fmtInt(M.biggest.players), lbl: 'Le plus de gagnants en même temps', delta: `${fmtLongDate(M.biggest.date)}, ${M.biggest.time}`, cls:'up' },
     { val: fmtInt(M.soloPageLikeCount), lbl: 'Cadeaux hors mini-jeu (paliers de page, jokers offerts)', delta: `${fmtInt(M.soloPageLikePulls)} jokers`, cls:'' },
     { val: fmtInt(totalFreePulls), lbl: 'Jokers gratuits distribués au total', delta: `mini-jeux + cadeaux`, cls:'' },
+    { val: `${miniKing.name}`, lbl: 'Roi des mini-jeux', delta: `${miniKing.wins} victoires · ${miniKing.pulls} jokers gagnés`, cls:'up' },
+    { val: `${topGiftBatch[1].biggest}<small> jokers</small>`, lbl: 'Plus gros cadeau reçu d’un coup', delta: `pour ${topGiftBatch[0]}`, cls:'up' },
+    { val: `${topGiftTotal[0]}`, lbl: 'A reçu le plus de cadeaux au total', delta: `${topGiftTotal[1].jokers} jokers offerts sur ${topGiftTotal[1].events} occasions`, cls:'' },
   ];
   document.getElementById('minigamesStats').innerHTML = tiles.map(t=>`
     <div class="stat-tile">
@@ -3233,5 +3457,398 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     e.stopPropagation();
     trigger(link);
   }, true);
+})();
+</script>
+
+<script>
+/* ---------- Depuis le début : séries, progressions, ascensions ----------
+   Reconstruit à partir de TRAJ_SERIES_ALL (score de chaque collectionneur à
+   chaque relevé de stream depuis le 7 juin) — même source que la trajectoire
+   des fiches. Rendu comme les autres panneaux : tuiles + listes. ---------- */
+(function(){
+  if (typeof TRAJ_SERIES_ALL === 'undefined' || !document.getElementById('historyStats')) return;
+  const SER = TRAJ_SERIES_ALL;
+  const D = TRAJ_DATES;
+  const nowRank = new Map(OFFICIAL_LEADERBOARD.map(r => [r[1], r[0]]));
+
+  // Plus longue suite de relevés consécutifs en hausse stricte.
+  function bestStreak(sc){
+    let best = 0, bestEnd = -1, cur = 0;
+    for (let i = 1; i < sc.length; i++){
+      if (sc[i] > sc[i-1]){ cur++; if (cur > best){ best = cur; bestEnd = i; } }
+      else cur = 0;
+    }
+    return { rises: best, endIdx: bestEnd, startIdx: bestEnd - best, ongoing: bestEnd === sc.length - 1 };
+  }
+  const streaks = SER.map(([name, sc]) => ({ name, ...bestStreak(sc) }))
+    .filter(s => s.rises > 0)
+    .sort((a, b) => b.rises - a.rises);
+
+  // Meilleur bond de score sur un seul relevé, par collectionneur (un record par personne).
+  const bestSessionGain = SER.map(([name, sc]) => {
+    let g = 0, at = -1;
+    for (let i = 1; i < sc.length; i++){
+      const d = sc[i] - sc[i-1];
+      if (d > g){ g = d; at = i; }
+    }
+    return { name, gain: g, at, now: nowRank.get(name) };
+  }).filter(c => c.gain > 0).sort((a, b) => b.gain - a.gain);
+  const jump = bestSessionGain[0];
+
+  // Gain de score total depuis le premier relevé.
+  const gains = SER.map(([name, sc]) => ({ name, gain: sc[sc.length - 1] - sc[0], now: nowRank.get(name) }))
+    .filter(c => c.now != null && c.gain > 0)
+    .sort((a, b) => b.gain - a.gain);
+
+  const median = a => { const s = [...a].sort((x, y) => x - y); const m = s.length >> 1; return s.length % 2 ? s[m] : Math.round((s[m-1] + s[m]) / 2); };
+  const ord = n => n === 1 ? '1ᵉʳ' : n + 'ᵉ';
+  const medStart = median(SER.map(s => s[1][0]));
+  const medNow = median(OFFICIAL_LEADERBOARD.map(r => r[2]));
+
+  const topStreak = streaks[0], topGain = gains[0];
+
+  // vitesse de croisière : pts/relevé sur les 5 derniers
+  const cruise = SER.filter(([, sc]) => sc.length >= 6 && sc[sc.length - 1] > 0)
+    .map(([name, sc]) => ({ name, rate: (sc[sc.length - 1] - sc[sc.length - 6]) / 5 }))
+    .filter(c => c.rate > 0)
+    .sort((a, b) => b.rate - a.rate)[0];
+  // démarrage le plus fulgurant : ce qu'il a grimpé pendant ses 5 premiers relevés actifs
+  const blastoff = SER.map(([name, sc]) => {
+    const f = sc.findIndex(v => v > 0);
+    if (f === -1 || f >= sc.length - 1) return null;
+    const end = Math.min(f + 4, sc.length - 1);
+    return { name, gain: sc[end] - sc[f], at: f };
+  }).filter(Boolean).sort((a, b) => b.gain - a.gain)[0];
+  // come-back : gros gain récent après une quasi-stagnation juste avant
+  let comeback = null;
+  SER.forEach(([name, sc]) => {
+    if (sc.length < 11) return;
+    const n = sc.length;
+    const before = sc[n - 6] - sc[n - 11], recent = sc[n - 1] - sc[n - 6];
+    if (before <= 2 && recent > 0 && (!comeback || recent > comeback.recent)) comeback = { name, recent, before };
+  });
+  // plus longue stagnation d'un collectionneur qui a fini par repartir
+  let stall = { name: '', len: 0, startIdx: -1, endIdx: -1 };
+  SER.forEach(([name, sc]) => {
+    let run = 0;
+    for (let i = 1; i < sc.length; i++) {
+      if (sc[i] === sc[i - 1]) { run++; if (run > stall.len && sc[sc.length - 1] > sc[i]) stall = { name, len: run, startIdx: i - run, endIdx: i }; }
+      else run = 0;
+    }
+  });
+
+  const tiles = [
+    { val: fmtInt(D.length), lbl: 'Relevés depuis le 7 juin', delta: `du ${D[0]} au ${D[D.length - 1]}`, cls: '' },
+    { val: `+${fmtInt(jump.gain)}<small> pts</small>`, lbl: 'Plus grosse progression sur un seul relevé', delta: `${jump.name}, le ${D[jump.at] || D[D.length - 1]}`, cls: 'up' },
+    { val: `${topStreak.rises + 1}<small> relevés</small>`, lbl: 'Plus longue série de relevés en hausse', delta: `${topStreak.name}${topStreak.ongoing ? ' — toujours en cours' : ''}`, cls: 'up' },
+    { val: `+${fmtInt(topGain.gain)}<small> pts</small>`, lbl: 'Plus gros gain de score depuis le début', delta: `${topGain.name} — ${ord(topGain.now)} aujourd'hui`, cls: 'up' },
+    { val: `${medStart} → ${medNow}<small> pts</small>`, lbl: "Score médian de la communauté : 1ᵉʳ relevé → aujourd'hui", delta: medStart > 0 ? `×${(medNow / medStart).toFixed(1)} en ${D.length} relevés` : `la moitié de la communauté était à 0 au 1ᵉʳ relevé`, cls: 'up' },
+  ];
+  if (cruise) tiles.push({ val: `${cruise.rate.toFixed(1)}<small> pts/relevé</small>`, lbl: 'Vitesse de croisière actuelle (5 derniers relevés)', delta: `${cruise.name} — celui qui carbure le plus en ce moment`, cls: 'up' });
+  if (blastoff) tiles.push({ val: `+${fmtInt(blastoff.gain)}<small> pts</small>`, lbl: 'Le démarrage le plus fulgurant', delta: `${blastoff.name}, sur ses 5 premiers relevés (à partir du ${D[blastoff.at] || '?'})`, cls: 'up' });
+  if (comeback) tiles.push({ val: `+${fmtInt(comeback.recent)}<small> pts</small>`, lbl: 'Le plus gros come-back', delta: `${comeback.name} — quasi à l'arrêt (+${comeback.before} pts avant) puis reparti fort sur les 5 derniers relevés`, cls: 'up' });
+  if (stall.len) tiles.push({ val: `${stall.len}<small> relevés</small>`, lbl: 'Plus longue stagnation avant de repartir', delta: `${stall.name} — score figé du ${D[stall.startIdx] || '?'} au ${D[stall.endIdx] || '?'}`, cls: 'down' });
+
+  document.getElementById('historyStats').innerHTML = tiles.map(t => `
+    <div class="stat-tile">
+      <span class="val">${t.val}</span>
+      <span class="lbl">${t.lbl}</span>
+      <span class="delta ${t.cls}">${t.delta}</span>
+    </div>`).join('');
+
+  const streakRow = (s, i) => `<div class="trophy-row" data-name="${s.name}">
+    <span class="trophy-rank">${i + 1}</span>
+    <span>
+      <span class="trophy-name">${s.name}</span>
+      <div class="trophy-sub">${s.ongoing ? 'en cours depuis le ' + (D[s.startIdx] || '?') : 'du ' + (D[s.startIdx] || '?') + ' au ' + (D[s.endIdx] || '?')}</div>
+    </span>
+    <span class="trophy-count">${s.rises + 1}<small>relevés</small></span>
+  </div>`;
+  document.getElementById('historyStreaksList').innerHTML = splitList(streaks, 12, streakRow);
+  document.getElementById('historyStreaksNote').innerHTML =
+    `Un relevé de plus dans la série = un stream où le collectionneur a encore gagné des points, sans jamais stagner ni reculer entre deux.`;
+
+  const HD = (typeof HISTORY_SESSION_DETAIL !== 'undefined') ? HISTORY_SESSION_DETAIL : {};
+  const edLabel = { none: 'Sans édition', foil: 'Brillant', holographic: 'Holographique', polychrome: 'Polychrome', negative: 'Négatif' };
+  function jokerThumb(name, edition, dup){
+    const edClass = ['foil','holographic','polychrome','negative'].includes(edition) ? ` ed-${edition}` : '';
+    const dupClass = dup ? ' dup' : '';
+    const custom = (typeof JOKER_CUSTOM_IMG !== 'undefined') ? JOKER_CUSTOM_IMG[name] : null;
+    if (custom) return `<span class="climb-thumb custom${edClass}${dupClass}" style="background-image:${custom}"></span>`;
+    if (typeof JOKER_TILE !== 'undefined' && JOKER_TILE[name] != null){
+      const t = JOKER_TILE[name], col = t % 10, row = Math.floor(t / 10);
+      return `<span class="climb-thumb${edClass}${dupClass}"><span class="thumb-tile" style="background-position:-${col*71+2}px -${row*95+2}px"></span></span>`;
+    }
+    return `<span class="climb-thumb${dupClass}"></span>`;
+  }
+  function climbDetailHTML(det){
+    const cards = det.items.map(it => {
+      const cap = it.dup ? 'doublon' : `+${it.points}`;
+      const tip = `${it.name}${it.edition !== 'none' ? ' · ' + (edLabel[it.edition] || it.edition) : ''}${it.dup ? ' · doublon (0 pt)' : ''}`;
+      return `<div class="stream-pull" title="${tip}">${jokerThumb(it.name, it.edition, it.dup)}<span class="stream-pull-time">${cap}</span></div>`;
+    }).join('');
+    const dupN = det.items.filter(it => it.dup).length;
+    const dupNote = dupN ? ` (dont ${dupN} doublon${dupN > 1 ? 's' : ''} à 0 pt)` : '';
+    const span = det.from !== det.date ? ` (créneau du ${det.from} au ${det.date})` : '';
+    return `<div class="stream-pulls">${cards}</div>
+      <p class="bars-note" style="margin:2px 0 0;">${det.items.length} joker${det.items.length > 1 ? 's' : ''} obtenu${det.items.length > 1 ? 's' : ''} ce jour-là${span}, pour <b>+${fmtInt(det.gain)} pts</b>${dupNote}.</p>`;
+  }
+  const climbRow = (c, i) => {
+    const det = HD[c.name.toLowerCase()];
+    const nJk = det ? det.items.length : null;
+    const jkLine = nJk != null
+      ? `<br><span class="climb-jk">${nJk} jk · ${(c.gain / nJk).toFixed(1).replace('.', ',')} pts/jk</span>`
+      : '';
+    return `<div class="climb-wrap">
+      <div class="mover-item up${det ? ' clickable' : ''}" data-name="${c.name}">
+        <span>${c.name}</span>
+        <span class="mover-ranks">${D[c.at] || '?'}${jkLine}</span>
+        <span class="mover-delta">+${fmtInt(c.gain)} pts${det ? ' <span class="trophy-chevron">▾</span>' : ''}</span>
+      </div>
+      <div class="trophy-detail">${det ? climbDetailHTML(det) : ''}</div>
+    </div>`;
+  };
+  document.getElementById('historyClimbList').innerHTML = splitList(bestSessionGain, 12, climbRow);
+  document.querySelectorAll('#historyClimbList .mover-item.clickable').forEach(row => {
+    row.addEventListener('click', () => {
+      const detail = row.nextElementSibling;
+      const open = detail.classList.toggle('open');
+      const ch = row.querySelector('.trophy-chevron');
+      if (ch) ch.textContent = open ? '▴' : '▾';
+    });
+  });
+  document.getElementById('historyClimbNote').innerHTML =
+    `Chaque ligne = le meilleur relevé d'un collectionneur, le stream où il a pris le plus de points d'un coup. Clique une ligne (top 30) pour voir les jokers obtenus. Record absolu : +${fmtInt(bestSessionGain[0].gain)} pts pour ${bestSessionGain[0].name} le ${D[bestSessionGain[0].at] || '?'}.`;
+
+  /* ---------- Le tableau de chasse : top (joker, édition) par points ---------- */
+  if (typeof TOP_JOKERS !== 'undefined' && document.getElementById('topJokersList')) {
+    const rarLabel = (typeof RARITY_LABEL !== 'undefined') ? RARITY_LABEL
+      : { Common: 'Commun', Uncommon: 'Peu-commun', Rare: 'Rare', Legendary: 'Légendaire' };
+    const tjRow = (r, i) => {
+      const first = r.holders[0];
+      const edTxt = r.edition !== 'none' ? ` <span class="edition-chip ${r.edition}">${edLabel[r.edition] || r.edition}</span>` : '';
+      const many = r.holders.length > 1;
+      const detHtml = r.holders.map((h, k) =>
+        `<div class="io-item"><span>${k === 0 ? '★ ' : ''}${h[0]}</span><span class="n">${h[1]}</span></div>`).join('');
+      return `<div class="trophy-item">
+        <div class="trophy-row clickable" data-i="${i}">
+          <span class="trophy-rank">${i + 1}</span>
+          <span>
+            <span class="trophy-name">${r.name}</span>${edTxt}
+            <div class="trophy-sub">${rarLabel[r.rarity] || r.rarity || ''} · premier : ${first[0]} le ${first[1]}${many ? ` · ${r.holders.length} détenteurs` : ''}</div>
+          </span>
+          <span class="trophy-count">${r.points}<small>pts</small> <span class="trophy-chevron">▾</span></span>
+        </div>
+        <div class="trophy-detail">${detHtml}</div>
+      </div>`;
+    };
+    document.getElementById('topJokersList').innerHTML = splitList(TOP_JOKERS, 10, tjRow);
+    document.querySelectorAll('#topJokersList .trophy-row.clickable').forEach(row => {
+      row.addEventListener('click', () => {
+        const detail = row.nextElementSibling;
+        const open = detail.classList.toggle('open');
+        row.querySelector('.trophy-chevron').textContent = open ? '▴' : '▾';
+      });
+    });
+    const t0 = TOP_JOKERS[0];
+    document.getElementById('topJokersNote').innerHTML =
+      `Une « prise » = la première fois qu'un collectionneur obtient ce joker dans cette édition ; les exemplaires suivants ne comptent pas. La plus chère du dex : <b>${t0.name}${t0.edition !== 'none' ? ' ' + (edLabel[t0.edition] || t0.edition) : ''}</b> à +${t0.points} pts.`;
+  }
+
+  /* ---------- Les records individuels ---------- */
+  if (document.getElementById('indivRecordsStats')) {
+    const clean = FULL.filter(r => r[3] >= 20)
+      .map(r => ({ name: r[0], dupRate: (r[2] - r[3]) / r[2], dup: r[2] - r[3], total: r[2], uniq: r[3] }))
+      .sort((a, b) => a.dupRate - b.dupRate)[0];
+    const negKing = [...OFFICIAL_LEADERBOARD].sort((a, b) => b[11] - a[11])[0];
+    const pile = [...OFFICIAL_LEADERBOARD].sort((a, b) => b[6] - a[6])[0];
+    let deep = { name: '', card: '', count: 0 };
+    if (typeof HOARDER_DETAIL !== 'undefined') {
+      Object.entries(HOARDER_DETAIL).forEach(([nm, entries]) => {
+        entries.forEach(e => { if (e[2] && e[2].length > deep.count) deep = { name: nm, card: e[0], count: e[2].length }; });
+      });
+    }
+    const stakeIdx = Math.min(deep.count - 2, STAKE_ORDER.length - 1);
+    const stakeLbl = (stakeIdx >= 0 && typeof STAKE_LABEL_FR !== 'undefined') ? (STAKE_LABEL_FR[STAKE_ORDER[stakeIdx]] || '') : '';
+    const t2 = [
+      { val: `${(clean.dupRate * 100).toFixed(0)}<small>% doublons</small>`, lbl: `La collection la plus propre — ${clean.name}`, delta: `${fmtInt(clean.dup)} doublon${clean.dup > 1 ? 's' : ''} seulement sur ${fmtInt(clean.total)} jokers obtenus (min. 20 uniques)`, cls: 'up' },
+      { val: fmtInt(negKing[11]), lbl: `Roi des Négatifs — ${negKing[1]}`, delta: 'exemplaires en édition Négatif dans sa collection', cls: 'up' },
+      { val: fmtInt(pile[6]), lbl: `Record de pile — ${pile[1]}`, delta: 'exemplaires du même joker chez une seule personne', cls: '' },
+    ];
+    if (deep.count >= 2) t2.push({ val: stakeLbl ? `Mise ${stakeLbl}` : `${deep.count} ex.`, lbl: `La mise la plus haute atteinte — ${deep.name}`, delta: `${deep.count} exemplaires de « ${deep.card.trim()} » — chaque doublon monte d'un cran la mise Balatro`, cls: 'up' });
+    document.getElementById('indivRecordsStats').innerHTML = t2.map(t => `
+      <div class="stat-tile">
+        <span class="val">${t.val}</span>
+        <span class="lbl">${t.lbl}</span>
+        <span class="delta ${t.cls}">${t.delta}</span>
+      </div>`).join('');
+  }
+})();
+</script>
+
+<script>
+/* ---------- Navigation 2 niveaux : accueil + sous-vues ----------
+   Rendu des panneaux inchange : tout est rendu par les IIFE ci-dessus (elements
+   visibles -> mesures SVG correctes), puis ce script masque ce qui n'est pas dans
+   la vue active. Aucune regeneration au changement de vue. ---------- */
+(function(){
+  const VIEWS = [
+    { id:'top25', label:'Top 25', tagline:'Le classement de tête', panels:[
+      ['panelActivity','Activité'],['panelSpending','Achats'],['panelChance','Rendement'],
+      ['panelSpark','Trajectoires'],['panelMovers','Ça grimpe, ça glisse'],['panelTrophy','Trophées'],
+      ['panelCompletion','Vers les 150'],['panelPages','Pages complètes'],['panelScatter','Doublons'],
+      ['panelIO','Entrées / sorties'] ] },
+    { id:'histoire', label:'Depuis le début', tagline:'Séries, progressions, ascensions', badge:'Nouvelle section', panels:[
+      ['panelHistoryStreaks','Meilleures séries'],['panelHistoryClimb','Grosses récoltes'] ] },
+    { id:'communaute', label:'Communauté', tagline:'Les 243 collectionneurs', panels:[
+      ['panelCommunityScale','Ampleur'],['panelCommunityTrophy','Le vrai tiercé'],
+      ['panelHoarders','Accumulateurs'],['panelPremium','Premium'],['panelIndivRecords','Records perso'] ] },
+    { id:'jokerdex', label:'Jokerdex', tagline:'Le tirage carte par carte', panels:[
+      ['panelValidation','Grand tirage'],['panelExtremes','Extrêmes'],['panelHoardedJokers','Biais du tirage'],['panelTopJokers','Tableau de chasse'] ] },
+    { id:'stream', label:'Stream', tagline:'Les sessions en direct', panels:[
+      ['panelSessions','Sessions'] ] },
+    { id:'boosters', label:'Boosters & mini-jeux', tagline:'Boosters payants, mini-jeux et cadeaux', panels:[
+      ['panelBoosterRecords','Boosters historiques'],['panelMinigames','Mini-jeux'] ] }
+  ];
+
+  const home = document.getElementById('homeView');
+  const bar  = document.getElementById('sectionBar');
+  const grid = home ? home.querySelector('.home-grid') : null;
+  if(!home || !bar || !grid) return;
+
+  const ALL = VIEWS.reduce((a,v)=>a.concat(v.panels.map(p=>p[0])), []);
+  const el = id => document.getElementById(id);
+
+  let foot = document.getElementById('sectionFoot');
+  if(!foot){
+    foot = document.createElement('div');
+    foot.id = 'sectionFoot'; foot.className = 'section-foot'; foot.hidden = true;
+    (document.querySelector('.wrap') || document.body).appendChild(foot);
+  }
+
+  function fmtDate(iso){
+    const m = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+    const p = String(iso).split('-'); return (+p[2]) + ' ' + m[(+p[1])-1] + ' ' + p[0];
+  }
+  function highlight(id){
+    try{
+      if(id === 'top25'){ const r = OFFICIAL_LEADERBOARD[0]; return '#1 : ' + r[1] + ' · ' + r[2] + ' pts'; }
+      if(id === 'communaute'){ return OFFICIAL_LEADERBOARD.length + ' collectionneurs classés'; }
+      if(id === 'jokerdex'){
+        const c = {};
+        OFFICIAL_LEADERBOARD.forEach(r => { const j = r[r.length-3]; c[j] = (c[j]||0) + 1; });
+        const t = Object.entries(c).sort((a,b)=>b[1]-a[1])[0];
+        return 'Joker le plus porté : ' + t[0] + ' (' + t[1] + '×)';
+      }
+      if(id === 'stream'){
+        const s = OFFICIAL_SESSIONS[OFFICIAL_SESSIONS.length-1];
+        return 'Dernière session : ' + fmtDate(s[1]) + ' · ' + s[6] + ' jokers';
+      }
+      if(id === 'boosters'){
+        return 'Mini-jeux collectifs : ' + MINIGAME_STATS.collectiveCount + ' · ' + MINIGAME_STATS.collectivePulls + ' jokers';
+      }
+      if(id === 'histoire'){
+        return (typeof TRAJ_DATES !== 'undefined' ? TRAJ_DATES.length : 0) + ' relevés depuis le 7 juin';
+      }
+    }catch(e){}
+    return '';
+  }
+  function isFresh(view){
+    return view.panels.some(p => {
+      const n = el(p[0]);
+      return n && n.querySelector('.trophy-row.new, .io-item.new, .bar-row.new');
+    });
+  }
+
+  // Remonte sur la carte d'accueil les pastilles trouvées dans les panneaux de la section.
+  function sectionFlags(v){
+    let kpi = false, data = false, nb = false;
+    v.panels.forEach(p => {
+      const el = document.getElementById(p[0]);
+      if (!el) return;
+      if (el.querySelector('.tag-kpi')) kpi = true;
+      if (el.querySelector('.tag-data')) data = true;
+      if (el.querySelector('.new-badge')) nb = true;
+    });
+    return { kpi, data, nb };
+  }
+
+  function renderHome(){
+    grid.innerHTML = VIEWS.map(v => {
+      const f = sectionFlags(v);
+      const kpiPill = v.badge
+        ? ' <span class="tag-kpi" title="Section ajoutée récemment au dashboard">' + v.badge + '</span>'
+        : (f.kpi ? ' <span class="tag-kpi" title="Cette section contient une nouvelle analyse">analyse</span>' : '');
+      const dataPill = f.data ? ' <span class="tag-data" title="Cette section contient un nouveau relevé de données">data</span>' : '';
+      const newPill = (f.nb || isFresh(v)) ? ' <span class="new-badge" title="Cette section contient une nouveauté ou un changement récent">Nouveau</span>' : '';
+      return '<button type="button" class="home-card" data-view="' + v.id + '">' +
+        '<span class="hc-kicker">' + v.label + '</span>' +
+        '<span class="hc-title">' + v.tagline + '</span>' +
+        '<span class="hc-stat">' + highlight(v.id) + '</span>' +
+        '<span class="hc-meta">' + v.panels.length + (v.panels.length > 1 ? ' analyses' : ' analyse') +
+          kpiPill + dataPill + newPill + '</span>' +
+        '<span class="hc-arrow">→</span>' +
+      '</button>';
+    }).join('');
+    grid.querySelectorAll('.home-card').forEach(c => {
+      c.addEventListener('click', () => { location.hash = c.dataset.view; });
+    });
+  }
+
+  function resolve(){
+    const h = location.hash.replace(/^#/, '');
+    if(!h || h === 'accueil') return null;
+    let v = VIEWS.find(v => v.id === h);
+    if(v) return { view:v, panel:null };
+    v = VIEWS.find(v => v.panels.some(p => p[0] === h));
+    if(v) return { view:v, panel:h };
+    return null;
+  }
+
+  function apply(){
+    const r = resolve();
+    document.querySelectorAll('.section-divider-wrap').forEach(d => d.hidden = true);
+
+    if(!r){
+      home.hidden = false;
+      bar.hidden = true;
+      foot.hidden = true;
+      ALL.forEach(id => { const n = el(id); if(n) n.hidden = true; });
+      return;
+    }
+
+    home.hidden = true;
+    bar.hidden = false;
+
+    bar.innerHTML =
+      '<button type="button" class="sb-home">← Accueil</button>' +
+      '<span class="sb-label">' + r.view.label + '</span>' +
+      '<span class="sb-sep" aria-hidden="true"></span>' +
+      '<span class="sb-chips">' +
+        r.view.panels.map(p => '<a class="sb-chip" href="#' + p[0] + '">' + p[1] + '</a>').join('') +
+      '</span>';
+    bar.querySelector('.sb-home').addEventListener('click', () => { location.hash = 'accueil'; });
+
+    const active = new Set(r.view.panels.map(p => p[0]));
+    ALL.forEach(id => { const n = el(id); if(n) n.hidden = !active.has(id); });
+
+    const idx = VIEWS.indexOf(r.view);
+    const next = VIEWS[(idx + 1) % VIEWS.length];
+    foot.hidden = false;
+    foot.innerHTML =
+      '<button type="button" data-go="accueil">← Accueil</button>' +
+      '<button type="button" data-go="' + next.id + '">' + next.label + ' →</button>';
+    foot.querySelectorAll('button').forEach(b => {
+      b.onclick = () => { location.hash = b.dataset.go; };
+    });
+
+    const targetId = r.panel || r.view.panels[0][0];
+    const t = el(targetId);
+    if(t) requestAnimationFrame(() => t.scrollIntoView({ block:'start', behavior:'instant' }));
+  }
+
+  window.addEventListener('hashchange', apply);
+  renderHome();
+  apply();
 })();
 </script>
