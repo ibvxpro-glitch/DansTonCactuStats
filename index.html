@@ -2722,7 +2722,9 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const avgParHeure = totalDistribues/totalHeures;
   const best = [...sessions].sort((a,b)=>b.jokersParHeure-a.jokersParHeure)[0];
   const longest = [...sessions].sort((a,b)=>b.duree-a.duree)[0];
-  const busiestDate = Object.entries(BOOSTER_ACTIVE_PLAYERS_BY_DATE).sort((a,b)=>b[1]-a[1])[0];
+  // Record de joueurs par SESSION (OFFICIAL_SESSIONS) — pas BOOSTER_ACTIVE_PLAYERS_BY_DATE, qui
+  // découpe une session à cheval sur minuit en deux journées calendaires.
+  const busiestSession = [...sessions].sort((a,b)=>b.viewersServis-a.viewersServis)[0];
 
   const medianS = a => { const s=[...a].sort((x,y)=>x-y); const m=s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
   const firstFiveAud = medianS(sessions.slice(0,5).map(r=>r.viewersServis));
@@ -2742,7 +2744,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     { val: `${fmtPts(totalHeures)}<small> h</small>`, lbl: 'Temps de stream cumulé', delta: `= ${fmtInt(totalDistribues)} jokers distribués`, cls:'' },
     { val: `${fmtPts(avgParHeure)}<small>/h</small>`, lbl: 'Jokers distribués par heure, en moyenne', delta: `record : ${fmtPts(best.jokersParHeure)}/h le ${best.date}`, cls:'up' },
     { val: `${fmtPts(longest.duree)}<small> h</small>`, lbl: 'Session la plus longue', delta: `le ${longest.date} (${longest.jokersDistribues} jokers)`, cls:'' },
-    { val: fmtInt(busiestDate[1]), lbl: 'Collectionneurs actifs, record en une session', delta: `le ${busiestDate[0]}`, cls:'up' },
+    { val: fmtInt(busiestSession.viewersServis), lbl: 'Collectionneurs actifs, record en une session', delta: `le ${busiestSession.date}`, cls:'up' },
     { val: `×${audGrowth.toFixed(1)}`, lbl: 'Croissance de l’audience (5 premières sessions → 5 dernières)', delta: `${firstFiveAud} → ${lastFiveAud} collectionneurs servis par session, en médiane`, cls:'up' },
     { val: `${perWeek.toFixed(1)}<small>/sem.</small>`, lbl: 'Sessions par semaine, en moyenne depuis le 7 juin', delta: `${sessions.length} sessions sur ${Math.round(weeks)} semaines`, cls:'' },
     { val: `${Math.round(maxGap)}<small> j</small>`, lbl: 'Plus longue pause entre deux streams', delta: `du ${gapFrom} au ${gapTo}`, cls:'down' },
@@ -2759,8 +2761,8 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const maxDistrib = sorted[0].jokersDistribues;
   document.getElementById('sessionBars').innerHTML = sorted.map((s,i)=>{
     const w = (s.jokersDistribues/maxDistrib*100).toFixed(1);
-    const isNew = typeof DAILY_CHANGES !== 'undefined' && s.date > DAILY_CHANGES.priorDate;
-    const newBadge = isNew ? ` <span class="new-badge" title="Session ajoutée depuis le ${DAILY_CHANGES.priorDate.split('-').reverse().join('/')}">Nouveau</span>` : '';
+    const isNew = typeof DAILY_CHANGES !== 'undefined' && s.date >= DAILY_CHANGES.priorDate;
+    const newBadge = isNew ? ` <span class="new-badge" title="Session de stream depuis le dernier relevé">Nouveau</span>` : '';
     const cadence = BOOSTER_CADENCE_BY_DATE[s.date] || 30;
     const cadenceBadge = cadence !== 30 ? ` <span class="new-badge" style="background:var(--gold); color:#141413;" title="Cadence des boosters ce jour-là : ${cadence} min au lieu des 30 min habituelles">${cadence} min</span>` : '';
     return `<div class="bar-row${isNew?' new':''}" data-date="${s.date}" data-duree="${s.duree}" data-ouvertures="${s.ouvertures}" data-jph="${s.jokersParHeure}" data-viewers="${s.viewersServis}" data-cadence="${cadence}">
@@ -3592,6 +3594,10 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   const SER = TRAJ_SERIES_ALL;
   const D = TRAJ_DATES;
   const nowRank = new Map(OFFICIAL_LEADERBOARD.map(r => [r[1], r[0]]));
+  // "frais" = daté depuis le dernier relevé (pastille Nouveau)
+  const PRIOR = (typeof DAILY_CHANGES !== 'undefined') ? DAILY_CHANGES.priorDate : null;
+  const freshDate = d => !!(PRIOR && d && d >= PRIOR);
+  const NB = '<span class="new-badge" title="Depuis le dernier relevé">Nouveau</span>';
 
   // Plus longue suite de relevés consécutifs en hausse stricte.
   function bestStreak(sc){
@@ -3721,9 +3727,10 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     const jkLine = nJk != null
       ? `<br><span class="climb-jk">${nJk} jk · ${(c.gain / nJk).toFixed(1).replace('.', ',')} pts/jk</span>`
       : '';
+    const fresh = freshDate(D[c.at]);
     return `<div class="climb-wrap">
-      <div class="mover-item up${det ? ' clickable' : ''}" data-name="${c.name}">
-        <span>${c.name}</span>
+      <div class="mover-item up${det ? ' clickable' : ''}${fresh ? ' new' : ''}" data-name="${c.name}">
+        <span>${c.name}${fresh ? ' ' + NB : ''}</span>
         <span class="mover-ranks">${D[c.at] || '?'}${jkLine}</span>
         <span class="mover-delta">+${fmtInt(c.gain)} pts${det ? ' <span class="trophy-chevron">▾</span>' : ''}</span>
       </div>
@@ -3750,13 +3757,15 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
       const first = r.holders[0];
       const edTxt = r.edition !== 'none' ? ` <span class="edition-chip ${r.edition}">${edLabel[r.edition] || r.edition}</span>` : '';
       const many = r.holders.length > 1;
+      const fresh = freshDate(first[1]);                       // 1re prise depuis le dernier relevé
+      const anyFreshHolder = r.holders.some(h => freshDate(h[1]));
       const detHtml = r.holders.map((h, k) =>
-        `<div class="io-item"><span>${k === 0 ? '★ ' : ''}${h[0]}</span><span class="n">${h[1]}</span></div>`).join('');
+        `<div class="io-item${freshDate(h[1]) ? ' new' : ''}"><span>${k === 0 ? '★ ' : ''}${h[0]}${freshDate(h[1]) ? ' ' + NB : ''}</span><span class="n">${h[1]}</span></div>`).join('');
       return `<div class="trophy-item">
-        <div class="trophy-row clickable" data-i="${i}">
+        <div class="trophy-row clickable${fresh ? ' new' : ''}" data-i="${i}">
           <span class="trophy-rank">${i + 1}</span>
           <span>
-            <span class="trophy-name">${r.name}</span>${edTxt}
+            <span class="trophy-name">${r.name}</span>${edTxt}${fresh ? ' ' + NB : (anyFreshHolder ? ' <span class="new-badge" title="Nouveau détenteur depuis le dernier relevé">Nouveau détenteur</span>' : '')}
             <div class="trophy-sub">${rarLabel[r.rarity] || r.rarity || ''} · premier : ${first[0]} le ${first[1]}${many ? ` · ${r.holders.length} détenteurs` : ''}</div>
           </span>
           <span class="trophy-count">${r.points}<small>pts</small> <span class="trophy-chevron">▾</span></span>
