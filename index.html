@@ -855,6 +855,59 @@ html{ scroll-behavior: smooth; }
 .home-find-empty{ color: var(--text-muted); font-size:0.9rem; margin:-8px 0 22px; }
 .home-find-empty[hidden]{ display:none; }
 
+/* ---------- Favoris ---------- */
+.fav-star{
+  border:0; background:none; cursor:pointer; padding:0 6px 0 0;
+  font-size:1em; line-height:1; color:var(--text-muted); vertical-align:baseline;
+  transition:color .12s ease, transform .12s ease;
+}
+.fav-star:hover{ transform:scale(1.2); }
+.fav-star.on{ color:var(--gold); }
+.fav-star:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; border-radius:4px; }
+.home-card.fav-card{ border-color:var(--gold); }
+.home-card.fav-card .hc-kicker{ color:var(--gold); }
+.sb-edit{
+  font-family:var(--font-display); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em;
+  color:var(--text-secondary); background:var(--surface-2); border:1px solid var(--border-soft);
+  border-radius:999px; padding:6px 12px; cursor:pointer; white-space:nowrap; flex:none; margin-left:auto;
+}
+.sb-edit:hover{ border-color:var(--gold); color:var(--text-primary); }
+#favContainer[hidden]{ display:none; }
+.fav-empty-view{ color:var(--text-secondary); font-size:0.95rem; line-height:1.5; text-align:center; padding:44px 20px; max-width:52ch; margin:0 auto; }
+.fav-empty-view[hidden]{ display:none; }
+.fav-empty-view button{
+  display:inline-block; margin-top:16px; font-family:var(--font-display); font-size:0.78rem;
+  text-transform:uppercase; letter-spacing:0.06em; color:var(--gold);
+  background:var(--surface-2); border:1px solid var(--border); border-radius:999px; padding:9px 18px; cursor:pointer;
+}
+.fav-empty-view button:hover{ border-color:var(--gold); }
+#favEditorOverlay .modal-dialog{ max-width:560px; }
+.fav-ed-h{ font-family:var(--font-display); font-size:0.95rem; margin:24px 0 4px; color:var(--text-primary); }
+.fav-ed-h:first-child{ margin-top:0; }
+.fav-ed-note{ color:var(--text-muted); font-size:0.82rem; margin:0 0 14px; }
+.fav-order{ display:flex; flex-direction:column; gap:6px; }
+.fav-order:empty::after{ content:"Rien encore \2014 coche des tableaux ci-dessous."; color:var(--text-muted); font-size:0.86rem; }
+.fav-row{
+  display:flex; align-items:center; gap:8px;
+  background:var(--surface-2); border:1px solid var(--border-soft); border-radius:10px;
+  padding:7px 10px; font-size:0.86rem;
+}
+.fav-row.drag-over{ border-color:var(--gold); }
+.fav-row.dragging{ opacity:0.4; }
+.fav-grip{ cursor:grab; color:var(--text-muted); user-select:none; }
+.fav-lbl{ flex:1; color:var(--text-primary); }
+.fav-sec{ color:var(--text-muted); font-size:0.76rem; }
+.fav-row button{
+  border:1px solid var(--border-soft); background:var(--surface); color:var(--text-secondary);
+  border-radius:7px; min-width:26px; height:26px; cursor:pointer; font-size:0.78rem; line-height:1; padding:0;
+}
+.fav-row button:hover{ border-color:var(--gold); color:var(--text-primary); }
+.fav-row button[disabled]{ opacity:0.35; cursor:default; }
+.fav-pick-sec{ font-family:var(--font-display); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin:16px 0 6px; }
+.fav-pick{ display:flex; flex-wrap:wrap; gap:6px 16px; }
+.fav-pick label{ display:flex; align-items:center; gap:6px; font-size:0.84rem; color:var(--text-secondary); cursor:pointer; }
+.fav-pick input{ accent-color:var(--gold); }
+
 .sectionbar{
   position: sticky; top: 62px; z-index: 90;
   display:flex; align-items:center; gap:10px;
@@ -1984,7 +2037,8 @@ const SITE_CHANGELOG = [
     'Section Jokerdex : « Qui possède quoi » (part de la communauté qui détient chaque joker), « Course à la nouveauté » (les dernières cartes apparues et leur pionnier), « La page qui bloque tout le monde ».',
     'Section Boosters & mini-jeux : « D\'où viennent les jokers » (part des boosters payants, des mini-jeux et des cadeaux) et « Le prix d\'une carte » (épines dépensées par joker différent obtenu).',
     'Page d\'accueil : chaque carte de section liste désormais ses analyses, et un champ « Trouver une analyse » filtre les cartes en direct.',
-    'Fiche collectionneur : ton rythme récent (points et jokers par relevé, assiduité, date d\'arrivée), la répartition de tes sources de jokers, ton coût en épines par carte, tes pages complètes, et les jokers dont tu es le tout premier détenteur de la communauté.'
+    'Fiche collectionneur : ton rythme récent (points et jokers par relevé, assiduité, date d\'arrivée), la répartition de tes sources de jokers, ton coût en épines par carte, tes pages complètes, et les jokers dont tu es le tout premier détenteur de la communauté.',
+    'Page « Mes favoris » : une carte sur l\'accueil où tu choisis les tableaux à afficher (case à cocher, ou l\'étoile ☆ à côté de chaque titre) et où tu les réordonnes comme tu veux (glisser-déposer ou flèches). Enregistré sur ton appareil.'
   ]},
   { date: '2026-08-29', items: [
     'Refonte de la navigation : le dashboard est découpé en sections (Top 25, Depuis le début, Communauté, Jokerdex, Stream, Boosters & mini-jeux) — une page d\'accueil avec des cartes, une section à la fois.',
@@ -4520,8 +4574,184 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
 
   const deburr = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
+  /* ============================ Favoris ============================
+     Sélection perso de tableaux, ordre 100% libre, persistée dans
+     localStorage (par navigateur). La vue #favoris déplace les vrais
+     blocs .panel dans un conteneur puis les remet à leur place en
+     sortant — pas de duplication. */
+  const FAV_KEY = 'radarFavoris';
+  const PANEL_LABEL = {}, PANEL_SECTION = {};
+  VIEWS.forEach(v => v.panels.forEach(p => { PANEL_LABEL[p[0]] = p[1]; PANEL_SECTION[p[0]] = v.label; }));
+  const wrapEl = document.querySelector('.wrap');
+
+  // ordre canonique des panneaux favorisables (position dans le document)
+  const favPanelEls = ALL.map(id => el(id)).filter(Boolean);
+  favPanelEls.sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1);
+  favPanelEls.forEach((p, i) => { p.dataset.ord = i; });
+
+  let favContainer = document.getElementById('favContainer');
+  if (!favContainer) {
+    favContainer = document.createElement('div');
+    favContainer.id = 'favContainer'; favContainer.hidden = true;
+    wrapEl.insertBefore(favContainer, foot);
+  }
+  let favEmpty = document.getElementById('favEmpty');
+  if (!favEmpty) {
+    favEmpty = document.createElement('div');
+    favEmpty.id = 'favEmpty'; favEmpty.className = 'fav-empty-view'; favEmpty.hidden = true;
+    favEmpty.innerHTML = 'Aucun tableau dans tes favoris pour l’instant.<br>Ajoute ceux que tu veux voir ici via l’étoile ☆ à côté du titre de n’importe quel tableau, ou avec le bouton ci-dessous.<br><button type="button" id="favEmptyPick">Choisir des tableaux</button>';
+    wrapEl.insertBefore(favEmpty, foot);
+    favEmpty.querySelector('#favEmptyPick').addEventListener('click', openFavEditor);
+  }
+
+  function getFavs(){
+    let a = [];
+    try { a = JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch (e) {}
+    if (!Array.isArray(a)) a = [];
+    return a.filter(id => PANEL_LABEL[id]);
+  }
+  function setFavs(a){
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(a)); } catch (e) {}
+    refreshFavUI();
+  }
+  function toggleFav(id){
+    const a = getFavs(), i = a.indexOf(id);
+    if (i === -1) a.push(id); else a.splice(i, 1);
+    setFavs(a);
+  }
+  function moveFav(id, dir){
+    const a = getFavs(), i = a.indexOf(id), j = i + dir;
+    if (i === -1 || j < 0 || j >= a.length) return;
+    a.splice(i, 1); a.splice(j, 0, id); setFavs(a);
+  }
+  function reorderFav(dragId, targetId){
+    const a = getFavs(), from = a.indexOf(dragId), to = a.indexOf(targetId);
+    if (from === -1 || to === -1 || from === to) return;
+    a.splice(from, 1); a.splice(to, 0, dragId); setFavs(a);
+  }
+
+  // remet tous les panneaux favorisables dans l'ordre canonique, avant #sectionFoot
+  function normalizePanels(){
+    favPanelEls.slice().sort((a, b) => +a.dataset.ord - +b.dataset.ord)
+      .forEach(p => wrapEl.insertBefore(p, foot));
+    favContainer.hidden = true;
+    favEmpty.hidden = true;
+  }
+
+  function favStatLine(){
+    const n = getFavs().length;
+    return n ? n + (n > 1 ? ' tableaux épinglés' : ' tableau épinglé') : 'Aucun tableau pour l’instant';
+  }
+  function favChipsHtml(){
+    return getFavs().map(id => '<span class="hc-chip" data-panel="' + id + '">' + PANEL_LABEL[id] + '</span>').join('');
+  }
+
+  function injectStars(){
+    VIEWS.forEach(v => v.panels.forEach(p => {
+      const panel = el(p[0]); if (!panel) return;
+      const h = panel.querySelector('.panel-head h2'); if (!h || h.querySelector('.fav-star')) return;
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'fav-star'; b.dataset.panel = p[0];
+      b.addEventListener('click', ev => { ev.stopPropagation(); toggleFav(p[0]); });
+      h.insertBefore(b, h.firstChild);
+      h.insertBefore(document.createTextNode(' '), b.nextSibling);
+    }));
+    refreshStars();
+  }
+  function refreshStars(){
+    const favs = getFavs();
+    document.querySelectorAll('.fav-star').forEach(b => {
+      const on = favs.indexOf(b.dataset.panel) !== -1;
+      b.classList.toggle('on', on);
+      b.textContent = on ? '★' : '☆';
+      b.title = on ? 'Retirer des favoris' : 'Ajouter aux favoris';
+      b.setAttribute('aria-label', b.title);
+    });
+  }
+
+  // ---- Modale « Modifier mes favoris » ----
+  let favEditorOpen = false;
+  let favEdOverlay = document.getElementById('favEditorOverlay');
+  if (!favEdOverlay) {
+    favEdOverlay = document.createElement('div');
+    favEdOverlay.id = 'favEditorOverlay'; favEdOverlay.className = 'modal-overlay'; favEdOverlay.hidden = true;
+    favEdOverlay.innerHTML =
+      '<div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Modifier mes favoris">' +
+        '<button type="button" class="modal-close" id="favEdClose" aria-label="Fermer">✕</button>' +
+        '<h3 class="pseudo-finder-title" style="margin-bottom:14px;">Mes favoris</h3>' +
+        '<div id="favEdBody"></div>' +
+      '</div>';
+    document.body.appendChild(favEdOverlay);
+    favEdOverlay.querySelector('#favEdClose').addEventListener('click', closeFavEditor);
+    favEdOverlay.addEventListener('mousedown', e => { if (e.target === favEdOverlay) closeFavEditor(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !favEdOverlay.hidden) closeFavEditor(); });
+  }
+  function openFavEditor(){ favEditorOpen = true; favEdOverlay.hidden = false; document.body.style.overflow = 'hidden'; renderFavEditor(); }
+  function closeFavEditor(){ favEditorOpen = false; favEdOverlay.hidden = true; document.body.style.overflow = ''; }
+
+  function renderFavEditor(){
+    const body = document.getElementById('favEdBody'); if (!body) return;
+    const favs = getFavs();
+    const orderRows = favs.map((id, i) =>
+      '<div class="fav-row" draggable="true" data-panel="' + id + '">' +
+        '<span class="fav-grip" aria-hidden="true">⠿</span>' +
+        '<span class="fav-lbl">' + PANEL_LABEL[id] + '</span>' +
+        '<span class="fav-sec">' + PANEL_SECTION[id] + '</span>' +
+        '<button type="button" data-act="up"' + (i === 0 ? ' disabled' : '') + ' aria-label="Monter">▲</button>' +
+        '<button type="button" data-act="down"' + (i === favs.length - 1 ? ' disabled' : '') + ' aria-label="Descendre">▼</button>' +
+        '<button type="button" data-act="rm" aria-label="Retirer">✕</button>' +
+      '</div>').join('');
+    const pick = VIEWS.map(v =>
+      '<div class="fav-pick-sec">' + v.label + '</div>' +
+      '<div class="fav-pick">' + v.panels.map(p =>
+        '<label><input type="checkbox" data-panel="' + p[0] + '"' + (favs.indexOf(p[0]) !== -1 ? ' checked' : '') + '>' + p[1] + '</label>'
+      ).join('') + '</div>'
+    ).join('');
+    body.innerHTML =
+      '<p class="fav-ed-h">Dans l’ordre d’affichage</p>' +
+      '<p class="fav-ed-note">Glisse une ligne pour la déplacer, ou utilise ▲▼. Enregistré sur cet appareil uniquement.</p>' +
+      '<div class="fav-order">' + orderRows + '</div>' +
+      '<p class="fav-ed-h">Tous les tableaux</p>' + pick;
+
+    body.querySelectorAll('.fav-order .fav-row button').forEach(b => {
+      b.addEventListener('click', () => {
+        const id = b.closest('.fav-row').dataset.panel;
+        if (b.dataset.act === 'up') moveFav(id, -1);
+        else if (b.dataset.act === 'down') moveFav(id, 1);
+        else toggleFav(id);
+      });
+    });
+    body.querySelectorAll('.fav-pick input').forEach(cb => {
+      cb.addEventListener('change', () => toggleFav(cb.dataset.panel));
+    });
+    let dragId = null;
+    body.querySelectorAll('.fav-order .fav-row').forEach(row => {
+      row.addEventListener('dragstart', e => { dragId = row.dataset.panel; row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+      row.addEventListener('dragend', () => { dragId = null; body.querySelectorAll('.fav-row').forEach(r => r.classList.remove('dragging', 'drag-over')); });
+      row.addEventListener('dragover', e => { e.preventDefault(); if (dragId && dragId !== row.dataset.panel) row.classList.add('drag-over'); });
+      row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+      row.addEventListener('drop', e => { e.preventDefault(); row.classList.remove('drag-over'); if (dragId) reorderFav(dragId, row.dataset.panel); });
+    });
+  }
+
+  function refreshFavUI(){
+    refreshStars();
+    renderHome();
+    if (favEditorOpen) renderFavEditor();
+    if ((location.hash.replace(/^#/, '') || 'accueil') === 'favoris') apply();
+  }
+
   function renderHome(){
-    grid.innerHTML = VIEWS.map(v => {
+    const favCard =
+      '<button type="button" class="home-card fav-card" data-view="favoris">' +
+        '<span class="hc-kicker">★ Mes favoris <span class="new-badge">Nouveau</span></span>' +
+        '<span class="hc-title">Ta sélection de tableaux, dans ton ordre</span>' +
+        '<span class="hc-stat">' + favStatLine() + '</span>' +
+        '<span class="hc-list">' + favChipsHtml() + '</span>' +
+        '<span class="hc-meta"></span>' +
+        '<span class="hc-arrow">→</span>' +
+      '</button>';
+    grid.innerHTML = favCard + VIEWS.map(v => {
       const f = sectionFlags(v);
       const kpiPill = v.badge
         ? ' <span class="tag-kpi" title="Section ajoutée récemment au dashboard">' + v.badge + '</span>'
@@ -4565,6 +4795,16 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
             ch.classList.toggle('is-hit', !!q && deburr(ch.textContent).indexOf(q) !== -1);
           });
         });
+        const fc = grid.querySelector('.home-card[data-view="favoris"]');
+        if (fc){
+          const hay2 = deburr('favoris mes favoris ' + getFavs().map(id => PANEL_LABEL[id]).join(' '));
+          const hit2 = !q || hay2.indexOf(q) !== -1;
+          fc.hidden = !hit2;
+          if (hit2) shown++;
+          fc.querySelectorAll('.hc-chip').forEach(ch => {
+            ch.classList.toggle('is-hit', !!q && deburr(ch.textContent).indexOf(q) !== -1);
+          });
+        }
         if (empty) empty.hidden = shown > 0;
       });
     }
@@ -4573,6 +4813,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
   function resolve(){
     const h = location.hash.replace(/^#/, '');
     if(!h || h === 'accueil') return null;
+    if(h === 'favoris') return { fav:true };
     let v = VIEWS.find(v => v.id === h);
     if(v) return { view:v, panel:null };
     v = VIEWS.find(v => v.panels.some(p => p[0] === h));
@@ -4580,9 +4821,52 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     return null;
   }
 
+  function applyFavView(){
+    const favs = getFavs();
+    home.hidden = true;
+    bar.hidden = false;
+    bar.innerHTML =
+      '<button type="button" class="sb-home">← Accueil</button>' +
+      '<span class="sb-label">Mes favoris</span>' +
+      '<span class="sb-sep" aria-hidden="true"></span>' +
+      '<span class="sb-chips">' +
+        favs.map(id => '<button type="button" class="sb-chip" data-jump="' + id + '">' + PANEL_LABEL[id] + '</button>').join('') +
+      '</span>' +
+      '<button type="button" class="sb-edit">⚙ Modifier</button>';
+    bar.querySelector('.sb-home').addEventListener('click', () => { location.hash = 'accueil'; });
+    bar.querySelector('.sb-edit').addEventListener('click', openFavEditor);
+    bar.querySelectorAll('[data-jump]').forEach(b => {
+      b.addEventListener('click', () => { const t = el(b.dataset.jump); if(t) t.scrollIntoView({ block:'start', behavior:'smooth' }); });
+    });
+
+    normalizePanels();
+    ALL.forEach(id => { const n = el(id); if(n) n.hidden = true; });
+    if(favs.length){
+      favs.forEach(id => { const n = el(id); if(n){ favContainer.appendChild(n); n.hidden = false; } });
+      favContainer.hidden = false;
+      favEmpty.hidden = true;
+    } else {
+      favContainer.hidden = true;
+      favEmpty.hidden = false;
+    }
+    foot.hidden = false;
+    foot.innerHTML =
+      '<button type="button" data-go="accueil">← Accueil</button>' +
+      '<button type="button" data-go="top25">Top 25 →</button>';
+    foot.querySelectorAll('button').forEach(b => { b.onclick = () => { location.hash = b.dataset.go; }; });
+
+    const first = favs[0] && el(favs[0]);
+    requestAnimationFrame(() => (first || bar).scrollIntoView({ block:'start', behavior:'instant' }));
+  }
+
   function apply(){
     const r = resolve();
     document.querySelectorAll('.section-divider-wrap').forEach(d => d.hidden = true);
+    refreshStars();
+
+    if(r && r.fav){ applyFavView(); return; }
+
+    normalizePanels();
 
     if(!r){
       home.hidden = false;
@@ -4622,6 +4906,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
     if(t) requestAnimationFrame(() => t.scrollIntoView({ block:'start', behavior:'instant' }));
   }
 
+  injectStars();
   window.addEventListener('hashchange', apply);
   renderHome();
   apply();
