@@ -1574,6 +1574,20 @@ footer code{
     </div>
   </section>
 
+  <section class="panel" id="panelClean">
+    <div class="panel-head">
+      <div>
+        <h2>Le moins de doublons</h2>
+        <p>Part des tirages qui sont tombés sur un joker déjà possédé — <b>plus c'est bas, plus la collection est « propre »</b>. Parmi les collectionneurs avec au moins 20 jokers uniques. L'envers du « prix des doublons ».</p>
+      </div>
+      <span class="panel-tag">Taux de doublons · le plus bas</span>
+    </div>
+    <div class="panel-body">
+      <div class="trophy-list compact" id="cleanList"></div>
+      <p class="bars-note" style="margin-top:22px;">Attention à l'effet taille : une petite collection accumule mécaniquement moins de doublons qu'une collection presque complète. Le nombre de jokers uniques est indiqué sous chaque nom.</p>
+    </div>
+  </section>
+
   <section class="panel" id="panelIndivRecords">
     <div class="panel-head">
       <div>
@@ -2798,6 +2812,34 @@ const TOP_HOLDERS = {"Stuntman":[["LeSoumis2Cactus35","holographic","2026-07-17"
     </div>`;
   };
   document.getElementById('premiumList').innerHTML = splitList(premium, 6, premiumRow);
+})();
+
+/* ---------- Le moins de doublons (taux de doublons le plus bas) ---------- */
+(function(){
+  const host = document.getElementById('cleanList');
+  if(!host) return;
+  const MIN_UNIQ = 20;
+  const rows = OFFICIAL_LEADERBOARD
+    .map(r => {
+      const [rang,name,score,total,uniq,doublons] = r;
+      return { name, uniq, total, doublons, rate: total>0 ? doublons/total*100 : 0, perU: uniq>0 ? doublons/uniq : 0 };
+    })
+    .filter(p => p.uniq >= MIN_UNIQ)
+    .sort((a,b) => a.rate-b.rate || a.perU-b.perU);
+  const cleanRow = (p,i)=>`
+    <div class="trophy-row" data-name="${p.name}">
+      <span class="trophy-rank">${i+1}</span>
+      <span>
+        <span class="trophy-name">${p.name}</span>
+        <div class="trophy-sub">${p.doublons} doublon${p.doublons>1?'s':''} sur ${p.total} tirages · ${p.uniq} jokers uniques</div>
+      </span>
+      <span class="trophy-count">${p.rate.toFixed(1)}<small>% doublons</small></span>
+    </div>`;
+  host.innerHTML = splitList(rows, 6, cleanRow);
+  host.querySelectorAll('.trophy-row').forEach(el=>{
+    const p = rows.find(r=>r.name===el.dataset.name);
+    if(p) attachTip(el, `<b>${p.name}</b><br>${p.rate.toFixed(1)} % des tirages sont des doublons<br>${p.perU.toFixed(2)} doublon/joker unique<br>${p.uniq} jokers uniques · ${p.total} tirages`);
+  });
 })();
 
 /* ---------- Les pages complètes (15 jokers/page, classeur en jeu) ---------- */
@@ -4489,7 +4531,7 @@ const EDITION_LABEL = {foil:'Brillant', holographic:'Holographique', polychrome:
       ['panelDuels','Matchs à suivre'],['panelRookie','Recrue de la saison'],['panelAssiduity','Assiduité'] ] },
     { id:'communaute', label:'Communauté', tagline:'Les 243 collectionneurs', panels:[
       ['panelCommunityScale','Ampleur'],['panelCommunityTrophy','Le vrai tiercé'],
-      ['panelHoarders','Accumulateurs'],['panelPremium','Premium'],['panelIndivRecords','Records perso'] ] },
+      ['panelHoarders','Accumulateurs'],['panelPremium','Premium'],['panelClean','Le moins de doublons'],['panelIndivRecords','Records perso'] ] },
     { id:'jokerdex', label:'Jokerdex', tagline:'Le tirage carte par carte', panels:[
       ['panelValidation','Grand tirage'],['panelExtremes','Extrêmes'],['panelHoardedJokers','Biais du tirage'],['panelTopJokers','Tableau de chasse'],
       ['panelPossession','Qui possède quoi'],['panelNewJokers','Course à la nouveauté'],['panelPageRace','La page qui bloque'] ] },
